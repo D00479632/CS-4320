@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-#
+# Confusion Matrix pretty print
 # https://gist.github.com/zachguo/10296432
 #
 
