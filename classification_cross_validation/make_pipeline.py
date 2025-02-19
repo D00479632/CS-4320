@@ -21,7 +21,7 @@ def make_numerical_predictor_params(my_args):
         "features__numerical__numerical-features-only__do_numerical" : [ True ],
     }
     if my_args.numerical_missing_strategy:
-        params["features__numerical__missing-data__strategy"] = [ 'median', 'mean', 'most_frequent' ]
+        params["features__numerical__missing-data__strategy"] = [ 'median' ] # 'mean', 'most_frequent'
     if my_args.use_polynomial_features:
         params["features__numerical__polynomial-features__degree"] = [ 2 ] # [ 1, 2, 3 ]
 
@@ -43,6 +43,121 @@ def make_predictor_params(my_args):
     p2 = make_categorical_predictor_params(my_args)
     p1.update(p2)
     return p1
+
+def make_SGD_params(my_args):
+    SGD_params = {
+    # [ "hinge", "log_loss", "modified_huber", "squared_hinge", "perceptron",
+    # "squared_error", "huber", "epsilon_insensitive", "squared_epsilon_insensitive" ], 
+    "model__loss": [ "hinge" ], 
+    "model__penalty": [ "l2" ], # ["l2", "l1", "elasticnet", None],
+    "model__alpha": [ 0.0001 ],  # Float in range [0.0, inf)
+    "model__l1_ratio": [ 0.15 ],  # Float in range [0.0, 1.0]
+    "model__fit_intercept": [ True ], # [True, False],
+    "model__max_iter": [ 1000 ],  # Int in range [1, inf)
+    "model__tol": [ 1e-3 ],  # Float in range [0.0, inf) or None
+    "model__shuffle": [ True ], # [True, False],
+    "model__verbose": [ 0 ],  # Int in range [0, inf)
+    "model__epsilon": [ 0.1 ],  # Float in range [0.0, inf)
+    "model__n_jobs": [ None ],  # -1 (using all processors) or None
+    "model__random_state": [ None ],  # Int in range [0, 2**32 - 1] or RandomState instance
+    "model__learning_rate": [ "optimal" ], # ["constant", "optimal", "invscaling", "adaptive"],
+    "model__eta0": [ 0.0 ],  # Float in range [0.0, inf)
+    "model__power_t": [ 0.5 ],  # Float in range (-inf, inf)
+    "model__early_stopping": [ False ], # [True, False],
+    "model__validation_fraction": [ 0.1 ],  # Float in range (0.0, 1.0)
+    "model__n_iter_no_change": [ 5 ],  # Int in range [1, max_iter)
+    "model__class_weight": [ None ],  # [None, "balanced"], 
+    "model__warm_start": [ False ], # [True, False],
+    "model__average": [ False ], # [True, False], Or int in range [1, n_samples]
+    }
+
+    return SGD_params
+
+def make_linear_params(my_args):
+    linear_params = {
+    "model__alpha": [1.0],  # Float in range (0.0, inf)
+    "model__fit_intercept": [True],  # [True, False]
+    "model__copy_X": [True],  # [True, False]
+    "model__max_iter": [None],  # Int in range [1, inf) or None
+    "model__tol": [1e-4],  # Float in range [0.0, inf)
+    "model__class_weight": [None],  # [None, "balanced", {class_label: weight}]
+    "model__solver": ["auto"],  # ["auto", "svd", "cholesky", "lsqr", "sparse_cg", "sag", "saga", "lbfgs"]
+    "model__positive": [False],  # [True, False] (Only supported with "lbfgs" solver)
+    "model__random_state": [None],  # Int in range [0, 2**32 - 1] or RandomState instance
+    }
+
+    return linear_params 
+
+def make_SVM_params(my_args):
+    SVC_params = {
+    "model__C": [1.0],  # Float, strictly positive
+    "model__kernel": ["rbf"],  # ["linear", "poly", "rbf", "sigmoid", "precomputed"] or callable
+    "model__degree": [3],  # Int, non-negative
+    "model__gamma": ["scale"],  # ["scale", "auto"] or float, non-negative
+    "model__coef0": [0.0],  # Float
+    "model__shrinking": [True],  # [True, False]
+    "model__probability": [False],  # [True, False]
+    "model__tol": [1e-3],  # Float
+    "model__cache_size": [200],  # Float (in MB)
+    "model__class_weight": [None],  # [None, "balanced"] or dict
+    "model__verbose": [False],  # [True, False]
+    "model__max_iter": [-1],  # Int, -1 for no limit
+    "model__decision_function_shape": ["ovr"],  # ["ovo", "ovr"]
+    "model__break_ties": [False],  # [True, False]
+    "model__random_state": [None],  # Int, RandomState instance, or None
+    }
+
+    return SVC_params 
+
+def make_boost_params(my_args):
+    boost_params = {
+    "model__loss": ["log_loss"],  # ["log_loss", "exponential"]
+    "model__learning_rate": [0.1],  # Float in range [0.0, inf)
+    "model__n_estimators": [100],  # Int in range [1, inf)
+    "model__subsample": [1.0],  # Float in range (0.0, 1.0]
+    "model__criterion": ["friedman_mse"],  # ["friedman_mse", "squared_error"]
+    "model__min_samples_split": [2],  # Int in range [2, inf) or float in range (0.0, 1.0]
+    "model__min_samples_leaf": [1],  # Int in range [1, inf) or float in range (0.0, 1.0)
+    "model__min_weight_fraction_leaf": [0.0],  # Float in range [0.0, 0.5]
+    "model__max_depth": [3],  # Int in range [1, inf) or None
+    "model__min_impurity_decrease": [0.0],  # Float in range [0.0, inf)
+    "model__init": [None],  # Estimator or "zero", default=None
+    "model__random_state": [None],  # Int, RandomState instance, or None
+    "model__max_features": [None],  # ["sqrt", "log2"], int in range [1, inf), float in range (0.0, 1.0], or None
+    "model__verbose": [0],  # Int in range [0, inf)
+    "model__max_leaf_nodes": [None],  # Int in range [2, inf) or None
+    "model__warm_start": [False],  # [True, False]
+    "model__validation_fraction": [0.1],  # Float in range (0.0, 1.0)
+    "model__n_iter_no_change": [None],  # Int in range [1, inf) or None
+    "model__tol": [1e-4],  # Float in range [0.0, inf)
+    "model__ccp_alpha": [0.0],  # Float in range [0.0, inf)
+    }
+    return boost_params 
+
+def make_forest_params(my_args):
+    forest_params = {
+        "model__n_estimators": [100],  # Int, default=100
+        "model__criterion": ["gini"],  # ["gini", "entropy", "log_loss"]
+        "model__max_depth": [None],  # Int or None
+        "model__min_samples_split": [2],  # Int in range [2, inf) or float in range (0.0, 1.0]
+        "model__min_samples_leaf": [1],  # Int in range [1, inf) or float in range (0.0, 1.0]
+        "model__min_weight_fraction_leaf": [0.0],  # Float in range [0.0, 0.5]
+        "model__max_features": ["sqrt"],  # ["sqrt", "log2", None] or int or float in range (0.0, 1.0]
+        "model__max_leaf_nodes": [None],  # Int in range [2, inf) or None
+        "model__min_impurity_decrease": [0.0],  # Float in range [0.0, inf)
+        "model__bootstrap": [True],  # [True, False]
+        "model__oob_score": [False],  # [True, False] or callable
+        "model__n_jobs": [None],  # Int or None
+        "model__random_state": [None],  # Int, RandomState instance, or None
+        "model__verbose": [0],  # Int in range [0, inf)
+        "model__warm_start": [False],  # [True, False]
+        "model__class_weight": [None],  # ["balanced", "balanced_subsample"] or dict or list of dicts
+        "model__ccp_alpha": [0.0],  # Float in range [0.0, inf)
+        "model__max_samples": [None],  # Float in range (0.0, 1.0] or Int or None
+        "model__monotonic_cst": [None],  # None or array-like
+    }
+
+    return forest_params 
 
 def make_tree_params(my_args):
     tree_params = {

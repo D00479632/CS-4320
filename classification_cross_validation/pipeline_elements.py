@@ -5,6 +5,7 @@
 #
 # These custom classes help with pipeline building and debugging
 #
+
 import sklearn.base
 import pandas as pd
 
@@ -47,10 +48,10 @@ class Printer(sklearn.base.BaseEstimator, sklearn.base.TransformerMixin):
 class DataFrameSelector(sklearn.base.BaseEstimator, sklearn.base.TransformerMixin):
     
     def __init__(self, do_predictors=True, do_numerical=True):
-        # skip "name", "ticket", "cabin", "boat", "body", "home.dest"
-        self.mCategoricalPredictors = ["pclass", "sex", "embarked"]
-        self.mNumericalPredictors = ["age", "sibsp", "parch", "fare", ]
-        self.mLabels = ["survived"]
+        self.mCategoricalPredictors = ["person_home_ownership", "loan_intent", "loan_grade", "cb_person_default_on_file" ]
+        self.mNumericalPredictors = ["person_age", "person_income", "person_emp_length", "loan_amnt", "loan_int_rate", 
+                                     "loan_percent_income", "cb_person_cred_hist_length"]
+        self.mLabels = ["loan_status"]
         self.do_numerical = do_numerical
         self.do_predictors = do_predictors
         
