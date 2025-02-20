@@ -196,7 +196,7 @@ def do_proba(my_args):
 
     merged = X_test.index.to_frame()
     merged[my_args.label] = y_test_predicted[:,1]
-    merged.to_csv("predictions_proba.csv", index=False)
+    merged.to_csv("predictions/predictionsRandomForestProba.csv", index=False)
 
     return
 
@@ -415,9 +415,9 @@ def do_precision_recall_curve(my_args):
 def parse_args(argv):
     parser = argparse.ArgumentParser(prog=argv[0], description='Fit Data Using Pipeline',
                                      formatter_class=argparse.ArgumentDefaultsHelpFormatter)
-    parser.add_argument('action', default='fit',
+    parser.add_argument('action', default='',
                         choices=[ "fit", "score", "loss", "cross", "predict", "grid-search", "show-best-params", "random-search",
-                                  "cross-score", "confusion-matrix", "precision-recall-plot", "pr-curve" ], 
+                                  "cross-score", "confusion-matrix", "precision-recall-plot", "pr-curve", "proba" ], 
                         nargs='?', help="desired action")
     parser.add_argument('--model-type',    '-M', default="", type=str,   choices=["SGD", "linear", "SVM", "boost", "forest", "tree"], help="Model type")
     parser.add_argument('--train-file',    '-t', default="",    type=str,   help="name of file with training data")
@@ -479,6 +479,8 @@ def main(argv):
         do_precision_recall_plot(my_args)
     elif my_args.action == "pr-curve":
         do_precision_recall_curve(my_args)
+    elif my_args.action == "proba":
+        do_proba(my_args)
     else:
         raise Exception("Action: {} is not known.".format(my_args.action))
         

@@ -85,4 +85,61 @@
 # Still, I am not going to do proba on this model because I know is not great
 
 # Now with RandomForestClassifier
-./pipeline.py random-search --model-type forest --train-file data/train.csv --model-file models/RandomForestClassifier.joblib --search-grid-file models/SearchGridRandomForestClassifier.joblib --use-polynomial-features 2 --use-scaler 1 --categorical-missing-strategy most_frequent --numerical-missing-strategy median --n-search-iterations 10 
+#./pipeline.py random-search --model-type forest --train-file data/train.csv --model-file models/RandomForestClassifier.joblib --search-grid-file models/SearchGridRandomForestClassifier.joblib --use-polynomial-features 2 --use-scaler 1 --categorical-missing-strategy most_frequent --numerical-missing-strategy median --n-search-iterations 10 
+# This took over 45 minutes I really hope it was not a waste of time
+
+# Let's see the best found parameters
+#./pipeline.py show-best-params --model-type forest --train-file data/train.csv --search-grid-file models/SearchGridRandomForestClassifier.joblib 
+#Best Score: 0.94988493408149
+#Best Params:
+#{   'features__categorical__categorical-features-only__do_numerical': False,
+#    'features__categorical__categorical-features-only__do_predictors': True,
+#    'features__categorical__encode-category-bits__categories': 'auto',
+#    'features__categorical__encode-category-bits__handle_unknown': 'ignore',
+#    'features__categorical__missing-data__strategy': 'most_frequent',
+#    'features__numerical__missing-data__strategy': 'median',
+#    'features__numerical__numerical-features-only__do_numerical': True,
+#    'features__numerical__numerical-features-only__do_predictors': True,
+#    'features__numerical__polynomial-features__degree': 2,
+#    'model__bootstrap': True,
+#    'model__ccp_alpha': 0.0,
+#    'model__class_weight': None,
+#    'model__criterion': 'gini',
+#    'model__max_depth': None,
+#    'model__max_features': None,
+#    'model__max_leaf_nodes': None,
+#    'model__max_samples': None,
+#    'model__min_impurity_decrease': 0.0,
+#    'model__min_samples_leaf': 1,
+#    'model__min_samples_split': 2,
+#    'model__min_weight_fraction_leaf': 0.0,
+#    'model__monotonic_cst': None,
+#    'model__n_estimators': 500,
+#    'model__n_jobs': -1,
+#    'model__oob_score': False,
+#    'model__random_state': None,
+#    'model__verbose': 0,
+#    'model__warm_start': False}
+
+# Lets look at the confusion matrix (make sure to change the make_fit_pipeline_classification with parameters found)
+#./pipeline.py confusion-matrix --model-type forest --train-file data/train.csv --search-grid-file models/SearchGridRandomForestClassifier.joblib
+#     t/p      F     T 
+#        F 49754.0 541.0 
+#        T 2355.0 5995.0 
+#Precision: 0.917
+#Recall:    0.718
+#F1:        0.805
+
+# Comparing it to the last one we did way better with 90% of the the positive predictions were actually correct. 70% of the true positives were identified.
+# I will do proba to submit to kaggle and see how I'm doing so far. I will still try more models afterwards.
+
+# Doing a precision-recall-plot
+#./pipeline.py precision-recall-plot --model-type forest --train-file data/train.csv --image-file plots/precisionRecallPlotRandomForest.png 
+
+# Now a pr-curve
+#./pipeline.py pr-curve --model-type forest --train-file data/train.csv --image-file plots/prCurveRandomForest.png 
+
+#./pipeline.py proba --model-type forest --test-file data/test.csv --model-file models/RandomForestClassifier.joblib 
+# After submitted to kaggle I got a 0.93810 which is not bad for my first try. I went over what I needed for the assignment
+
+# Moving on to the next I want to try the GradientBoostingClassifier
