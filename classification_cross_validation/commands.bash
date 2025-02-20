@@ -139,7 +139,64 @@
 # Now a pr-curve
 #./pipeline.py pr-curve --model-type forest --train-file data/train.csv --image-file plots/prCurveRandomForest.png 
 
-#./pipeline.py proba --model-type forest --test-file data/test.csv --model-file models/RandomForestClassifier.joblib 
+#./pipeline.py proba --model-type forest --test-file data/test.csv --model-file models/RandomForestClassifier.joblib --proba-file predictions/predictionsRandomForestProba.csv
 # After submitted to kaggle I got a 0.93810 which is not bad for my first try. I went over what I needed for the assignment
 
 # Moving on to the next I want to try the GradientBoostingClassifier
+#./pipeline.py random-search --model-type boost --train-file data/train.csv --model-file models/GradientBoostingClassifier.joblib --search-grid-file models/SearchGridGradientBoostingClassifier.joblib --use-polynomial-features 2 --use-scaler 1 --categorical-missing-strategy most_frequent --numerical-missing-strategy median --n-search-iterations 10 
+# It has been running for an hour and half now, I am going to go to bed and hope it is done
+# It took almost three hours.
+
+# Lets see the best parameters that were found
+#./pipeline.py show-best-params --model-type boost --train-file data/train.csv --search-grid-file models/SearchGridGradientBoostingClassifier.joblib 
+#Best Score: 0.9489641298743177
+#Best Params:
+#{   'features__categorical__categorical-features-only__do_numerical': False,
+#    'features__categorical__categorical-features-only__do_predictors': True,
+#    'features__categorical__encode-category-bits__categories': 'auto',
+#    'features__categorical__encode-category-bits__handle_unknown': 'ignore',
+#    'features__categorical__missing-data__strategy': 'most_frequent',
+#    'features__numerical__missing-data__strategy': 'median',
+#    'features__numerical__numerical-features-only__do_numerical': True,
+#    'features__numerical__numerical-features-only__do_predictors': True,
+#    'features__numerical__polynomial-features__degree': 2,
+#    'model__ccp_alpha': 0.0,
+#    'model__criterion': 'squared_error',
+#    'model__init': None,
+#    'model__learning_rate': 0.1,
+#    'model__loss': 'exponential',
+#    'model__max_depth': None,
+#    'model__max_features': None,
+#    'model__max_leaf_nodes': None,
+#    'model__min_impurity_decrease': 0.0,
+#    'model__min_samples_leaf': 1,
+#    'model__min_samples_split': 2,
+#    'model__min_weight_fraction_leaf': 0.0,
+#    'model__n_estimators': 200,
+#    'model__n_iter_no_change': None,
+#    'model__random_state': None,
+#    'model__subsample': 0.9,
+#    'model__tol': 0.0001,
+#    'model__validation_fraction': 0.1,
+#    'model__verbose': 0,
+#    'model__warm_start': False}
+
+# Now lets see how good the confusion matrix is
+#./pipeline.py confusion-matrix --model-type boost --train-file data/train.csv --search-grid-file models/SearchGridGradientBoostingClassifier.joblib
+#     t/p      F     T 
+#        F 49775.0 520.0 
+#        T 2359.0 5991.0 
+#Precision: 0.920
+#Recall:    0.717
+#F1:        0.806
+
+# Comparing it to the RandomForest it barely improved. However, I still want to submit it to see what the difference would be.
+
+# Doing a precision-recall-plot
+#./pipeline.py precision-recall-plot --model-type boost --train-file data/train.csv --image-file plots/precisionRecallPlotGradientBoosting.png 
+
+# Now a pr-curve
+#./pipeline.py pr-curve --model-type forest --train-file data/train.csv --image-file plots/prCurveGradientBoosting.png 
+
+#./pipeline.py proba --model-type boost --test-file data/test.csv --model-file models/GradientBoostingClassifier.joblib --proba-file predictions/predictionsGradientBoostingProba.csv
+# After submitted to kaggle I got a 0.94164 which is not much better than the random forest was.

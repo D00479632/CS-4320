@@ -196,7 +196,7 @@ def do_proba(my_args):
 
     merged = X_test.index.to_frame()
     merged[my_args.label] = y_test_predicted[:,1]
-    merged.to_csv("predictions/predictionsRandomForestProba.csv", index=False)
+    merged.to_csv(my_args.proba_file, index=False)
 
     return
 
@@ -435,7 +435,8 @@ def parse_args(argv):
     parser.add_argument('--show-test',     '-S', default=0,         type=int,   help="0 = don't show test loss, 1 = do show test loss (default=0)")
     parser.add_argument('--n-search-iterations', default=10,        type=int,   help="number of random iterations in randomized grid search.")
     parser.add_argument('--cv-count',            default=3,         type=int,   help="number of partitions for cross validation.")
-    parser.add_argument('--image-file',          default="image.png", type=str,   help="name of file to store output images")
+    parser.add_argument('--image-file',          default="", type=str,   help="name of file to store output images")
+    parser.add_argument('--proba-file',          default="", type=str,   help="name of file to store output of proba")
     parser.add_argument('--cross-val-predict-method', default="", type=str,   help="method argument for cross_val_predict, will be determined by model-type")
 
     my_args = parser.parse_args(argv[1:])
