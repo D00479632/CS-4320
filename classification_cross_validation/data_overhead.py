@@ -14,7 +14,7 @@ import logging
 def get_test_filename(test_file, filename):
     if test_file == "":
         basename = get_basename(filename)
-        test_file = "{}-test.csv".format(basename)
+        test_file = "data/{}-test.csv".format(basename)
     return test_file
 
 def get_basename(filename):
@@ -31,13 +31,13 @@ def get_basename(filename):
 def get_model_filename(model_file, filename):
     if model_file == "":
         basename = get_basename(filename)
-        model_file = "{}-model.joblib".format(basename)
+        model_file = "models/{}-model.joblib".format(basename)
     return model_file
 
 def get_search_grid_filename(search_grid_file, filename):
     if search_grid_file == "":
         basename = get_basename(filename)
-        search_grid_file = "{}-search-grid.joblib".format(basename)
+        search_grid_file = "models/{}-search-grid.joblib".format(basename)
     return search_grid_file
 
 def get_data(filename):

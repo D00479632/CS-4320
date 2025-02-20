@@ -254,10 +254,13 @@ def show_best_params(my_args):
     train_file = my_args.train_file
     if not os.path.exists(train_file):
         raise Exception("training data file: {} does not exist.".format(train_file))
-    
+    ''' 
+    Tis is not being used and I rather not pass it in.
+
     test_file = get_test_filename(my_args.test_file, train_file)
     if not os.path.exists(test_file):
         raise Exception("testing data file, '{}', does not exist.".format(test_file))
+    '''
     
     search_grid_file = get_search_grid_filename(my_args.search_grid_file, train_file)
     if not os.path.exists(search_grid_file):

@@ -22,3 +22,67 @@
 # Because everything is so polarized the scatter plot function doesn't work well for this data 
 # and you can barely see at the top and bottom all the points. So for now I will just take a look
 # at the histograms
+
+# For what I know right now I think that RandomForestClassifier or GradientBoostingClassifier will do the best out of
+# the different models we have set up. But like always I want to start with the SGDClassifier to get used to the process.
+
+#./pipeline.py random-search --model-type SGD --train-file data/train.csv --model-file models/SGDClassifier.joblib --search-grid-file models/SearchGridSGDClassifier.joblib --use-polynomial-features 2 --use-scaler 1 --categorical-missing-strategy most_frequent --numerical-missing-strategy median --n-search-iterations 10 
+
+# Let's see what our best parameters are
+#./pipeline.py show-best-params --model-type SGD --train-file data/train.csv --search-grid-file models/SearchGridSGDClassifier.joblib 
+
+#Best Score: 0.9144001833459651
+#Best Params:
+#{   'features__categorical__categorical-features-only__do_numerical': False,
+#    'features__categorical__categorical-features-only__do_predictors': True,
+#    'features__categorical__encode-category-bits__categories': 'auto',
+#    'features__categorical__encode-category-bits__handle_unknown': 'ignore',
+#    'features__categorical__missing-data__strategy': 'most_frequent',
+#    'features__numerical__missing-data__strategy': 'median',
+#    'features__numerical__numerical-features-only__do_numerical': True,
+#    'features__numerical__numerical-features-only__do_predictors': True,
+#    'features__numerical__polynomial-features__degree': 2,
+#    'model__alpha': 0.0001,
+#    'model__average': False,
+#    'model__class_weight': None,
+#    'model__early_stopping': False,
+#    'model__epsilon': 0.1,
+#    'model__eta0': 0.0,
+#    'model__fit_intercept': True,
+#    'model__l1_ratio': 0.15,
+#    'model__learning_rate': 'optimal',
+#    'model__loss': 'log_loss',
+#    'model__max_iter': 1000,
+#    'model__n_iter_no_change': 5,
+#    'model__n_jobs': -1,
+#    'model__penalty': None,
+#    'model__power_t': 0.5,
+#    'model__random_state': None,
+#    'model__shuffle': True,
+#    'model__tol': 0.001,
+#    'model__validation_fraction': 0.1,
+#    'model__verbose': 0,
+#    'model__warm_start': False}
+
+# Maybe we overfitted our model so lets look at the confusion matrix (make sure to change the make_fit_pipeline_classification with parameters found)
+#./pipeline.py confusion-matrix --model-type SGD --train-file data/train.csv --search-grid-file models/SearchGridSGDClassifier.joblib 
+
+#     t/p      F     T 
+#        F 48509.0 1786.0 
+#        T 6518.0 1832.0 
+#Precision: 0.506
+#Recall:    0.219
+#F1:        0.306
+# This is very poor 50.6% of the positive predictions were actually correct so we have a 50/50 model. Only 21.9% of the actual positives were correctly identified.
+# But if I change the make_fit_pipeline_classification and delete the best parameters we found then we get this confusion matrix:
+#     t/p      F     T 
+#        F 42871.0 7424.0 
+#        T 3595.0 4755.0 
+#Precision: 0.390
+#Recall:    0.569
+#F1:        0.463
+# And I can tell that the hyperparameters that I found make the model way better than with the default by a lot (30% to 50%)
+# Still, I am not going to do proba on this model because I know is not great
+
+# Now with RandomForestClassifier
+./pipeline.py random-search --model-type forest --train-file data/train.csv --model-file models/RandomForestClassifier.joblib --search-grid-file models/SearchGridRandomForestClassifier.joblib --use-polynomial-features 2 --use-scaler 1 --categorical-missing-strategy most_frequent --numerical-missing-strategy median --n-search-iterations 10 
