@@ -89,7 +89,7 @@ def make_linear_params(my_args):
     return linear_params 
 
 def make_SVM_params(my_args):
-    SVC_params = {
+    SVM_params = {
         "model__C": [1.0],  # Float, strictly positive
         "model__kernel": ["rbf"],  # ["linear", "poly", "rbf", "sigmoid", "precomputed"] or callable
         "model__degree": [3],  # Int, non-negative
@@ -107,10 +107,9 @@ def make_SVM_params(my_args):
         "model__random_state": [None],  # Int, RandomState instance, or None
     }
 
-    return SVC_params 
+    return SVM_params 
 
 def make_boost_params(my_args):
-    '''
     boost_params = {
         "model__loss": ["log_loss"],  # ["log_loss", "exponential"]
         "model__learning_rate": [0.1],  # Float in range [0.0, inf)
@@ -133,33 +132,10 @@ def make_boost_params(my_args):
         "model__tol": [1e-4],  # Float in range [0.0, inf)
         "model__ccp_alpha": [0.0],  # Float in range [0.0, inf)
     }
-    '''
-    boost_params = {
-        "model__loss": ["log_loss", "exponential"],  # ["log_loss", "exponential"]
-        "model__learning_rate": [0.1, 0.3, 0.5],  # Float in range [0.0, inf)
-        "model__n_estimators": [100, 50, 200],  # Int in range [1, inf)
-        "model__subsample": [1.0, 0.5, 0.9],  # Float in range (0.0, 1.0]
-        "model__criterion": ["friedman_mse", "squared_error"],  # ["friedman_mse", "squared_error"]
-        "model__min_samples_split": [2],  # Int in range [2, inf) or float in range (0.0, 1.0]
-        "model__min_samples_leaf": [1],  # Int in range [1, inf) or float in range (0.0, 1.0)
-        "model__min_weight_fraction_leaf": [0.0],  # Float in range [0.0, 0.5]
-        "model__max_depth": [3, None],  # Int in range [1, inf) or None
-        "model__min_impurity_decrease": [0.0],  # Float in range [0.0, inf)
-        "model__init": [None],  # Estimator or "zero", default=None
-        "model__random_state": [None],  # Int, RandomState instance, or None
-        "model__max_features": ["sqrt", "log2", None],  # ["sqrt", "log2"], int in range [1, inf), float in range (0.0, 1.0], or None
-        "model__verbose": [0],  # Int in range [0, inf)
-        "model__max_leaf_nodes": [None],  # Int in range [2, inf) or None
-        "model__warm_start": [False],  # [True, False]
-        "model__validation_fraction": [0.1],  # Float in range (0.0, 1.0)
-        "model__n_iter_no_change": [None],  # Int in range [1, inf) or None
-        "model__tol": [1e-4],  # Float in range [0.0, inf)
-        "model__ccp_alpha": [0.0, 0.5, 1.0],  # Float in range [0.0, inf)
-    }
+    
     return boost_params 
 
 def make_forest_params(my_args):
-    '''
     forest_params = {
         "model__n_estimators": [100],  # Int, default=100
         "model__criterion": ["gini"],  # ["gini", "entropy", "log_loss"]
@@ -181,28 +157,7 @@ def make_forest_params(my_args):
         "model__max_samples": [None],  # Float in range (0.0, 1.0] or Int or None
         "model__monotonic_cst": [None],  # None or array-like
     }
-    '''
-    forest_params = {
-        "model__n_estimators": [100, 500, 50],  # Int, default=100
-        "model__criterion": ["gini", "entropy", "log_loss"],
-        "model__max_depth": [None],  # Int or None
-        "model__min_samples_split": [2],  # Int in range [2, inf) or float in range (0.0, 1.0]
-        "model__min_samples_leaf": [1],  # Int in range [1, inf) or float in range (0.0, 1.0]
-        "model__min_weight_fraction_leaf": [0.0],  # Float in range [0.0, 0.5]
-        "model__max_features": ["sqrt", "log2", None],  #  int or float in range (0.0, 1.0]
-        "model__max_leaf_nodes": [None],  # Int in range [2, inf) or None
-        "model__min_impurity_decrease": [0.0],  # Float in range [0.0, inf)
-        "model__bootstrap": [True],  # [True, False]
-        "model__oob_score": [False],  # [True, False] or callable
-        "model__n_jobs": [-1],  # Int or None
-        "model__random_state": [None],  # Int, RandomState instance, or None
-        "model__verbose": [0],  # Int in range [0, inf)
-        "model__warm_start": [False],  # [True, False]
-        "model__class_weight": [None],  # ["balanced", "balanced_subsample"] or dict or list of dicts
-        "model__ccp_alpha": [0.0],  # Float in range [0.0, inf)
-        "model__max_samples": [None],  # Float in range (0.0, 1.0] or Int or None
-        "model__monotonic_cst": [None],  # None or array-like
-    }
+    
     return forest_params 
 
 def make_tree_params(my_args):

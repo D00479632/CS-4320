@@ -196,7 +196,10 @@
 #./pipeline.py precision-recall-plot --model-type boost --train-file data/train.csv --image-file plots/precisionRecallPlotGradientBoosting.png 
 
 # Now a pr-curve
-#./pipeline.py pr-curve --model-type forest --train-file data/train.csv --image-file plots/prCurveGradientBoosting.png 
+#./pipeline.py pr-curve --model-type boost --train-file data/train.csv --image-file plots/prCurveGradientBoosting.png 
 
 #./pipeline.py proba --model-type boost --test-file data/test.csv --model-file models/GradientBoostingClassifier.joblib --proba-file predictions/predictionsGradientBoostingProba.csv
 # After submitted to kaggle I got a 0.94164 which is not much better than the random forest was.
+
+# For future projects I want to improve my testing by spliting the training data into train and test so that I can test my models with data they haven't seen 
+# and I would also like to take more time to look at the features and see which ones I could leave out to make the dataset less complex.
