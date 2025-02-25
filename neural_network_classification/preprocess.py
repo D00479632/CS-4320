@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
 
+# This is like the pipeline code but without myargs
+# TODO: change all the hardcoded names
 from pipeline_elements import *
 import sklearn.impute
 import sklearn.preprocessing
@@ -42,8 +44,9 @@ def preprocess_dataframe(pipeline, dataframe, label):
     Assumes all other columns are features, and transforms them.
     """
     
-    # list of features to transform
+    # list of features to transform (all features but the label)
     feature_names = list(dataframe.columns)
+    # Remember if label is present
     have_label = label in feature_names
     if have_label:
         feature_names.remove(label)
@@ -51,17 +54,19 @@ def preprocess_dataframe(pipeline, dataframe, label):
     # separate features and label
     X = dataframe[feature_names]
     if have_label:
+        # Make series of label only if label was present
         y = dataframe[label]
     
     # transform features
     X_transformed = pipeline.transform(X)
     
     # if the transform became sparse, densify it.
-    # this usually happens because of one-hot-encoding
+    # this usually happens because of one-hot-encoding because there are a lot of 0
     if not isinstance(X_transformed, np.ndarray):
         X_transformed = X_transformed.todense()
 
     # reconstruct a dataframe, we've lost the labels of features. Too bad.
+    # When we send a panda df into the pipeline it turns it into np arrays
     df1 = pd.DataFrame(X_transformed)
     
     if have_label:
@@ -88,9 +93,11 @@ def load_pipeline(filename):
 
 def preprocess_file(input_filename, output_filename, pipeline_filename, label):
     dataframe = pd.read_csv(input_filename, index_col=0)
+    # If the pipeline does not exist it will fit it and save it
     if not os.path.exists(pipeline_filename):
         pipeline = fit_pipeline_to_dataframe(dataframe)
         save_pipeline(pipeline, pipeline_filename)
+    # Else, it will load the pipeline
     else:
         pipeline = load_pipeline(pipeline_filename)
 
@@ -116,7 +123,7 @@ def main_test():
     return
 
 def main():
-    # main_train()
+    main_train()
     main_test()
 
 if __name__ == "__main__":
