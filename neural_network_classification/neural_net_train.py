@@ -7,9 +7,9 @@ import matplotlib.pyplot as plt
 
 label = "Depression"
 input_filename = "data/preprocessed-train.csv"
-model_filename = "models/model1.keras"
+model_filename = "models/model2.keras"
 train_ratio = 0.80
-learning_curve_filename = "plots/learning-curve1.png"
+learning_curve_filename = "plots/learning-curve2.png"
 #
 # Load the training dataframe, separate into X/y
 #
@@ -87,14 +87,15 @@ model = keras.Sequential()
 # input_shape needs to match the shape of the data bc the data needs to fit the model
 model.add(keras.layers.Input(shape=input_shape))
 
-activation, initializer = 'relu', 'kernel_initializer'
-layers = 1
+activation = 'relu'
+initializer = keras.initializers.HeNormal()
+layers = 2
 for i in range(layers):
-    model.add(keras.layers.Dense(100, activation=activation))
+    model.add(keras.layers.Dense(128, activation=activation, kernel_initializer=initializer))
 
 # Output layer only has one unit in it (one output)
 # Sigmoid is the threshold function type that helps for the steps
-model.add(keras.layers.Dense(1, activation=activation))
+model.add(keras.layers.Dense(1, activation="sigmoid"))
 #print(model.summary())
 #print(model.layers[1].get_weights())
 
@@ -103,9 +104,10 @@ model.add(keras.layers.Dense(1, activation=activation))
 #
 # binary_crossentropy is typical for binary classification
 loss = "mean_squared_error"
+optimizer = keras.optimizers.SGD(learning_rate=0.1)
 model.compile(loss=loss,
               # Optimizer is the algorithm to use to try and find a min of the loss
-              optimizer=keras.optimizers.SGD(learning_rate=0.1),
+              optimizer=optimizer,
               # This is to track the area under the curve while learning
               metrics=["R2Score"])
 

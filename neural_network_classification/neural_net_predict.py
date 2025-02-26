@@ -7,9 +7,9 @@ import keras
 # TODO: change the harcoded variables
 label = "Depression"
 input_filename = "data/preprocessed-test.csv"
-model_filename = "models/model1.keras"
-proba_filename = "predictions/predictions_proba1.csv"
-predictions_filename = "predictions/predictions1.csv"
+model_filename = "models/model2.keras"
+proba_filename = "predictions/predictions_proba2.csv"
+predictions_filename = "predictions/predictions2.csv"
 
 #
 # Load the test data, removing the label column, if it exists
