@@ -7,9 +7,9 @@ import matplotlib.pyplot as plt
 
 label = "Depression"
 input_filename = "data/preprocessed-train.csv"
-model_filename = "models/model2.keras"
+model_filename = "models/model4.keras"
 train_ratio = 0.80
-learning_curve_filename = "plots/learning-curve2.png"
+learning_curve_filename = "plots/learning-curve4.png"
 #
 # Load the training dataframe, separate into X/y
 #
@@ -87,11 +87,13 @@ model = keras.Sequential()
 # input_shape needs to match the shape of the data bc the data needs to fit the model
 model.add(keras.layers.Input(shape=input_shape))
 
-activation = 'relu'
-initializer = keras.initializers.HeNormal()
-layers = 2
+activation = 'selu'
+initializer = keras.initializers.LecunNormal()
+layers = 3
 for i in range(layers):
-    model.add(keras.layers.Dense(128, activation=activation, kernel_initializer=initializer))
+    model.add(keras.layers.Dense(100, activation=activation, kernel_initializer=initializer))
+    model.add(keras.layers.BatchNormalization())  # Normalizes activations for stability
+    model.add(keras.layers.Dropout(0.3))  # Prevents overfitting
 
 # Output layer only has one unit in it (one output)
 # Sigmoid is the threshold function type that helps for the steps
