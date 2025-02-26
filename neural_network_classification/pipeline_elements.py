@@ -46,11 +46,20 @@ class Printer(sklearn.base.BaseEstimator, sklearn.base.TransformerMixin):
         return X
 
 class DataFrameSelector(sklearn.base.BaseEstimator, sklearn.base.TransformerMixin):
+    '''
+    Here are the features for train.csv:
+    Name,Gender,Age,City,Working Professional or Student,Profession,Academic Pressure,Work Pressure,
+    CGPA,Study Satisfaction,Job Satisfaction,Sleep Duration,Dietary Habits,Degree,
+    Have you ever had suicidal thoughts ?,Work/Study Hours,Financial Stress,Family History of Mental Illness,Depression
+    '''
     
     def __init__(self, do_predictors=True, do_numerical=True):
-        self.mCategoricalPredictors = []
-        self.mNumericalPredictors = []
-        self.mLabels = []
+        self.mCategoricalPredictors = ["Name", "Gender", "City", "Working Professional or Student", "Profession", 
+                                       "Sleep Duration", "Dietary Habits", "Degree", "Have you ever had suicidal thoughts ?",
+                                       "Family History of Mental Illness"]
+        self.mNumericalPredictors = ["Age", "Academic Pressure", "Work Pressure", "CGPA", "Study Satisfaction", 
+                                     "Job Satisfaction", "Work/Study Hours", "Financial Stress"]
+        self.mLabels = ['Depression']
         self.do_numerical = do_numerical
         self.do_predictors = do_predictors
         

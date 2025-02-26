@@ -5,12 +5,11 @@ import tensorflow as tf
 import keras
 import matplotlib.pyplot as plt
 
-# TODO: change harcoded names
-label = "loan_status"
-input_filename = "loan-preprocessed-train.csv"
-model_filename = "loan-model.keras"
+label = "Depression"
+input_filename = "data/preprocessed-train.csv"
+model_filename = "models/model1.keras"
 train_ratio = 0.80
-learning_curve_filename = "loan-learning-curve.png"
+learning_curve_filename = "plots/learning-curve1.png"
 #
 # Load the training dataframe, separate into X/y
 #
@@ -87,10 +86,15 @@ tf.random.set_seed(42)
 model = keras.Sequential()
 # input_shape needs to match the shape of the data bc the data needs to fit the model
 model.add(keras.layers.Input(shape=input_shape))
-model.add(keras.layers.Dense(100, activation="relu"))
+
+activation, initializer = 'relu', 'kernel_initializer'
+layers = 1
+for i in range(layers):
+    model.add(keras.layers.Dense(100, activation=activation))
+
 # Output layer only has one unit in it (one output)
 # Sigmoid is the threshold function type that helps for the steps
-model.add(keras.layers.Dense(1, activation="sigmoid"))
+model.add(keras.layers.Dense(1, activation=activation))
 #print(model.summary())
 #print(model.layers[1].get_weights())
 
@@ -98,12 +102,12 @@ model.add(keras.layers.Dense(1, activation="sigmoid"))
 # Compile the model
 #
 # binary_crossentropy is typical for binary classification
-loss = "binary_crossentropy"
+loss = "mean_squared_error"
 model.compile(loss=loss,
               # Optimizer is the algorithm to use to try and find a min of the loss
               optimizer=keras.optimizers.SGD(learning_rate=0.1),
               # This is to track the area under the curve while learning
-              metrics=["AUC"])
+              metrics=["R2Score"])
 
 
 #

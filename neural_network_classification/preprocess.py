@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 
 # This is like the pipeline code but without myargs
-# TODO: change all the hardcoded names
 from pipeline_elements import *
 import sklearn.impute
 import sklearn.preprocessing
@@ -107,18 +106,19 @@ def preprocess_file(input_filename, output_filename, pipeline_filename, label):
     return
 
 def main_train():
-    data_filename = "loan-train.csv"
-    out_filename = "loan-preprocessed-train.csv"
-    pipeline_filename = "loan-preprocessor.joblib"
-    label = "loan_status"
+    data_filename = "data/train.csv"
+    out_filename = "data/preprocessed-train.csv"
+    pipeline_filename = "preprocessor.joblib"
+    label = "Depression"
     preprocess_file(data_filename, out_filename, pipeline_filename, label)
     return
 
 def main_test():
-    data_filename = "loan-test.csv"
-    out_filename = "loan-preprocessed-test.csv"
-    pipeline_filename = "loan-preprocessor.joblib"
-    label = "loan_status"
+    data_filename = "data/test.csv"
+    out_filename = "data/preprocessed-test.csv"
+    # TODO: Does it matter that train and test both have same pipeline name?
+    pipeline_filename = "data/preprocessor.joblib"
+    label = "Depression"
     preprocess_file(data_filename, out_filename, pipeline_filename, label)
     return
 
