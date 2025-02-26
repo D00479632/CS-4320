@@ -1,3 +1,6 @@
+# Dont include the data of these assignemtns
+data/
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
