@@ -111,7 +111,7 @@ model.compile(loss=loss,
               # Optimizer is the algorithm to use to try and find a min of the loss
               optimizer=optimizer,
               # This is to track the area under the curve while learning
-              metrics=["R2Score"])
+              metrics=["R2Score", keras.metrics.Accuracy()])
 
 
 #
