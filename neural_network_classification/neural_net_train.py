@@ -91,8 +91,9 @@ activation = 'selu'
 initializer = keras.initializers.LecunNormal()
 layers = 3
 for i in range(layers):
-    model.add(keras.layers.Dense(100, activation=activation, kernel_initializer=initializer))
+    # The BatchNormalization should've been before the dense layer!
     model.add(keras.layers.BatchNormalization())  # Normalizes activations for stability
+    model.add(keras.layers.Dense(100, activation=activation, kernel_initializer=initializer))
     model.add(keras.layers.Dropout(0.3))  # Prevents overfitting
 
 # Output layer only has one unit in it (one output)
