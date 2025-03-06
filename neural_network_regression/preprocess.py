@@ -108,8 +108,8 @@ def preprocess_file(input_filename, output_filename, pipeline_filename, label):
 def main_train():
     data_filename = "data/train.csv"
     out_filename = "data/preprocessed-train.csv"
-    pipeline_filename = "preprocessor.joblib"
-    label = "Depression"
+    pipeline_filename = "data/preprocessor-train.joblib"
+    label = "Premium Amount"
     preprocess_file(data_filename, out_filename, pipeline_filename, label)
     return
 
@@ -117,8 +117,8 @@ def main_test():
     data_filename = "data/test.csv"
     out_filename = "data/preprocessed-test.csv"
     # TODO: Does it matter that train and test both have same pipeline name?
-    pipeline_filename = "data/preprocessor.joblib"
-    label = "Depression"
+    pipeline_filename = "data/preprocessor-test.joblib"
+    label = "Premium Amount"
     preprocess_file(data_filename, out_filename, pipeline_filename, label)
     return
 

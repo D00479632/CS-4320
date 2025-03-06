@@ -5,11 +5,11 @@ import tensorflow as tf
 import keras
 import matplotlib.pyplot as plt
 
-label = "Depression"
+label = "Premium Amount"
 input_filename = "data/preprocessed-train.csv"
-model_filename = "models/model4.keras"
+model_filename = "models/model1.keras"
 train_ratio = 0.80
-learning_curve_filename = "plots/learning-curve4.png"
+learning_curve_filename = "plots/learning-curve1.png"
 #
 # Load the training dataframe, separate into X/y
 #
@@ -87,18 +87,9 @@ model = keras.Sequential()
 # input_shape needs to match the shape of the data bc the data needs to fit the model
 model.add(keras.layers.Input(shape=input_shape))
 
-activation = 'selu'
-initializer = keras.initializers.LecunNormal()
-layers = 3
-for i in range(layers):
-    # The BatchNormalization should've been before the dense layer!
-    model.add(keras.layers.BatchNormalization())  # Normalizes activations for stability
-    model.add(keras.layers.Dense(100, activation=activation, kernel_initializer=initializer))
-    model.add(keras.layers.Dropout(0.3))  # Prevents overfitting
+model.add(keras.layers.Dense(100, activation="relu"))
 
-# Output layer only has one unit in it (one output)
-# Sigmoid is the threshold function type that helps for the steps
-model.add(keras.layers.Dense(1, activation="sigmoid"))
+model.add(keras.layers.Dense(1, activation="linear"))
 #print(model.summary())
 #print(model.layers[1].get_weights())
 
@@ -106,13 +97,15 @@ model.add(keras.layers.Dense(1, activation="sigmoid"))
 # Compile the model
 #
 # binary_crossentropy is typical for binary classification
-loss = "mean_squared_error"
+loss = keras.losses.MeanSquaredLogarithmicError(
+    reduction="sum_over_batch_size", name="mean_squared_logarithmic_error", dtype=None)
 optimizer = keras.optimizers.SGD(learning_rate=0.1)
 model.compile(loss=loss,
               # Optimizer is the algorithm to use to try and find a min of the loss
               optimizer=optimizer,
               # This is to track the area under the curve while learning
-              metrics=["R2Score", keras.metrics.Accuracy()])
+              metrics=[keras.metrics.MeanSquaredLogarithmicError(
+                        name="mean_squared_logarithmic_error", dtype=None)])
 
 
 #

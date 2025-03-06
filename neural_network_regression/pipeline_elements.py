@@ -54,12 +54,18 @@ class DataFrameSelector(sklearn.base.BaseEstimator, sklearn.base.TransformerMixi
     '''
     
     def __init__(self, do_predictors=True, do_numerical=True):
-        self.mCategoricalPredictors = ["Name", "Gender", "City", "Working Professional or Student", "Profession", 
-                                       "Sleep Duration", "Dietary Habits", "Degree", "Have you ever had suicidal thoughts ?",
-                                       "Family History of Mental Illness"]
-        self.mNumericalPredictors = ["Age", "Academic Pressure", "Work Pressure", "CGPA", "Study Satisfaction", 
-                                     "Job Satisfaction", "Work/Study Hours", "Financial Stress"]
-        self.mLabels = ['Depression']
+        '''
+        id,Age,Gender,Annual Income,Marital Status,Number of Dependents,Education Level,Occupation,Health Score,Location,
+        Policy Type,Previous Claims,Vehicle Age,Credit Score,Insurance Duration,Policy Start Date,Customer Feedback,
+        Smoking Status,Exercise Frequency,Property Type
+        '''
+        # Maybe Insurance Duratio should be categorical
+        # I will avoid Policy Start Date because its a weird form
+        self.mCategoricalPredictors = ['Gender', 'Marital Status', 'Education Level', 'Occupation', 'Location', 'Policy Type', 
+                                        'Customer Feedback', 'Smoking Status', 'Exercise Frequency', 'Property Type']
+        self.mNumericalPredictors = ['Age', 'Annual Income', 'Number of Dependents', 'Health Score', 'Previous Claims', 'Vehicle Age', 
+                                        'Credit Score', 'Insurance Duration']
+        self.mLabels = ['Premium Amount']
         self.do_numerical = do_numerical
         self.do_predictors = do_predictors
         

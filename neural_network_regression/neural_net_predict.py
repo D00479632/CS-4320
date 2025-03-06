@@ -5,11 +5,11 @@ import tensorflow as tf
 import keras
 
 # TODO: change the harcoded variables
-label = "Depression"
+label = "Premium Amount"
 input_filename = "data/preprocessed-test.csv"
-model_filename = "models/model4.keras"
-proba_filename = "predictions/predictions_proba4.csv"
-predictions_filename = "predictions/predictions4.csv"
+model_filename = "models/model1.keras"
+proba_filename = "predictions/predictions_proba1.csv"
+predictions_filename = "predictions/predictions1.csv"
 
 #
 # Load the test data, removing the label column, if it exists
