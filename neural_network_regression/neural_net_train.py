@@ -7,9 +7,9 @@ import matplotlib.pyplot as plt
 
 label = "Premium Amount"
 input_filename = "data/preprocessed-train.csv"
-model_filename = "models/model4.keras"
+model_filename = "models/model5.keras"
 train_ratio = 0.80
-learning_curve_filename = "plots/learning-curve4.png"
+learning_curve_filename = "plots/learning-curve5.png"
 #
 # Load the training dataframe, separate into X/y
 #
@@ -71,7 +71,7 @@ validation_dataset = validation_dataset.shuffle(buffer_size=validate_size)
 # Efficiency benefits.
 # Training differences.
 #
-BATCH_SIZE = 32
+BATCH_SIZE = 64
 # Prefetching is important when files need to be grabbed from disk
 train_dataset      = train_dataset.batch(BATCH_SIZE).prefetch(tf.data.AUTOTUNE)
 validation_dataset = validation_dataset.batch(BATCH_SIZE).prefetch(tf.data.AUTOTUNE)
@@ -88,7 +88,7 @@ model = keras.Sequential()
 # input_shape needs to match the shape of the data bc the data needs to fit the model
 model.add(keras.layers.Input(shape=input_shape))
 
-activation = "relu"
+activation = "elu"
 initializer = "he_normal"
 
 def dense_block(units, dropout_rate=0.3):
@@ -99,7 +99,7 @@ def dense_block(units, dropout_rate=0.3):
     model.add(keras.layers.Dropout(dropout_rate))
 
 for i in range(4):
-    dense_block(100)
+    dense_block(200)
 
 # Output Layer
 model.add(keras.layers.Dense(1, activation="linear", kernel_initializer=initializer))

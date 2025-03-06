@@ -171,3 +171,26 @@ But it took 22 epochs to finish. Comparing it to the last one it is slightly bet
 Now its time that I do predict and see how good I did
 I got 1.07427 which I consider it to be the same as the one before.
 
+### FIFTH TRY
+
+model_file: model5.keras
+plot_file: learning-curve4.png
+
+I really dont know what to change really
+Model: Sequential
+Optimizer: Adam beta_1=0.9, beta_2=0.999
+Activation: elu for hidden layers and linear for output
+Initializer = he_normal for hidden layers and output
+Layers: 4
+Density: 200
+Batch Size: 64
+
+It stopped and it was here:
+Epoch 22/100
+15000/15000 ━━━━━━━━━━━━━━━━━━━━ 52s 3ms/step - loss: 1.1563 - mean_squared_logarithmic_error: 1.1563 - val_loss: 1.1385 - val_mean_squared_logarithmic_error: 1.1385 - learning_rate: 9.4176e-04
+But it took 27 epochs to finish. Comparing it to the all the last ones it is slightly better so I'm hoping I didn't overfit
+
+Now its time that I do predict and see how good I did
+I got 1.07243 which is my best score so far
+Looking at the leaderboard I found that I would be in front of: 1138 NirmitGavate1 1.06957 which also goes over the requirements for the assignment of getting more
+than 1.12
