@@ -7,9 +7,9 @@ import matplotlib.pyplot as plt
 
 label = "Premium Amount"
 input_filename = "data/preprocessed-train.csv"
-model_filename = "models/model1.keras"
+model_filename = "models/model2.keras"
 train_ratio = 0.80
-learning_curve_filename = "plots/learning-curve1.png"
+learning_curve_filename = "plots/learning-curve2.png"
 #
 # Load the training dataframe, separate into X/y
 #
@@ -83,13 +83,26 @@ validation_dataset = validation_dataset.batch(BATCH_SIZE).prefetch(tf.data.AUTOT
 #
 tf.random.set_seed(42)
 # Sequential model is the simplest
+
 model = keras.Sequential()
 # input_shape needs to match the shape of the data bc the data needs to fit the model
 model.add(keras.layers.Input(shape=input_shape))
 
-model.add(keras.layers.Dense(100, activation="relu"))
+activation = "swish"
+initializer = "he_normal"
 
-model.add(keras.layers.Dense(1, activation="linear"))
+def dense_block(units, dropout_rate=0.3):
+    # I still don't know if this is the right way of doind the layers
+    model.add(keras.layers.Dense(units, kernel_initializer=initializer))
+    model.add(keras.layers.BatchNormalization())
+    model.add(keras.layers.Activation(activation))
+    model.add(keras.layers.Dropout(dropout_rate))
+
+for i in range(6):
+    dense_block(100)
+
+# Output Layer
+model.add(keras.layers.Dense(1, activation="linear", kernel_initializer=initializer))
 #print(model.summary())
 #print(model.layers[1].get_weights())
 

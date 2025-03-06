@@ -91,6 +91,7 @@ Model: sequential
 Activation: relu and sigmoid
 Layers: 1
 Density: 100
+Batch Size: 32
 
 My model didn't converge, it ran for the 100 epochs which took 40 minutes. I am worried that I am overfitting the 
 training data but I only have one layer so it shouldn't.
@@ -103,3 +104,23 @@ I called predict on this model because I wanted to submit it to kaggle to see ho
 I submitted predictions_proba1.csv since it's like the sample submission and I got 1.07819 which is already pretty good since the requirement is to get  below 1.12 on 
 the hidden data set.
 
+### SECOND TRY
+
+model_file: model2.keras
+plot_file: learning-curve2.png
+
+For this one now I am going to change some things and have:
+Model: Sequential
+Activation: swish for hidden layers and linear for output
+Initializer = he_normal for hidden layers and output
+Layers: 6
+Density: 100
+Batch Size: 32
+
+It stopped and it was here:
+Epoch 19/100
+30000/30000 ━━━━━━━━━━━━━━━━━━━━ 45s 1ms/step - loss: 1.1647 - mean_squared_logarithmic_error: 1.1647 - val_loss: 1.1435 - val_mean_squared_logarithmic_error: 1.1435 - learning_rate: 0.0956
+But it took 24 epochs to finish. Comparing it to the last one it seems like its very close or even a little worse so let me predict and submit
+
+Now its time that I do predict and see how good I did
+I got 1.07487 which is slightly better than the last one but not by much
