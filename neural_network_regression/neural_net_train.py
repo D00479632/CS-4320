@@ -92,7 +92,7 @@ activation = "elu"
 initializer = "he_normal"
 
 def dense_block(units, dropout_rate=0.3):
-    # I still don't know if this is the right way of doind the layers
+    # I still don't know if this is the right way of stacking the layers
     model.add(keras.layers.Dense(units, kernel_initializer=initializer))
     model.add(keras.layers.BatchNormalization())
     model.add(keras.layers.Activation(activation))
