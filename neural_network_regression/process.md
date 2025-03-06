@@ -88,7 +88,7 @@ plot_file: learning-curve1.png
 
 For this first try I am not going to change anything
 Model: sequential
-Activation: relu and sigmoid
+Activation: relu and linear
 Layers: 1
 Density: 100
 Batch Size: 32
@@ -124,3 +124,25 @@ But it took 24 epochs to finish. Comparing it to the last one it seems like its 
 
 Now its time that I do predict and see how good I did
 I got 1.07487 which is slightly better than the last one but not by much
+
+### THIRD TRY
+
+model_file: model3.keras
+plot_file: learning-curve3.png
+
+I will go back to relu since maybe adding more layers would make it better.
+Model: Sequential
+Activation: relu for hidden layers and linear for output
+Initializer = he_normal for hidden layers and output
+Layers: 4
+Density: 100
+Batch Size: 32
+
+It stopped and it was here:
+Epoch 21/100
+30000/30000 ━━━━━━━━━━━━━━━━━━━━ 38s 1ms/step - loss: 1.1648 - mean_squared_logarithmic_error: 1.1648 - val_loss: 1.1433 - val_mean_squared_logarithmic_error: 1.1433 - learning_rate: 0.0946
+But it took 25 epochs to finish. Comparing it to the last one it is literally the same loss
+
+Now its time that I do predict and see how good I did
+I got 1.07428 which is kind of the same as the last one but it has 2 less layers.
+

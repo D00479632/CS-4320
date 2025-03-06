@@ -7,9 +7,9 @@ import matplotlib.pyplot as plt
 
 label = "Premium Amount"
 input_filename = "data/preprocessed-train.csv"
-model_filename = "models/model2.keras"
+model_filename = "models/model3.keras"
 train_ratio = 0.80
-learning_curve_filename = "plots/learning-curve2.png"
+learning_curve_filename = "plots/learning-curve3.png"
 #
 # Load the training dataframe, separate into X/y
 #
@@ -88,7 +88,7 @@ model = keras.Sequential()
 # input_shape needs to match the shape of the data bc the data needs to fit the model
 model.add(keras.layers.Input(shape=input_shape))
 
-activation = "swish"
+activation = "relu"
 initializer = "he_normal"
 
 def dense_block(units, dropout_rate=0.3):
@@ -98,7 +98,7 @@ def dense_block(units, dropout_rate=0.3):
     model.add(keras.layers.Activation(activation))
     model.add(keras.layers.Dropout(dropout_rate))
 
-for i in range(6):
+for i in range(4):
     dense_block(100)
 
 # Output Layer
@@ -112,6 +112,7 @@ model.add(keras.layers.Dense(1, activation="linear", kernel_initializer=initiali
 # binary_crossentropy is typical for binary classification
 loss = keras.losses.MeanSquaredLogarithmicError(
     reduction="sum_over_batch_size", name="mean_squared_logarithmic_error", dtype=None)
+# keras.optimizers.Adagrad(beta_1=0.9, beta_2=0.999)
 optimizer = keras.optimizers.SGD(learning_rate=0.1)
 model.compile(loss=loss,
               # Optimizer is the algorithm to use to try and find a min of the loss
