@@ -88,6 +88,7 @@ plot_file: learning-curve1.png
 
 For this first try I am not going to change anything
 Model: sequential
+Optimizer: SGD
 Activation: relu and linear
 Layers: 1
 Density: 100
@@ -111,6 +112,7 @@ plot_file: learning-curve2.png
 
 For this one now I am going to change some things and have:
 Model: Sequential
+Optimizer: SGD
 Activation: swish for hidden layers and linear for output
 Initializer = he_normal for hidden layers and output
 Layers: 6
@@ -132,6 +134,7 @@ plot_file: learning-curve3.png
 
 I will go back to relu since maybe adding more layers would make it better.
 Model: Sequential
+Optimizer: SGD
 Activation: relu for hidden layers and linear for output
 Initializer = he_normal for hidden layers and output
 Layers: 4
@@ -145,4 +148,26 @@ But it took 25 epochs to finish. Comparing it to the last one it is literally th
 
 Now its time that I do predict and see how good I did
 I got 1.07428 which is kind of the same as the last one but it has 2 less layers.
+
+### FOURTH TRY
+
+model_file: model4.keras
+plot_file: learning-curve4.png
+
+I will be using the same network but with a different optimizer
+Model: Sequential
+Optimizer: Adam
+Activation: relu for hidden layers and linear for output
+Initializer = he_normal for hidden layers and output
+Layers: 4
+Density: 100
+Batch Size: 32
+
+It stopped and it was here:
+Epoch 17/100
+30000/30000 ━━━━━━━━━━━━━━━━━━━━ 44s 1ms/step - loss: 1.1712 - mean_squared_logarithmic_error: 1.1712 - val_loss: 1.1424 - val_mean_squared_logarithmic_error: 1.1424 - learning_rate: 9.6561e-04
+But it took 22 epochs to finish. Comparing it to the last one it is slightly better but not by a lot
+
+Now its time that I do predict and see how good I did
+I got 1.07427 which I consider it to be the same as the one before.
 

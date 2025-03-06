@@ -7,9 +7,9 @@ import matplotlib.pyplot as plt
 
 label = "Premium Amount"
 input_filename = "data/preprocessed-train.csv"
-model_filename = "models/model3.keras"
+model_filename = "models/model4.keras"
 train_ratio = 0.80
-learning_curve_filename = "plots/learning-curve3.png"
+learning_curve_filename = "plots/learning-curve4.png"
 #
 # Load the training dataframe, separate into X/y
 #
@@ -112,8 +112,8 @@ model.add(keras.layers.Dense(1, activation="linear", kernel_initializer=initiali
 # binary_crossentropy is typical for binary classification
 loss = keras.losses.MeanSquaredLogarithmicError(
     reduction="sum_over_batch_size", name="mean_squared_logarithmic_error", dtype=None)
-# keras.optimizers.Adagrad(beta_1=0.9, beta_2=0.999)
-optimizer = keras.optimizers.SGD(learning_rate=0.1)
+#keras.optimizers.SGD(learning_rate=0.1) 
+optimizer = keras.optimizers.Adam(beta_1=0.9, beta_2=0.999) 
 model.compile(loss=loss,
               # Optimizer is the algorithm to use to try and find a min of the loss
               optimizer=optimizer,
