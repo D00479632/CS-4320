@@ -1,0 +1,84 @@
+#!/usr/bin/env python3
+
+#
+# Keep the model creation code contained here
+#
+import tensorflow as tf
+import keras
+
+def create_model(my_args, input_shape):
+    """
+    Control function.
+    Selects the correct function to build a model, based on the model name
+    from the command line arguments.
+
+    Assumes my_args.model_name is set.
+    """
+    # Add the different models here
+    create_functions = {
+        "a": create_model_a,
+    }
+    if my_args.model_name not in create_functions:
+        raise Exception("Invalid model name: {} not in {}".format(my_args.model_name, list(create_functions.keys())))
+        
+    model = create_functions[my_args.model_name](my_args, input_shape)
+    print(model.summary())
+    return model
+
+
+### Various model architectures (keep adding _b, _c, etc for the report)
+
+'''
+Suggested layer types are:
+
+- [Conv2D](https://keras.io/api/layers/convolution_layers/convolution2d/)
+- [MaxPooling2D](https://keras.io/api/layers/pooling_layers/max_pooling2d/)
+- [Dense](https://keras.io/api/layers/core_layers/dense/)
+- [Dropout](https://keras.io/api/layers/regularization_layers/dropout/)
+- [Flatten](https://keras.io/api/layers/reshaping_layers/flatten/)
+'''
+
+'''
+Suggested model structure is:
+
+- Conv (bigger kernel size)
+Bigger kernel size to make sure we capture large scale info before the first pooling.
+- Pooling
+
+-----------
+- Conv (smaller kernel size)
+- Conv (smaller kernel size)
+Now we want to pay more attention to small collections of things so thats why smaller kernel size.
+- Pooling
+-----------
+^ as many as wanted
+
+-----------
+- Flatten
+- Dense
+-----------
+^ as many as wanted
+
+- Output
+
+(You can also add some dropout layers to prevent overfitting)
+'''
+
+def create_model_a(my_args, input_shape):
+    model = keras.models.Sequential()
+    model.add(keras.layers.Input(shape=input_shape))
+    model.add(keras.layers.Conv2D(filters=64, kernel_size=(7,7), activation="relu", kernel_initializer="he_normal", padding="same"))
+    # In this case, MaxPooling2D will take a 2x2 region from the layer above and take the max of the 4 numbers to feed as output
+    # So it reduces the width and height
+    model.add(keras.layers.MaxPooling2D(pool_size=(2,2)))
+    model.add(keras.layers.Conv2D(filters=128, kernel_size=(3,3), activation="relu", kernel_initializer="he_normal", padding="same"))
+    model.add(keras.layers.Conv2D(filters=128, kernel_size=(3,3), activation="relu", kernel_initializer="he_normal", padding="same"))
+    model.add(keras.layers.MaxPooling2D(pool_size=(2,2)))
+    model.add(keras.layers.Flatten())
+    model.add(keras.layers.Dense(64, activation="relu", kernel_initializer="he_normal"))
+    model.add(keras.layers.Dropout(0.5))
+    # Gives you probs that the image belongs to a specific class (the sum of all is 1)
+    model.add(keras.layers.Dense(10, activation="softmax"))
+
+    model.compile(loss="categorical_crossentropy", metrics=["accuracy"], optimizer=keras.optimizers.Adam())
+    return model
