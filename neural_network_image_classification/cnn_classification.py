@@ -61,7 +61,7 @@ import model_history
 
 def parse_args(argv):
     parser = argparse.ArgumentParser(prog=argv[0], description='Image Classification with CNN')
-    parser.add_argument('action', default='cnn-fit',
+    parser.add_argument('action', default='',
                         choices=[ "cnn-fit", "score", "learning-curve", "cnn-refit" ], 
                         nargs='?', help="desired action")
 

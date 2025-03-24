@@ -2,30 +2,43 @@
 
 model_name=a
 
+echo "=== Starting CNN training process ==="
+echo "Model name: ${model_name}"
+
+<<'COMMENT'
+THIS IS THE TEST RUN TO USE AS REFERENC
+echo "[1/3] Fitting initial model..."
 time ./cnn_classification.py cnn-fit \
-     --model-name ${model_name} --model-file ${model_name}.joblib \
+     --model-name ${model_name} --model-file models/${model_name}.joblib \
      --batch-number 1
 
+echo "[1/3] Generating learning curve..."
 time ./cnn_classification.py learning-curve \
-     --model-file ${model_name}.joblib
-mv ${model_name}.joblib.learning_curve.png ${model_name}.joblib.learning_curve-a.png
+     --model-file models/${model_name}.joblib
+mv plots/${model_name}.joblib.learning_curve.png plots/${model_name}.joblib.learning_curve-1.png
 
+echo "[2/3] Refitting model with Batch 2..."
 time ./cnn_classification.py cnn-refit \
-     --model-name ${model_name} --model-file ${model_name}.joblib \
+     --model-name ${model_name} --model-file models/${model_name}.joblib \
      --batch-number 2
 
+echo "[2/3] Generating learning curve..."
 time ./cnn_classification.py learning-curve \
-     --model-file ${model_name}.joblib
-mv ${model_name}.joblib.learning_curve.png ${model_name}.joblib.learning_curve-b.png
+     --model-file models/${model_name}.joblib
+mv plots/${model_name}.joblib.learning_curve.png plots/${model_name}.joblib.learning_curve-2.png
 
+echo "[3/3] Refitting model with Batch 3..."
 time ./cnn_classification.py cnn-refit \
-     --model-name ${model_name} --model-file ${model_name}.joblib \
+     --model-name ${model_name} --model-file models/${model_name}.joblib \
      --batch-number 3
 
+echo "[3/3] Generating learning curve..."
 time ./cnn_classification.py learning-curve \
-     --model-file ${model_name}.joblib
-mv ${model_name}.joblib.learning_curve.png ${model_name}.joblib.learning_curve-c.png
+     --model-file models/${model_name}.joblib
+mv plots/${model_name}.joblib.learning_curve.png plots/${model_name}.joblib.learning_curve-3.png
 
+echo "Generating score"
 time ./cnn_classification.py score \
-     --model-file ${model_name}.joblib \
+     --model-file models/${model_name}.joblib \
      --batch-number 6
+COMMENT

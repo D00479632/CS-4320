@@ -64,6 +64,7 @@ Now we want to pay more attention to small collections of things so thats why sm
 (You can also add some dropout layers to prevent overfitting)
 '''
 
+# This model is for fashion_mnist dataset, don't use it after I change the files to work with CIFAR10 
 def create_model_a(my_args, input_shape):
     model = keras.models.Sequential()
     model.add(keras.layers.Input(shape=input_shape))
