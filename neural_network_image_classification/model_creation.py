@@ -17,6 +17,7 @@ def create_model(my_args, input_shape):
     # Add the different models here
     create_functions = {
         "a": create_model_a,
+        "b": create_model_b,
     }
     if my_args.model_name not in create_functions:
         raise Exception("Invalid model name: {} not in {}".format(my_args.model_name, list(create_functions.keys())))
@@ -64,6 +65,24 @@ Now we want to pay more attention to small collections of things so thats why sm
 (You can also add some dropout layers to prevent overfitting)
 '''
 
+'''
+Select an optimizer and a learning rate. Consider the following
+hyperparameters:
+
+- Optimizer
+- Batch size
+- Number of epochs
+- Learning rate
+- Learning rate decay
+'''
+
+'''
+Use the loss function that works best for you. Remember that this
+guides the learning process. It is a hyperparameter that can
+be tuned.
+'''
+
+
 # This model is for fashion_mnist dataset, don't use it after I change the files to work with CIFAR10 
 def create_model_a(my_args, input_shape):
     model = keras.models.Sequential()
@@ -82,4 +101,26 @@ def create_model_a(my_args, input_shape):
     model.add(keras.layers.Dense(10, activation="softmax"))
 
     model.compile(loss="categorical_crossentropy", metrics=["accuracy"], optimizer=keras.optimizers.Adam())
+    return model
+
+# My very first model with CIFAR10 will be just like the past one
+def create_model_b(my_args, input_shape):
+    model = keras.models.Sequential()
+    model.add(keras.layers.Input(shape=input_shape))
+    model.add(keras.layers.Conv2D(filters=64, kernel_size=(7,7), activation="relu", kernel_initializer="he_normal", padding="same"))
+    # In this case, MaxPooling2D will take a 2x2 region from the layer above and take the max of the 4 numbers to feed as output
+    # So it reduces the width and height
+    model.add(keras.layers.MaxPooling2D(pool_size=(2,2)))
+    model.add(keras.layers.Conv2D(filters=128, kernel_size=(3,3), activation="relu", kernel_initializer="he_normal", padding="same"))
+    model.add(keras.layers.Conv2D(filters=128, kernel_size=(3,3), activation="relu", kernel_initializer="he_normal", padding="same"))
+    model.add(keras.layers.MaxPooling2D(pool_size=(2,2)))
+    model.add(keras.layers.Flatten())
+    model.add(keras.layers.Dense(64, activation="relu", kernel_initializer="he_normal"))
+    model.add(keras.layers.Dropout(0.5))
+    # Gives you probs that the image belongs to a specific class (the sum of all is 1)
+    model.add(keras.layers.Dense(10, activation="softmax"))
+
+    optimizer = keras.optimizers.Adam(learning_rate=0.0001)
+    # Using categorical_crossentropy because we one-hot-encode the labels on open_data.py
+    model.compile(loss="categorical_crossentropy", metrics=["accuracy"], optimizer=optimizer)
     return model
