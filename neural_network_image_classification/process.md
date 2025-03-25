@@ -1257,3 +1257,61 @@ The results:
 - Testing data accuracy ('test_categorical_accuracy'): 0.79 > 0.75 (This is not the testing data yet but its my validation data so I'm expecting somewhat the same
 result with the testing data)
 - abs(val_categorical_accuracy - test_categorical_accuracy):(0.797 - 0.79) = 0.007 < 0.03
+
+```bash
+./cnn.bash
+=== Starting testing score process ===
+Model name: f
+GPU is available
+2025-03-25 11:29:24.067216: I metal_plugin/src/device/metal_device.cc:1154] Metal device set to: Apple M2
+2025-03-25 11:29:24.067264: I metal_plugin/src/device/metal_device.cc:296] systemMemory: 16.00 GB
+2025-03-25 11:29:24.067274: I metal_plugin/src/device/metal_device.cc:313] maxCacheSize: 5.33 GB
+2025-03-25 11:29:24.067515: I tensorflow/core/common_runtime/pluggable_device/pluggable_device_factory.cc:305] Could not identify NUMA node of platform GPU ID 0, defaulting to 0. Your kernel may not have been built with NUMA support.
+2025-03-25 11:29:24.067535: I tensorflow/core/common_runtime/pluggable_device/pluggable_device_factory.cc:271] Created TensorFlow device (/job:localhost/replica:0/task:0/device:GPU:0 with 0 MB memory) -> physical PluggableDevice (device: 0, name: METAL, pci bus id: <undefined>)
+2025-03-25 11:29:24.874341: I tensorflow/core/grappler/optimizers/custom_graph_optimizer_registry.cc:117] Plugin optimizer for device_type GPU is enabled.
+313/313 ━━━━━━━━━━━━━━━━━━━━ 4s 12ms/step   
+
+models/f.joblib: train: 
+
++-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+
+| 820 |  11 |  50 |  16 |   9 |   5 |  10 |   6 |  48 |  25 |
+|  16 | 871 |   2 |   5 |   1 |   3 |   6 |   0 |  22 |  74 |
+|  47 |   2 | 674 |  60 |  70 |  54 |  47 |  27 |   9 |  10 |
+|  18 |   3 |  46 | 606 |  59 | 166 |  43 |  27 |  16 |  16 |
+|  18 |   2 |  48 |  52 | 780 |  30 |  29 |  29 |  10 |   2 |
+|  12 |   0 |  22 | 145 |  42 | 715 |  18 |  35 |   2 |   9 |
+|   6 |   3 |  24 |  51 |  26 |  25 | 855 |   1 |   4 |   5 |
+|   8 |   1 |  24 |  34 |  44 |  59 |   4 | 808 |   6 |  12 |
+|  47 |  12 |  10 |  11 |   6 |   9 |   5 |   3 | 884 |  13 |
+|  39 |  49 |   7 |   4 |   4 |   6 |   3 |   4 |  32 | 852 |
++-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+
+
+              precision    recall  f1-score   support
+
+           0       0.80      0.82      0.81      1000
+           1       0.91      0.87      0.89      1000
+           2       0.74      0.67      0.71      1000
+           3       0.62      0.61      0.61      1000
+           4       0.75      0.78      0.76      1000
+           5       0.67      0.71      0.69      1000
+           6       0.84      0.85      0.85      1000
+           7       0.86      0.81      0.83      1000
+           8       0.86      0.88      0.87      1000
+           9       0.84      0.85      0.84      1000
+
+    accuracy                           0.79     10000
+   macro avg       0.79      0.79      0.79     10000
+weighted avg       0.79      0.79      0.79     10000
+
+
+
+real    0m12.696s
+user    0m8.497s
+sys     0m2.126s
+```
+
+It's exactly what I expected:
+- Training data accuracy: 0.9138
+- Validation data accuracy ('val_categorical_accuracy'): 0.797 > 0.75
+- Testing data accuracy ('test_categorical_accuracy'): 0.79 > 0.75 (This is now the testing data)
+- abs(val_categorical_accuracy - test_categorical_accuracy):(0.797 - 0.79) = 0.007 < 0.03

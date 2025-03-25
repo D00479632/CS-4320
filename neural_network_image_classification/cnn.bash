@@ -2,6 +2,16 @@
 
 model_name=f
 
+echo "=== Starting testing score process ==="
+echo "Model name: ${model_name}"
+
+time ./cnn_classification.py score \
+     --model-file models/${model_name}.joblib \
+     --batch-number 0
+
+<<'COMMENT'
+model_name=f
+
 echo "=== Starting CNN training process ==="
 echo "Model name: ${model_name}"
 
@@ -19,6 +29,7 @@ echo "Generating score"
 time ./cnn_classification.py score \
      --model-file models/${model_name}.joblib \
      --batch-number 5
+COMMENT
 
 <<'COMMENT'
 model_name=e
