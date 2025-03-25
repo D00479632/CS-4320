@@ -781,4 +781,157 @@ sys     0m1.926s
 
 It for sure ran faster and was easier for my computer (temperature wise). However, the way I changed my model made it really bad.
 My accuracy now is 0.33 and the model thought it was going to be 0.4170 which is way off. I will go back to my other model and make some other changes to see if that
-makes it better 
+makes it better.
+I am also going to try and just fit once with all the data (minus the validation data) 
+
+```bash
+./cnn.bash
+=== Starting CNN training process ===
+Model name: e
+[1/1] Fitting initial model with all the data...
+GPU is available
+2025-03-24 19:24:31.954094: I metal_plugin/src/device/metal_device.cc:1154] Metal device set to: Apple M2
+2025-03-24 19:24:31.954124: I metal_plugin/src/device/metal_device.cc:296] systemMemory: 16.00 GB
+2025-03-24 19:24:31.954132: I metal_plugin/src/device/metal_device.cc:313] maxCacheSize: 5.33 GB
+2025-03-24 19:24:31.954149: I tensorflow/core/common_runtime/pluggable_device/pluggable_device_factory.cc:305] Could not identify NUMA node of platform GPU ID 0, defaulting to 0. Your kernel may not have been built with NUMA support.
+2025-03-24 19:24:31.954163: I tensorflow/core/common_runtime/pluggable_device/pluggable_device_factory.cc:271] Created TensorFlow device (/job:localhost/replica:0/task:0/device:GPU:0 with 0 MB memory) -> physical PluggableDevice (device: 0, name: METAL, pci bus id: <undefined>)
+Model: "sequential"
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━┓
+┃ Layer (type)                         ┃ Output Shape                ┃         Param # ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━┩
+│ conv2d (Conv2D)                      │ (None, 32, 32, 64)          │           9,472 │
+├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+│ max_pooling2d (MaxPooling2D)         │ (None, 16, 16, 64)          │               0 │
+├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+│ conv2d_1 (Conv2D)                    │ (None, 16, 16, 128)         │         204,928 │
+├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+│ conv2d_2 (Conv2D)                    │ (None, 16, 16, 128)         │         147,584 │
+├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+│ max_pooling2d_1 (MaxPooling2D)       │ (None, 8, 8, 128)           │               0 │
+├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+│ dropout (Dropout)                    │ (None, 8, 8, 128)           │               0 │
+├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+│ conv2d_3 (Conv2D)                    │ (None, 8, 8, 256)           │         295,168 │
+├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+│ max_pooling2d_2 (MaxPooling2D)       │ (None, 4, 4, 256)           │               0 │
+├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+│ conv2d_4 (Conv2D)                    │ (None, 4, 4, 256)           │         590,080 │
+├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+│ max_pooling2d_3 (MaxPooling2D)       │ (None, 2, 2, 256)           │               0 │
+├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+│ dropout_1 (Dropout)                  │ (None, 2, 2, 256)           │               0 │
+├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+│ flatten (Flatten)                    │ (None, 1024)                │               0 │
+├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+│ dense (Dense)                        │ (None, 128)                 │         131,200 │
+├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+│ dropout_2 (Dropout)                  │ (None, 128)                 │               0 │
+├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+│ dense_1 (Dense)                      │ (None, 10)                  │           1,290 │
+└──────────────────────────────────────┴─────────────────────────────┴─────────────────┘
+ Total params: 1,379,722 (5.26 MB)
+ Trainable params: 1,379,722 (5.26 MB)
+ Non-trainable params: 0 (0.00 B)
+None
+Epoch 1/20
+2025-03-24 19:24:32.798629: I tensorflow/core/grappler/optimizers/custom_graph_optimizer_registry.cc:117] Plugin optimizer for device_type GPU is enabled.
+2000/2000 ━━━━━━━━━━━━━━━━━━━━ 55s 27ms/step - accuracy: 0.2187 - loss: 2.1869 - val_accuracy: 0.4499 - val_loss: 1.4953
+Epoch 2/20
+2000/2000 ━━━━━━━━━━━━━━━━━━━━ 53s 27ms/step - accuracy: 0.4206 - loss: 1.5917 - val_accuracy: 0.5451 - val_loss: 1.2629
+Epoch 3/20
+2000/2000 ━━━━━━━━━━━━━━━━━━━━ 54s 27ms/step - accuracy: 0.5092 - loss: 1.3560 - val_accuracy: 0.6036 - val_loss: 1.1390
+Epoch 4/20
+2000/2000 ━━━━━━━━━━━━━━━━━━━━ 53s 27ms/step - accuracy: 0.5756 - loss: 1.2010 - val_accuracy: 0.6235 - val_loss: 1.0859
+Epoch 5/20
+2000/2000 ━━━━━━━━━━━━━━━━━━━━ 54s 27ms/step - accuracy: 0.6112 - loss: 1.0957 - val_accuracy: 0.6306 - val_loss: 1.0909
+Epoch 6/20
+2000/2000 ━━━━━━━━━━━━━━━━━━━━ 55s 27ms/step - accuracy: 0.6428 - loss: 1.0252 - val_accuracy: 0.6854 - val_loss: 0.9031
+Epoch 7/20
+2000/2000 ━━━━━━━━━━━━━━━━━━━━ 54s 27ms/step - accuracy: 0.6643 - loss: 0.9449 - val_accuracy: 0.7016 - val_loss: 0.8619
+Epoch 8/20
+2000/2000 ━━━━━━━━━━━━━━━━━━━━ 64s 32ms/step - accuracy: 0.6921 - loss: 0.8955 - val_accuracy: 0.7035 - val_loss: 0.8675
+Epoch 9/20
+2000/2000 ━━━━━━━━━━━━━━━━━━━━ 87s 43ms/step - accuracy: 0.7108 - loss: 0.8475 - val_accuracy: 0.7081 - val_loss: 0.8751
+Epoch 10/20
+2000/2000 ━━━━━━━━━━━━━━━━━━━━ 81s 41ms/step - accuracy: 0.7199 - loss: 0.8212 - val_accuracy: 0.7250 - val_loss: 0.8294
+Epoch 11/20
+2000/2000 ━━━━━━━━━━━━━━━━━━━━ 85s 42ms/step - accuracy: 0.7309 - loss: 0.8043 - val_accuracy: 0.7001 - val_loss: 0.9591
+Epoch 12/20
+2000/2000 ━━━━━━━━━━━━━━━━━━━━ 317s 159ms/step - accuracy: 0.7365 - loss: 0.7918 - val_accuracy: 0.7197 - val_loss: 0.8437
+Epoch 13/20
+2000/2000 ━━━━━━━━━━━━━━━━━━━━ 605s 303ms/step - accuracy: 0.7516 - loss: 0.7564 - val_accuracy: 0.7377 - val_loss: 0.8099
+Epoch 14/20
+2000/2000 ━━━━━━━━━━━━━━━━━━━━ 185s 93ms/step - accuracy: 0.7559 - loss: 0.7467 - val_accuracy: 0.7297 - val_loss: 0.8601
+Epoch 15/20
+2000/2000 ━━━━━━━━━━━━━━━━━━━━ 82s 41ms/step - accuracy: 0.7591 - loss: 0.7686 - val_accuracy: 0.7306 - val_loss: 0.8343
+Epoch 16/20
+2000/2000 ━━━━━━━━━━━━━━━━━━━━ 83s 41ms/step - accuracy: 0.7647 - loss: 0.7346 - val_accuracy: 0.7369 - val_loss: 0.8147
+Epoch 17/20
+2000/2000 ━━━━━━━━━━━━━━━━━━━━ 83s 42ms/step - accuracy: 0.7703 - loss: 0.7102 - val_accuracy: 0.7440 - val_loss: 0.8322
+Epoch 18/20
+2000/2000 ━━━━━━━━━━━━━━━━━━━━ 83s 42ms/step - accuracy: 0.7707 - loss: 0.7111 - val_accuracy: 0.7402 - val_loss: 0.8669
+
+real    35m37.221s
+user    18m11.283s
+sys     8m25.310s
+[1/1] Generating learning curve...
+GPU is available
+
+real    0m6.116s
+user    0m5.854s
+sys     0m2.457s
+mv: rename plots/e.learning_curve.png to plots/e.learning_curve-1.png: No such file or directory
+Generating score
+GPU is available
+2025-03-24 20:00:16.660694: I metal_plugin/src/device/metal_device.cc:1154] Metal device set to: Apple M2
+2025-03-24 20:00:16.660727: I metal_plugin/src/device/metal_device.cc:296] systemMemory: 16.00 GB
+2025-03-24 20:00:16.660735: I metal_plugin/src/device/metal_device.cc:313] maxCacheSize: 5.33 GB
+2025-03-24 20:00:16.660756: I tensorflow/core/common_runtime/pluggable_device/pluggable_device_factory.cc:305] Could not identify NUMA node of platform GPU ID 0, defaulting to 0. Your kernel may not have been built with NUMA support.
+2025-03-24 20:00:16.660776: I tensorflow/core/common_runtime/pluggable_device/pluggable_device_factory.cc:271] Created TensorFlow device (/job:localhost/replica:0/task:0/device:GPU:0 with 0 MB memory) -> physical PluggableDevice (device: 0, name: METAL, pci bus id: <undefined>)
+2025-03-24 20:00:17.215169: I tensorflow/core/grappler/optimizers/custom_graph_optimizer_registry.cc:117] Plugin optimizer for device_type GPU is enabled.
+313/313 ━━━━━━━━━━━━━━━━━━━━ 4s 12ms/step  
+
+models/e.joblib: train: 
+
++-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+
+| 744 |  14 |  70 |  18 |  22 |  10 |   8 |  10 |  62 |  52 |
+|  16 | 796 |   6 |   7 |   7 |   4 |   9 |   4 |  15 | 125 |
+|  59 |   2 | 685 |  56 |  73 |  42 |  41 |  12 |  11 |  12 |
+|  17 |   2 |  91 | 540 |  55 | 163 |  56 |  19 |   1 |  23 |
+|  24 |   1 | 131 |  66 | 666 |  38 |  26 |  45 |   5 |   9 |
+|   3 |   0 |  96 | 177 |  45 | 617 |  24 |  35 |   1 |   6 |
+|   4 |   2 |  78 |  81 |  38 |  32 | 786 |   4 |   4 |   4 |
+|  10 |   0 |  61 |  55 |  77 |  60 |   3 | 765 |   2 |  13 |
+|  45 |  32 |  16 |  22 |   9 |   7 |   8 |   6 | 830 |  29 |
+|  11 |  41 |  10 |  18 |   2 |   9 |   6 |   4 |  17 | 825 |
++-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+
+
+              precision    recall  f1-score   support
+
+           0       0.80      0.74      0.77      1010
+           1       0.89      0.80      0.85       989
+           2       0.55      0.69      0.61       993
+           3       0.52      0.56      0.54       967
+           4       0.67      0.66      0.66      1011
+           5       0.63      0.61      0.62      1004
+           6       0.81      0.76      0.79      1033
+           7       0.85      0.73      0.78      1046
+           8       0.88      0.83      0.85      1004
+           9       0.75      0.87      0.81       943
+
+    accuracy                           0.73     10000
+   macro avg       0.73      0.73      0.73     10000
+weighted avg       0.74      0.73      0.73     10000
+
+
+
+real    0m9.972s
+user    0m6.804s
+sys     0m2.412s
+```
+
+This model did way better, the time is not fully real because I closed my computer and it paused the script but I am happy with the results. 
+I just need to tweak it a little more and I will probably start doing better.
+Things I changed: I added more dropout layers with smaller rates (0.25 instead of 0.5), I also added one conv and one pooling more and I changed
+the optimizer to adamax with learning_rate=0.001, weight_decay=1e-4. I also only trained once, so I loaded all the data and then trained with 20 epochs to 
+make sure it could converge

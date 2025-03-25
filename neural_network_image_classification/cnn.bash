@@ -1,5 +1,26 @@
 #!/bin/bash
 
+model_name=e
+
+echo "=== Starting CNN training process ==="
+echo "Model name: ${model_name}"
+
+echo "[1/1] Fitting initial model with all the data..."
+time ./cnn_classification.py cnn-fit \
+     --model-name ${model_name} --model-file models/${model_name}.joblib \
+     --batch-number 6
+
+echo "[1/1] Generating learning curve..."
+time ./cnn_classification.py learning-curve \
+     --model-file models/${model_name}.joblib
+mv plots/${model_name}.learning_curve.png plots/${model_name}.learning_curve-1.png
+
+echo "Generating score"
+time ./cnn_classification.py score \
+     --model-file models/${model_name}.joblib \
+     --batch-number 5
+
+<<'COMMENT'
 model_name=d
 
 echo "=== Starting CNN training process ==="
@@ -50,6 +71,7 @@ echo "Generating score"
 time ./cnn_classification.py score \
      --model-file models/${model_name}.joblib \
      --batch-number 5
+COMMENT
 
 <<'COMMENT'
 model_name=c

@@ -179,3 +179,35 @@ def create_model_d(my_args, input_shape):
     optimizer = keras.optimizers.Adam(learning_rate=0.0001)
     model.compile(loss="categorical_crossentropy", metrics=["accuracy"], optimizer=optimizer)
     return model
+
+def create_model_e(my_args, input_shape):
+    model = keras.models.Sequential()
+    model.add(keras.layers.Input(shape=input_shape))
+    
+    # First convolutional layer with a larger kernel size
+    model.add(keras.layers.Conv2D(filters=64, kernel_size=(7,7), activation="relu", kernel_initializer="he_normal", padding="same"))
+    model.add(keras.layers.MaxPooling2D(pool_size=(2,2)))
+    
+    # Additional convolutional layers with smaller kernel sizes
+    model.add(keras.layers.Conv2D(filters=128, kernel_size=(5,5), activation="relu", kernel_initializer="he_normal", padding="same"))
+    model.add(keras.layers.Conv2D(filters=128, kernel_size=(3,3), activation="relu", kernel_initializer="he_normal", padding="same"))
+    model.add(keras.layers.MaxPooling2D(pool_size=(2,2)))
+    model.add(keras.layers.Dropout(0.25))  # Dropout layer to prevent overfitting
+    
+    # Additional convolutional layer for more feature extraction
+    model.add(keras.layers.Conv2D(filters=256, kernel_size=(3,3), activation="relu", kernel_initializer="he_normal", padding="same"))
+    model.add(keras.layers.MaxPooling2D(pool_size=(2,2)))
+    model.add(keras.layers.Conv2D(filters=256, kernel_size=(3,3), activation="relu", kernel_initializer="he_normal", padding="same"))
+    model.add(keras.layers.MaxPooling2D(pool_size=(2,2)))
+    model.add(keras.layers.Dropout(0.35))  # Dropout layer to prevent overfitting
+    
+    model.add(keras.layers.Flatten())
+    model.add(keras.layers.Dense(128, activation="relu", kernel_initializer="he_normal"))
+    model.add(keras.layers.Dropout(0.15))  # Dropout layer to prevent overfitting
+    model.add(keras.layers.Dense(10, activation="softmax"))
+
+    # Read online that weight_decay=1e-4, helps with generalization
+    optimizer = keras.optimizers.Adamax(learning_rate=0.001, weight_decay=1e-4)
+    model.compile(loss="categorical_crossentropy", metrics=["accuracy"], optimizer=optimizer)
+    return model
+

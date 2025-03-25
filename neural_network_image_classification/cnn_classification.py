@@ -26,7 +26,7 @@ def do_cnn_fit(my_args):
     model = model_creation.create_model(my_args, X.shape[1:])
     early_stopping = keras.callbacks.EarlyStopping(monitor='val_loss', patience=5, restore_best_weights=True)
     # Has all the history stored so its nice for plotting after the model is trained
-    history = model.fit(X, y, epochs=10, verbose=1, callbacks=[early_stopping], validation_split=0.2, shuffle=True, batch_size=16)
+    history = model.fit(X, y, epochs=20, verbose=1, callbacks=[early_stopping], validation_split=0.2, shuffle=True, batch_size=16)
     model_file = my_args.model_file
     joblib.dump(model, model_file)
     joblib.dump(history.history, "{}.history".format(model_file))
