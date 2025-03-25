@@ -1,5 +1,7 @@
 pandas
 tensorflow
+tensorflow-macos
+tensorflow-metal
 keras
 numpy
 joblib

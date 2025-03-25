@@ -21,7 +21,7 @@ def plot_history(my_args):
     # IDK why the model_name doesnt work
     #print("Model name: ", my_args.model_name)
     #learning_curve_filename = "plots/{}.learning_curve.png".format(my_args.model_name)
-    learning_curve_filename = "plots/c.learning_curve.png"
+    learning_curve_filename = "plots/d.learning_curve.png"
 
     #
     # Display the learning curves

@@ -569,3 +569,216 @@ sys     0m2.051s
 We got the same accuracy as in the past model. However, the graphs are very different. I noticed that this one got bad at 
 generalizing after the first fit and I can also see in c.learning_curve-1 that it could've gone for more epochs so for the next model 
 I will change the epochs to be 20 for the cnn_fit and see how it does.
+
+For this next try I changed the architecture of my model, and also the batch size (from 32 to 16). I also installed 
+the necessary packages for tensorflow to use my gpu on mac.
+Here are the websites:
+https://developer.apple.com/metal/tensorflow-plugin/
+https://blog.fotiecodes.com/install-tensorflow-on-your-mac-m1m2m3-with-gpu-support-clqs92bzl000308l8a3i35479
+Lets see if it works and if it runs faster.
+
+```bash
+./cnn.bash
+=== Starting CNN training process ===
+Model name: d
+[1/4] Fitting initial model...
+GPU is available
+2025-03-24 18:43:35.204206: I metal_plugin/src/device/metal_device.cc:1154] Metal device set to: Apple M2
+2025-03-24 18:43:35.204243: I metal_plugin/src/device/metal_device.cc:296] systemMemory: 16.00 GB
+2025-03-24 18:43:35.204257: I metal_plugin/src/device/metal_device.cc:313] maxCacheSize: 5.33 GB
+2025-03-24 18:43:35.204292: I tensorflow/core/common_runtime/pluggable_device/pluggable_device_factory.cc:305] Could not identify NUMA node of platform GPU ID 0, defaulting to 0. Your kernel may not have been built with NUMA support.
+2025-03-24 18:43:35.204304: I tensorflow/core/common_runtime/pluggable_device/pluggable_device_factory.cc:271] Created TensorFlow device (/job:localhost/replica:0/task:0/device:GPU:0 with 0 MB memory) -> physical PluggableDevice (device: 0, name: METAL, pci bus id: <undefined>)
+Model: "sequential"
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━┓
+┃ Layer (type)                         ┃ Output Shape                ┃         Param # ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━┩
+│ conv2d (Conv2D)                      │ (None, 32, 32, 64)          │           9,472 │
+├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+│ max_pooling2d (MaxPooling2D)         │ (None, 16, 16, 64)          │               0 │
+├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+│ conv2d_1 (Conv2D)                    │ (None, 16, 16, 128)         │         204,928 │
+├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+│ conv2d_2 (Conv2D)                    │ (None, 16, 16, 128)         │         147,584 │
+├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+│ max_pooling2d_1 (MaxPooling2D)       │ (None, 8, 8, 128)           │               0 │
+├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+│ flatten (Flatten)                    │ (None, 8192)                │               0 │
+├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+│ dense (Dense)                        │ (None, 128)                 │       1,048,704 │
+├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+│ dense_1 (Dense)                      │ (None, 128)                 │          16,512 │
+├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+│ dropout (Dropout)                    │ (None, 128)                 │               0 │
+├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+│ dense_2 (Dense)                      │ (None, 10)                  │           1,290 │
+└──────────────────────────────────────┴─────────────────────────────┴─────────────────┘
+ Total params: 1,428,490 (5.45 MB)
+ Trainable params: 1,428,490 (5.45 MB)
+ Non-trainable params: 0 (0.00 B)
+None
+Epoch 1/10
+2025-03-24 18:43:36.613893: I tensorflow/core/grappler/optimizers/custom_graph_optimizer_registry.cc:117] Plugin optimizer for device_type GPU is enabled.
+500/500 ━━━━━━━━━━━━━━━━━━━━ 18s 28ms/step - accuracy: 0.1134 - loss: 5.3609 - val_accuracy: 0.2420 - val_loss: 2.1239
+Epoch 2/10
+500/500 ━━━━━━━━━━━━━━━━━━━━ 14s 29ms/step - accuracy: 0.1714 - loss: 5.2471 - val_accuracy: 0.3245 - val_loss: 2.6237
+Epoch 3/10
+500/500 ━━━━━━━━━━━━━━━━━━━━ 14s 28ms/step - accuracy: 0.2203 - loss: 7.1075 - val_accuracy: 0.3555 - val_loss: 2.9990
+Epoch 4/10
+500/500 ━━━━━━━━━━━━━━━━━━━━ 14s 29ms/step - accuracy: 0.2336 - loss: 8.6853 - val_accuracy: 0.3835 - val_loss: 3.9924
+Epoch 5/10
+500/500 ━━━━━━━━━━━━━━━━━━━━ 14s 28ms/step - accuracy: 0.2640 - loss: 11.7143 - val_accuracy: 0.4125 - val_loss: 5.2111
+Epoch 6/10
+500/500 ━━━━━━━━━━━━━━━━━━━━ 14s 28ms/step - accuracy: 0.2774 - loss: 12.9118 - val_accuracy: 0.4470 - val_loss: 4.6469
+
+real    1m35.390s
+user    0m58.482s
+sys     0m26.142s
+[1/4] Generating learning curve...
+GPU is available
+
+real    0m3.640s
+user    0m4.561s
+sys     0m1.576s
+[2/4] Refitting model with Batch 2...
+GPU is available
+2025-03-24 18:45:12.464174: I metal_plugin/src/device/metal_device.cc:1154] Metal device set to: Apple M2
+2025-03-24 18:45:12.464201: I metal_plugin/src/device/metal_device.cc:296] systemMemory: 16.00 GB
+2025-03-24 18:45:12.464209: I metal_plugin/src/device/metal_device.cc:313] maxCacheSize: 5.33 GB
+2025-03-24 18:45:12.464227: I tensorflow/core/common_runtime/pluggable_device/pluggable_device_factory.cc:305] Could not identify NUMA node of platform GPU ID 0, defaulting to 0. Your kernel may not have been built with NUMA support.
+2025-03-24 18:45:12.464241: I tensorflow/core/common_runtime/pluggable_device/pluggable_device_factory.cc:271] Created TensorFlow device (/job:localhost/replica:0/task:0/device:GPU:0 with 0 MB memory) -> physical PluggableDevice (device: 0, name: METAL, pci bus id: <undefined>)
+Epoch 1/10
+2025-03-24 18:45:12.915832: I tensorflow/core/grappler/optimizers/custom_graph_optimizer_registry.cc:117] Plugin optimizer for device_type GPU is enabled.
+500/500 ━━━━━━━━━━━━━━━━━━━━ 15s 28ms/step - accuracy: 0.1600 - loss: 5.7435 - val_accuracy: 0.3185 - val_loss: 2.5008
+Epoch 2/10
+500/500 ━━━━━━━━━━━━━━━━━━━━ 14s 27ms/step - accuracy: 0.1893 - loss: 10.6767 - val_accuracy: 0.3065 - val_loss: 3.7573
+Epoch 3/10
+500/500 ━━━━━━━━━━━━━━━━━━━━ 14s 28ms/step - accuracy: 0.2058 - loss: 13.7324 - val_accuracy: 0.3525 - val_loss: 4.9334
+Epoch 4/10
+500/500 ━━━━━━━━━━━━━━━━━━━━ 14s 28ms/step - accuracy: 0.2293 - loss: 15.7300 - val_accuracy: 0.3685 - val_loss: 5.9665
+Epoch 5/10
+500/500 ━━━━━━━━━━━━━━━━━━━━ 14s 28ms/step - accuracy: 0.2400 - loss: 21.2437 - val_accuracy: 0.3695 - val_loss: 8.5377
+Epoch 6/10
+500/500 ━━━━━━━━━━━━━━━━━━━━ 13s 27ms/step - accuracy: 0.2675 - loss: 21.3590 - val_accuracy: 0.4095 - val_loss: 8.3419
+
+real    1m27.529s
+user    0m56.775s
+sys     0m27.115s
+[2/4] Generating learning curve...
+GPU is available
+
+real    0m3.568s
+user    0m4.622s
+sys     0m1.428s
+[3/4] Refitting model with Batch 3...
+GPU is available
+2025-03-24 18:46:43.528082: I metal_plugin/src/device/metal_device.cc:1154] Metal device set to: Apple M2
+2025-03-24 18:46:43.528110: I metal_plugin/src/device/metal_device.cc:296] systemMemory: 16.00 GB
+2025-03-24 18:46:43.528118: I metal_plugin/src/device/metal_device.cc:313] maxCacheSize: 5.33 GB
+2025-03-24 18:46:43.528135: I tensorflow/core/common_runtime/pluggable_device/pluggable_device_factory.cc:305] Could not identify NUMA node of platform GPU ID 0, defaulting to 0. Your kernel may not have been built with NUMA support.
+2025-03-24 18:46:43.528149: I tensorflow/core/common_runtime/pluggable_device/pluggable_device_factory.cc:271] Created TensorFlow device (/job:localhost/replica:0/task:0/device:GPU:0 with 0 MB memory) -> physical PluggableDevice (device: 0, name: METAL, pci bus id: <undefined>)
+Epoch 1/10
+2025-03-24 18:46:43.988951: I tensorflow/core/grappler/optimizers/custom_graph_optimizer_registry.cc:117] Plugin optimizer for device_type GPU is enabled.
+500/500 ━━━━━━━━━━━━━━━━━━━━ 16s 30ms/step - accuracy: 0.1917 - loss: 11.0506 - val_accuracy: 0.3045 - val_loss: 3.8676
+Epoch 2/10
+500/500 ━━━━━━━━━━━━━━━━━━━━ 15s 29ms/step - accuracy: 0.2005 - loss: 13.2955 - val_accuracy: 0.3760 - val_loss: 4.7399
+Epoch 3/10
+500/500 ━━━━━━━━━━━━━━━━━━━━ 15s 29ms/step - accuracy: 0.2250 - loss: 17.6846 - val_accuracy: 0.3715 - val_loss: 5.7227
+Epoch 4/10
+500/500 ━━━━━━━━━━━━━━━━━━━━ 14s 28ms/step - accuracy: 0.2419 - loss: 25.9772 - val_accuracy: 0.3705 - val_loss: 10.9437
+Epoch 5/10
+500/500 ━━━━━━━━━━━━━━━━━━━━ 14s 28ms/step - accuracy: 0.2560 - loss: 26.3172 - val_accuracy: 0.3875 - val_loss: 8.7684
+Epoch 6/10
+500/500 ━━━━━━━━━━━━━━━━━━━━ 15s 29ms/step - accuracy: 0.2620 - loss: 28.2883 - val_accuracy: 0.4005 - val_loss: 11.4892
+
+real    1m32.145s
+user    0m58.049s
+sys     0m27.338s
+[3/4] Generating learning curve...
+GPU is available
+
+real    0m3.454s
+user    0m4.385s
+sys     0m1.748s
+[4/4] Refitting model with Batch 4...
+GPU is available
+2025-03-24 18:48:19.132002: I metal_plugin/src/device/metal_device.cc:1154] Metal device set to: Apple M2
+2025-03-24 18:48:19.132025: I metal_plugin/src/device/metal_device.cc:296] systemMemory: 16.00 GB
+2025-03-24 18:48:19.132031: I metal_plugin/src/device/metal_device.cc:313] maxCacheSize: 5.33 GB
+2025-03-24 18:48:19.132046: I tensorflow/core/common_runtime/pluggable_device/pluggable_device_factory.cc:305] Could not identify NUMA node of platform GPU ID 0, defaulting to 0. Your kernel may not have been built with NUMA support.
+2025-03-24 18:48:19.132058: I tensorflow/core/common_runtime/pluggable_device/pluggable_device_factory.cc:271] Created TensorFlow device (/job:localhost/replica:0/task:0/device:GPU:0 with 0 MB memory) -> physical PluggableDevice (device: 0, name: METAL, pci bus id: <undefined>)
+Epoch 1/10
+2025-03-24 18:48:19.587213: I tensorflow/core/grappler/optimizers/custom_graph_optimizer_registry.cc:117] Plugin optimizer for device_type GPU is enabled.
+500/500 ━━━━━━━━━━━━━━━━━━━━ 15s 29ms/step - accuracy: 0.2020 - loss: 14.8183 - val_accuracy: 0.3425 - val_loss: 5.7657
+Epoch 2/10
+500/500 ━━━━━━━━━━━━━━━━━━━━ 14s 28ms/step - accuracy: 0.2145 - loss: 22.0295 - val_accuracy: 0.3840 - val_loss: 8.4517
+Epoch 3/10
+500/500 ━━━━━━━━━━━━━━━━━━━━ 14s 27ms/step - accuracy: 0.2422 - loss: 24.5268 - val_accuracy: 0.4050 - val_loss: 9.1871
+Epoch 4/10
+500/500 ━━━━━━━━━━━━━━━━━━━━ 14s 28ms/step - accuracy: 0.2406 - loss: 30.6841 - val_accuracy: 0.4030 - val_loss: 16.1064
+Epoch 5/10
+500/500 ━━━━━━━━━━━━━━━━━━━━ 14s 27ms/step - accuracy: 0.2539 - loss: 41.0464 - val_accuracy: 0.4185 - val_loss: 14.7644
+Epoch 6/10
+500/500 ━━━━━━━━━━━━━━━━━━━━ 13s 27ms/step - accuracy: 0.2587 - loss: 45.4614 - val_accuracy: 0.4170 - val_loss: 19.5652
+
+real    1m27.841s
+user    0m59.325s
+sys     0m26.441s
+[4/4] Generating learning curve...
+GPU is available
+
+real    0m3.476s
+user    0m4.068s
+sys     0m2.145s
+mv: rename plots/d.blearning_curve.png to plots/d.learning_curve-4.png: No such file or directory
+Generating score
+GPU is available
+2025-03-24 18:49:50.399278: I metal_plugin/src/device/metal_device.cc:1154] Metal device set to: Apple M2
+2025-03-24 18:49:50.399304: I metal_plugin/src/device/metal_device.cc:296] systemMemory: 16.00 GB
+2025-03-24 18:49:50.399312: I metal_plugin/src/device/metal_device.cc:313] maxCacheSize: 5.33 GB
+2025-03-24 18:49:50.399335: I tensorflow/core/common_runtime/pluggable_device/pluggable_device_factory.cc:305] Could not identify NUMA node of platform GPU ID 0, defaulting to 0. Your kernel may not have been built with NUMA support.
+2025-03-24 18:49:50.399349: I tensorflow/core/common_runtime/pluggable_device/pluggable_device_factory.cc:271] Created TensorFlow device (/job:localhost/replica:0/task:0/device:GPU:0 with 0 MB memory) -> physical PluggableDevice (device: 0, name: METAL, pci bus id: <undefined>)
+2025-03-24 18:49:50.759252: I tensorflow/core/grappler/optimizers/custom_graph_optimizer_registry.cc:117] Plugin optimizer for device_type GPU is enabled.
+313/313 ━━━━━━━━━━━━━━━━━━━━ 2s 6ms/step    
+
+models/d.joblib: train: 
+
++-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+
+| 406 |  26 |  43 |   5 |  14 |  18 |  71 | 130 | 131 | 166 |
+|  22 | 166 |   2 |   5 |   2 |   6 | 112 |  65 |  26 | 583 |
+|  93 |   4 |  77 |   7 |  53 |  68 | 399 | 198 |  29 |  65 |
+|  16 |   4 |  28 |  23 |   5 | 155 | 390 | 245 |   8 |  93 |
+|  36 |   3 |  40 |   5 |  53 |  30 | 515 | 266 |  14 |  49 |
+|   9 |   1 |  23 |  20 |   5 | 259 | 377 | 254 |   3 |  53 |
+|   6 |   7 |  19 |   1 |  10 |  17 | 772 | 129 |   8 |  64 |
+|  21 |  11 |   8 |  10 |   9 |  43 | 220 | 621 |   6 |  97 |
+| 189 |  33 |  26 |  14 |   3 |  35 |  57 |  39 | 321 | 287 |
+|  21 |  21 |   2 |   6 |   2 |   9 |  69 |  73 |  11 | 729 |
++-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+
+
+              precision    recall  f1-score   support
+
+           0       0.50      0.40      0.44      1010
+           1       0.60      0.17      0.26       989
+           2       0.29      0.08      0.12       993
+           3       0.24      0.02      0.04       967
+           4       0.34      0.05      0.09      1011
+           5       0.40      0.26      0.32      1004
+           6       0.26      0.75      0.38      1033
+           7       0.31      0.59      0.41      1046
+           8       0.58      0.32      0.41      1004
+           9       0.33      0.77      0.47       943
+
+    accuracy                           0.34     10000
+   macro avg       0.38      0.34      0.29     10000
+weighted avg       0.38      0.34      0.30     10000
+
+
+
+real    0m5.957s
+user    0m4.174s
+sys     0m1.926s
+```
+
+It for sure ran faster and was easier for my computer (temperature wise). However, the way I changed my model made it really bad.
+My accuracy now is 0.33 and the model thought it was going to be 0.4170 which is way off. I will go back to my other model and make some other changes to see if that
+makes it better 
