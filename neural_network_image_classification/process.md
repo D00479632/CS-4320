@@ -365,3 +365,207 @@ validation batch we got an accuracy of 0.66. This is all right. We dont meet the
 since we have val_accurac: 0.6495 ( not > 0.75)
 and a testing (not with the test data just validation but I will use the validation for now) score of 0.66
 We do have an abs(0.6495-0.66) of 0.01 which is < 0.03 so that's good.
+
+I just figured out that I had the batch size = 1 when I was fitting the model, this slows down the process a lot so I will try to do 32 and maybe that will be faster. 
+Another way I could make it faster is by training on multiple data batches at the same time instead of refitting.
+
+```bash
+./cnn.bash
+=== Starting CNN training process ===
+Model name: c
+[1/4] Fitting initial model...
+Model: "sequential"
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━┓
+┃ Layer (type)                         ┃ Output Shape                ┃         Param # ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━┩
+│ conv2d (Conv2D)                      │ (None, 32, 32, 64)          │           9,472 │
+├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+│ max_pooling2d (MaxPooling2D)         │ (None, 16, 16, 64)          │               0 │
+├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+│ conv2d_1 (Conv2D)                    │ (None, 16, 16, 128)         │         204,928 │
+├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+│ conv2d_2 (Conv2D)                    │ (None, 16, 16, 128)         │         147,584 │
+├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+│ max_pooling2d_1 (MaxPooling2D)       │ (None, 8, 8, 128)           │               0 │
+├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+│ conv2d_3 (Conv2D)                    │ (None, 8, 8, 256)           │         295,168 │
+├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+│ max_pooling2d_2 (MaxPooling2D)       │ (None, 4, 4, 256)           │               0 │
+├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+│ flatten (Flatten)                    │ (None, 4096)                │               0 │
+├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+│ dense (Dense)                        │ (None, 128)                 │         524,416 │
+├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+│ dropout (Dropout)                    │ (None, 128)                 │               0 │
+├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+│ dense_1 (Dense)                      │ (None, 10)                  │           1,290 │
+└──────────────────────────────────────┴─────────────────────────────┴─────────────────┘
+ Total params: 1,182,858 (4.51 MB)
+ Trainable params: 1,182,858 (4.51 MB)
+ Non-trainable params: 0 (0.00 B)
+None
+Epoch 1/10
+250/250 ━━━━━━━━━━━━━━━━━━━━ 22s 87ms/step - accuracy: 0.1571 - loss: 2.2843 - val_accuracy: 0.3475 - val_loss: 1.9368
+Epoch 2/10
+250/250 ━━━━━━━━━━━━━━━━━━━━ 23s 91ms/step - accuracy: 0.2872 - loss: 1.9577 - val_accuracy: 0.4035 - val_loss: 1.7591
+Epoch 3/10
+250/250 ━━━━━━━━━━━━━━━━━━━━ 23s 93ms/step - accuracy: 0.3623 - loss: 1.8049 - val_accuracy: 0.4625 - val_loss: 1.6058
+Epoch 4/10
+250/250 ━━━━━━━━━━━━━━━━━━━━ 23s 93ms/step - accuracy: 0.4010 - loss: 1.6864 - val_accuracy: 0.4635 - val_loss: 1.5213
+Epoch 5/10
+250/250 ━━━━━━━━━━━━━━━━━━━━ 24s 96ms/step - accuracy: 0.4282 - loss: 1.5987 - val_accuracy: 0.4750 - val_loss: 1.4741
+Epoch 6/10
+250/250 ━━━━━━━━━━━━━━━━━━━━ 24s 96ms/step - accuracy: 0.4614 - loss: 1.5163 - val_accuracy: 0.5090 - val_loss: 1.4434
+Epoch 7/10
+250/250 ━━━━━━━━━━━━━━━━━━━━ 24s 97ms/step - accuracy: 0.4808 - loss: 1.4411 - val_accuracy: 0.5245 - val_loss: 1.3669
+Epoch 8/10
+250/250 ━━━━━━━━━━━━━━━━━━━━ 27s 106ms/step - accuracy: 0.5107 - loss: 1.3752 - val_accuracy: 0.5335 - val_loss: 1.3442
+Epoch 9/10
+250/250 ━━━━━━━━━━━━━━━━━━━━ 31s 124ms/step - accuracy: 0.5317 - loss: 1.3192 - val_accuracy: 0.5405 - val_loss: 1.3184
+Epoch 10/10
+250/250 ━━━━━━━━━━━━━━━━━━━━ 34s 135ms/step - accuracy: 0.5594 - loss: 1.2451 - val_accuracy: 0.5455 - val_loss: 1.2778
+
+real    4m21.268s
+user    26m20.848s
+sys     1m38.423s
+[1/4] Generating learning curve...
+
+real    0m3.526s
+user    0m2.481s
+sys     0m0.297s
+[2/4] Refitting model with Batch 2...
+Epoch 1/10
+250/250 ━━━━━━━━━━━━━━━━━━━━ 30s 118ms/step - accuracy: 0.4862 - loss: 1.4398 - val_accuracy: 0.5535 - val_loss: 1.2875
+Epoch 2/10
+250/250 ━━━━━━━━━━━━━━━━━━━━ 30s 120ms/step - accuracy: 0.5268 - loss: 1.3526 - val_accuracy: 0.5540 - val_loss: 1.2546
+Epoch 3/10
+250/250 ━━━━━━━━━━━━━━━━━━━━ 30s 119ms/step - accuracy: 0.5418 - loss: 1.3010 - val_accuracy: 0.5505 - val_loss: 1.2460
+Epoch 4/10
+250/250 ━━━━━━━━━━━━━━━━━━━━ 30s 122ms/step - accuracy: 0.5692 - loss: 1.2242 - val_accuracy: 0.5615 - val_loss: 1.1950
+Epoch 5/10
+250/250 ━━━━━━━━━━━━━━━━━━━━ 30s 120ms/step - accuracy: 0.5773 - loss: 1.1793 - val_accuracy: 0.5770 - val_loss: 1.1707
+Epoch 6/10
+250/250 ━━━━━━━━━━━━━━━━━━━━ 30s 120ms/step - accuracy: 0.5962 - loss: 1.1337 - val_accuracy: 0.5840 - val_loss: 1.1613
+Epoch 7/10
+250/250 ━━━━━━━━━━━━━━━━━━━━ 29s 118ms/step - accuracy: 0.6110 - loss: 1.0824 - val_accuracy: 0.5755 - val_loss: 1.1464
+Epoch 8/10
+250/250 ━━━━━━━━━━━━━━━━━━━━ 29s 117ms/step - accuracy: 0.6420 - loss: 1.0092 - val_accuracy: 0.5835 - val_loss: 1.1249
+Epoch 9/10
+250/250 ━━━━━━━━━━━━━━━━━━━━ 29s 118ms/step - accuracy: 0.6478 - loss: 0.9786 - val_accuracy: 0.5965 - val_loss: 1.1348
+Epoch 10/10
+250/250 ━━━━━━━━━━━━━━━━━━━━ 30s 122ms/step - accuracy: 0.6746 - loss: 0.9028 - val_accuracy: 0.5865 - val_loss: 1.1488
+
+real    5m2.073s
+user    32m0.440s
+sys     1m38.817s
+[2/4] Generating learning curve...
+
+real    0m3.449s
+user    0m2.470s
+sys     0m0.287s
+[3/4] Refitting model with Batch 3...
+Epoch 1/10
+250/250 ━━━━━━━━━━━━━━━━━━━━ 28s 112ms/step - accuracy: 0.5546 - loss: 1.2851 - val_accuracy: 0.6265 - val_loss: 1.1072
+Epoch 2/10
+250/250 ━━━━━━━━━━━━━━━━━━━━ 30s 118ms/step - accuracy: 0.5841 - loss: 1.1839 - val_accuracy: 0.6100 - val_loss: 1.1168
+Epoch 3/10
+250/250 ━━━━━━━━━━━━━━━━━━━━ 30s 121ms/step - accuracy: 0.6010 - loss: 1.1347 - val_accuracy: 0.6305 - val_loss: 1.0860
+Epoch 4/10
+250/250 ━━━━━━━━━━━━━━━━━━━━ 31s 122ms/step - accuracy: 0.6134 - loss: 1.0941 - val_accuracy: 0.6280 - val_loss: 1.1083
+Epoch 5/10
+250/250 ━━━━━━━━━━━━━━━━━━━━ 31s 122ms/step - accuracy: 0.6389 - loss: 1.0325 - val_accuracy: 0.6235 - val_loss: 1.0946
+Epoch 6/10
+250/250 ━━━━━━━━━━━━━━━━━━━━ 31s 125ms/step - accuracy: 0.6647 - loss: 0.9478 - val_accuracy: 0.6235 - val_loss: 1.0601
+Epoch 7/10
+250/250 ━━━━━━━━━━━━━━━━━━━━ 31s 123ms/step - accuracy: 0.6852 - loss: 0.8901 - val_accuracy: 0.6405 - val_loss: 1.0354
+Epoch 8/10
+250/250 ━━━━━━━━━━━━━━━━━━━━ 31s 125ms/step - accuracy: 0.6993 - loss: 0.8600 - val_accuracy: 0.6385 - val_loss: 1.0608
+Epoch 9/10
+250/250 ━━━━━━━━━━━━━━━━━━━━ 31s 125ms/step - accuracy: 0.7118 - loss: 0.8029 - val_accuracy: 0.6425 - val_loss: 1.0406
+Epoch 10/10
+250/250 ━━━━━━━━━━━━━━━━━━━━ 33s 133ms/step - accuracy: 0.7212 - loss: 0.7773 - val_accuracy: 0.6460 - val_loss: 1.0315
+
+real    5m10.799s
+user    32m1.247s
+sys     1m44.556s
+[3/4] Generating learning curve...
+
+real    0m3.536s
+user    0m2.534s
+sys     0m0.306s
+[4/4] Refitting model with Batch 4...
+Epoch 1/10
+250/250 ━━━━━━━━━━━━━━━━━━━━ 31s 124ms/step - accuracy: 0.6011 - loss: 1.1624 - val_accuracy: 0.6315 - val_loss: 1.0803
+Epoch 2/10
+250/250 ━━━━━━━━━━━━━━━━━━━━ 33s 133ms/step - accuracy: 0.6346 - loss: 1.0717 - val_accuracy: 0.6445 - val_loss: 1.0223
+Epoch 3/10
+250/250 ━━━━━━━━━━━━━━━━━━━━ 32s 127ms/step - accuracy: 0.6513 - loss: 0.9795 - val_accuracy: 0.6590 - val_loss: 1.0157
+Epoch 4/10
+250/250 ━━━━━━━━━━━━━━━━━━━━ 31s 123ms/step - accuracy: 0.6811 - loss: 0.9214 - val_accuracy: 0.6380 - val_loss: 1.0281
+Epoch 5/10
+250/250 ━━━━━━━━━━━━━━━━━━━━ 31s 123ms/step - accuracy: 0.7072 - loss: 0.8426 - val_accuracy: 0.6560 - val_loss: 1.0012
+Epoch 6/10
+250/250 ━━━━━━━━━━━━━━━━━━━━ 30s 119ms/step - accuracy: 0.7219 - loss: 0.7956 - val_accuracy: 0.6660 - val_loss: 0.9887
+Epoch 7/10
+250/250 ━━━━━━━━━━━━━━━━━━━━ 30s 121ms/step - accuracy: 0.7456 - loss: 0.7389 - val_accuracy: 0.6625 - val_loss: 1.0248
+Epoch 8/10
+250/250 ━━━━━━━━━━━━━━━━━━━━ 30s 120ms/step - accuracy: 0.7569 - loss: 0.6850 - val_accuracy: 0.6510 - val_loss: 1.0160
+Epoch 9/10
+250/250 ━━━━━━━━━━━━━━━━━━━━ 31s 126ms/step - accuracy: 0.7795 - loss: 0.6231 - val_accuracy: 0.6570 - val_loss: 1.0192
+Epoch 10/10
+250/250 ━━━━━━━━━━━━━━━━━━━━ 32s 128ms/step - accuracy: 0.8036 - loss: 0.5752 - val_accuracy: 0.6620 - val_loss: 1.0518
+
+real    5m14.861s
+user    32m26.284s
+sys     1m38.678s
+[4/4] Generating learning curve...
+
+real    0m3.459s
+user    0m2.463s
+sys     0m0.293s
+mv: rename plots/c.blearning_curve.png to plots/c.learning_curve-4.png: No such file or directory
+Generating score
+313/313 ━━━━━━━━━━━━━━━━━━━━ 10s 31ms/step
+
+models/c.joblib: train: 
+
++-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+
+| 754 |  30 |  53 |   6 |  22 |   8 |  18 |  20 |  69 |  30 |
+|  41 | 818 |   6 |   6 |   4 |   2 |  15 |   4 |  17 |  76 |
+|  87 |   9 | 563 |  54 |  95 |  42 |  72 |  37 |  19 |  15 |
+|  31 |  11 |  90 | 436 |  76 | 145 |  94 |  41 |  11 |  32 |
+|  36 |   7 | 117 |  52 | 596 |  26 |  57 | 108 |   8 |   4 |
+|   7 |   6 | 101 | 220 |  59 | 476 |  45 |  76 |   7 |   7 |
+|  10 |  14 |  53 |  52 |  66 |  11 | 793 |   9 |   8 |  17 |
+|  18 |   4 |  46 |  39 |  91 |  51 |   5 | 778 |   1 |  13 |
+| 105 |  66 |  15 |  18 |  13 |   2 |  11 |   3 | 746 |  25 |
+|  46 | 155 |  11 |   9 |   4 |   9 |  15 |  30 |  28 | 636 |
++-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+
+
+              precision    recall  f1-score   support
+
+           0       0.66      0.75      0.70      1010
+           1       0.73      0.83      0.78       989
+           2       0.53      0.57      0.55       993
+           3       0.49      0.45      0.47       967
+           4       0.58      0.59      0.59      1011
+           5       0.62      0.47      0.54      1004
+           6       0.70      0.77      0.73      1033
+           7       0.70      0.74      0.72      1046
+           8       0.82      0.74      0.78      1004
+           9       0.74      0.67      0.71       943
+
+    accuracy                           0.66     10000
+   macro avg       0.66      0.66      0.66     10000
+weighted avg       0.66      0.66      0.66     10000
+
+
+
+real    0m13.546s
+user    1m7.127s
+sys     0m2.051s
+```
+
+We got the same accuracy as in the past model. However, the graphs are very different. I noticed that this one got bad at 
+generalizing after the first fit and I can also see in c.learning_curve-1 that it could've gone for more epochs so for the next model 
+I will change the epochs to be 20 for the cnn_fit and see how it does.

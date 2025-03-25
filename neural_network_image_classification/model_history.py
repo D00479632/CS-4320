@@ -18,8 +18,10 @@ def plot_history(my_args):
 
     history = joblib.load("{}.history".format(my_args.model_file))
     epochs = len(history["loss"])
-    print("Model name: ", my_args.model_name)
-    learning_curve_filename = "plots/{}.learning_curve.png".format(my_args.model_name)
+    # IDK why the model_name doesnt work
+    #print("Model name: ", my_args.model_name)
+    #learning_curve_filename = "plots/{}.learning_curve.png".format(my_args.model_name)
+    learning_curve_filename = "plots/c.learning_curve.png"
 
     #
     # Display the learning curves
