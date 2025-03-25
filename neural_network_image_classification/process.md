@@ -935,3 +935,325 @@ I just need to tweak it a little more and I will probably start doing better.
 Things I changed: I added more dropout layers with smaller rates (0.25 instead of 0.5), I also added one conv and one pooling more and I changed
 the optimizer to adamax with learning_rate=0.001, weight_decay=1e-4. I also only trained once, so I loaded all the data and then trained with 20 epochs to 
 make sure it could converge
+
+```bash
+./cnn.bash
+=== Starting CNN training process ===
+WATCH OUT THIS ONE DIDNT REALLY RUN F IT RAN E!!!!!!!!
+Model name: f
+[1/1] Fitting initial model with all the data...
+GPU is available
+2025-03-25 00:24:03.374195: I metal_plugin/src/device/metal_device.cc:1154] Metal device set to: Apple M2
+2025-03-25 00:24:03.374430: I metal_plugin/src/device/metal_device.cc:296] systemMemory: 16.00 GB
+2025-03-25 00:24:03.374451: I metal_plugin/src/device/metal_device.cc:313] maxCacheSize: 5.33 GB
+2025-03-25 00:24:03.374519: I tensorflow/core/common_runtime/pluggable_device/pluggable_device_factory.cc:305] Could not identify NUMA node of platform GPU ID 0, defaulting to 0. Your kernel may not have been built with NUMA support.
+2025-03-25 00:24:03.374547: I tensorflow/core/common_runtime/pluggable_device/pluggable_device_factory.cc:271] Created TensorFlow device (/job:localhost/replica:0/task:0/device:GPU:0 with 0 MB memory) -> physical PluggableDevice (device: 0, name: METAL, pci bus id: <undefined>)
+Model: "sequential"
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━┓
+┃ Layer (type)                         ┃ Output Shape                ┃         Param # ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━┩
+│ conv2d (Conv2D)                      │ (None, 32, 32, 64)          │           9,472 │
+├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+│ max_pooling2d (MaxPooling2D)         │ (None, 16, 16, 64)          │               0 │
+├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+│ conv2d_1 (Conv2D)                    │ (None, 16, 16, 128)         │         204,928 │
+├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+│ conv2d_2 (Conv2D)                    │ (None, 16, 16, 128)         │         147,584 │
+├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+│ max_pooling2d_1 (MaxPooling2D)       │ (None, 8, 8, 128)           │               0 │
+├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+│ dropout (Dropout)                    │ (None, 8, 8, 128)           │               0 │
+├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+│ conv2d_3 (Conv2D)                    │ (None, 8, 8, 256)           │         295,168 │
+├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+│ max_pooling2d_2 (MaxPooling2D)       │ (None, 4, 4, 256)           │               0 │
+├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+│ conv2d_4 (Conv2D)                    │ (None, 4, 4, 256)           │         590,080 │
+├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+│ max_pooling2d_3 (MaxPooling2D)       │ (None, 2, 2, 256)           │               0 │
+├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+│ dropout_1 (Dropout)                  │ (None, 2, 2, 256)           │               0 │
+├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+│ flatten (Flatten)                    │ (None, 1024)                │               0 │
+├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+│ dense (Dense)                        │ (None, 128)                 │         131,200 │
+├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+│ dropout_2 (Dropout)                  │ (None, 128)                 │               0 │
+├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+│ dense_1 (Dense)                      │ (None, 10)                  │           1,290 │
+└──────────────────────────────────────┴─────────────────────────────┴─────────────────┘
+ Total params: 1,379,722 (5.26 MB)
+ Trainable params: 1,379,722 (5.26 MB)
+ Non-trainable params: 0 (0.00 B)
+None
+Epoch 1/20
+2025-03-25 00:24:04.984382: I tensorflow/core/grappler/optimizers/custom_graph_optimizer_registry.cc:117] Plugin optimizer for device_type GPU is enabled.
+2000/2000 ━━━━━━━━━━━━━━━━━━━━ 83s 40ms/step - accuracy: 0.2376 - loss: 2.1296 - val_accuracy: 0.4470 - val_loss: 1.4850
+Epoch 2/20
+2000/2000 ━━━━━━━━━━━━━━━━━━━━ 83s 41ms/step - accuracy: 0.4101 - loss: 1.6117 - val_accuracy: 0.5449 - val_loss: 1.2580
+Epoch 3/20
+2000/2000 ━━━━━━━━━━━━━━━━━━━━ 81s 41ms/step - accuracy: 0.5093 - loss: 1.3781 - val_accuracy: 0.6046 - val_loss: 1.1012
+Epoch 4/20
+2000/2000 ━━━━━━━━━━━━━━━━━━━━ 82s 41ms/step - accuracy: 0.5786 - loss: 1.1869 - val_accuracy: 0.6336 - val_loss: 1.0498
+Epoch 5/20
+2000/2000 ━━━━━━━━━━━━━━━━━━━━ 85s 43ms/step - accuracy: 0.6241 - loss: 1.0755 - val_accuracy: 0.6311 - val_loss: 1.0658
+Epoch 6/20
+2000/2000 ━━━━━━━━━━━━━━━━━━━━ 81s 41ms/step - accuracy: 0.6589 - loss: 0.9752 - val_accuracy: 0.6805 - val_loss: 0.9328
+Epoch 7/20
+2000/2000 ━━━━━━━━━━━━━━━━━━━━ 83s 41ms/step - accuracy: 0.6898 - loss: 0.8898 - val_accuracy: 0.6848 - val_loss: 0.9193
+Epoch 8/20
+2000/2000 ━━━━━━━━━━━━━━━━━━━━ 83s 41ms/step - accuracy: 0.7075 - loss: 0.8422 - val_accuracy: 0.7016 - val_loss: 0.8722
+Epoch 9/20
+2000/2000 ━━━━━━━━━━━━━━━━━━━━ 83s 41ms/step - accuracy: 0.7318 - loss: 0.7893 - val_accuracy: 0.7129 - val_loss: 0.8378
+Epoch 10/20
+2000/2000 ━━━━━━━━━━━━━━━━━━━━ 81s 41ms/step - accuracy: 0.7497 - loss: 0.7224 - val_accuracy: 0.7351 - val_loss: 0.7868
+Epoch 11/20
+2000/2000 ━━━━━━━━━━━━━━━━━━━━ 83s 42ms/step - accuracy: 0.7622 - loss: 0.6965 - val_accuracy: 0.7349 - val_loss: 0.7883
+Epoch 12/20
+2000/2000 ━━━━━━━━━━━━━━━━━━━━ 82s 41ms/step - accuracy: 0.7791 - loss: 0.6539 - val_accuracy: 0.7309 - val_loss: 0.8042
+Epoch 13/20
+2000/2000 ━━━━━━━━━━━━━━━━━━━━ 85s 42ms/step - accuracy: 0.7949 - loss: 0.6082 - val_accuracy: 0.7316 - val_loss: 0.7973
+Epoch 14/20
+2000/2000 ━━━━━━━━━━━━━━━━━━━━ 84s 42ms/step - accuracy: 0.7991 - loss: 0.5940 - val_accuracy: 0.7124 - val_loss: 0.9396
+Epoch 15/20
+2000/2000 ━━━━━━━━━━━━━━━━━━━━ 84s 42ms/step - accuracy: 0.8074 - loss: 0.5756 - val_accuracy: 0.7433 - val_loss: 0.8155
+
+real    20m51.035s
+user    18m45.929s
+sys     8m40.621s
+[1/1] Generating learning curve...
+GPU is available
+
+real    0m5.290s
+user    0m5.465s
+sys     0m2.561s
+Generating score
+GPU is available
+2025-03-25 00:44:58.112351: I metal_plugin/src/device/metal_device.cc:1154] Metal device set to: Apple M2
+2025-03-25 00:44:58.112380: I metal_plugin/src/device/metal_device.cc:296] systemMemory: 16.00 GB
+2025-03-25 00:44:58.112388: I metal_plugin/src/device/metal_device.cc:313] maxCacheSize: 5.33 GB
+2025-03-25 00:44:58.112407: I tensorflow/core/common_runtime/pluggable_device/pluggable_device_factory.cc:305] Could not identify NUMA node of platform GPU ID 0, defaulting to 0. Your kernel may not have been built with NUMA support.
+2025-03-25 00:44:58.112422: I tensorflow/core/common_runtime/pluggable_device/pluggable_device_factory.cc:271] Created TensorFlow device (/job:localhost/replica:0/task:0/device:GPU:0 with 0 MB memory) -> physical PluggableDevice (device: 0, name: METAL, pci bus id: <undefined>)
+2025-03-25 00:44:58.647955: I tensorflow/core/grappler/optimizers/custom_graph_optimizer_registry.cc:117] Plugin optimizer for device_type GPU is enabled.
+313/313 ━━━━━━━━━━━━━━━━━━━━ 4s 12ms/step  
+
+models/f.joblib: train: 
+
++-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+
+| 721 |  14 |  66 |  15 |  21 |  10 |  15 |  32 |  61 |  55 |
+|  16 | 803 |   5 |   6 |   1 |   5 |  12 |   5 |  10 | 126 |
+|  52 |   5 | 625 |  37 |  77 |  68 |  61 |  39 |  11 |  18 |
+|  11 |   7 |  56 | 486 |  59 | 175 |  77 |  56 |   2 |  38 |
+|  18 |   5 |  85 |  64 | 645 |  36 |  44 | 103 |   3 |   8 |
+|   1 |   5 |  62 | 166 |  37 | 611 |  27 |  77 |   3 |  15 |
+|   3 |   5 |  39 |  51 |  38 |  28 | 841 |  12 |   2 |  14 |
+|  11 |   1 |  27 |  33 |  45 |  53 |   4 | 849 |   4 |  19 |
+|  54 |  38 |  13 |   5 |   7 |   7 |  18 |  10 | 807 |  45 |
+|  21 |  64 |   5 |   9 |   0 |  10 |  13 |  20 |  16 | 785 |
++-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+
+
+              precision    recall  f1-score   support
+
+           0       0.79      0.71      0.75      1010
+           1       0.85      0.81      0.83       989
+           2       0.64      0.63      0.63       993
+           3       0.56      0.50      0.53       967
+           4       0.69      0.64      0.66      1011
+           5       0.61      0.61      0.61      1004
+           6       0.76      0.81      0.78      1033
+           7       0.71      0.81      0.76      1046
+           8       0.88      0.80      0.84      1004
+           9       0.70      0.83      0.76       943
+
+    accuracy                           0.72     10000
+   macro avg       0.72      0.72      0.72     10000
+weighted avg       0.72      0.72      0.72     10000
+
+
+
+real    0m10.157s
+user    0m7.155s
+sys     0m2.221s
+```
+
+This model did a little worse than the last one on the validation set. It also did a worse job at generalizing
+It said the accuracy was 0.8074 when validation said 0.7433
+accuracy: 0.8074 - loss: 0.5756 - val_accuracy: 0.7433 - val_loss: 0.8155
+vs
+accuracy 0.7707 when validation said 0.7402
+accuracy: 0.7707 - loss: 0.7111 - val_accuracy: 0.7402 - val_loss: 0.8669
+
+So I think I am going to mix them both and see what happens
+I JUST REALIZED: I didnt really run my new model since I hadn't changed the function name let me actually run it
+
+```bash
+./cnn.bash
+=== Starting CNN training process ===
+Model name: f
+[1/1] Fitting initial model with all the data...
+GPU is available
+2025-03-25 10:53:01.205737: I metal_plugin/src/device/metal_device.cc:1154] Metal device set to: Apple M2
+2025-03-25 10:53:01.205940: I metal_plugin/src/device/metal_device.cc:296] systemMemory: 16.00 GB
+2025-03-25 10:53:01.205960: I metal_plugin/src/device/metal_device.cc:313] maxCacheSize: 5.33 GB
+2025-03-25 10:53:01.206205: I tensorflow/core/common_runtime/pluggable_device/pluggable_device_factory.cc:305] Could not identify NUMA node of platform GPU ID 0, defaulting to 0. Your kernel may not have been built with NUMA support.
+2025-03-25 10:53:01.206239: I tensorflow/core/common_runtime/pluggable_device/pluggable_device_factory.cc:271] Created TensorFlow device (/job:localhost/replica:0/task:0/device:GPU:0 with 0 MB memory) -> physical PluggableDevice (device: 0, name: METAL, pci bus id: <undefined>)
+Model: "sequential"
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━┓
+┃ Layer (type)                         ┃ Output Shape                ┃         Param # ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━┩
+│ conv2d (Conv2D)                      │ (None, 32, 32, 64)          │           4,864 │
+├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+│ batch_normalization                  │ (None, 32, 32, 64)          │             256 │
+│ (BatchNormalization)                 │                             │                 │
+├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+│ activation (Activation)              │ (None, 32, 32, 64)          │               0 │
+├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+│ max_pooling2d (MaxPooling2D)         │ (None, 16, 16, 64)          │               0 │
+├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+│ conv2d_1 (Conv2D)                    │ (None, 16, 16, 128)         │         204,928 │
+├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+│ batch_normalization_1                │ (None, 16, 16, 128)         │             512 │
+│ (BatchNormalization)                 │                             │                 │
+├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+│ activation_1 (Activation)            │ (None, 16, 16, 128)         │               0 │
+├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+│ conv2d_2 (Conv2D)                    │ (None, 16, 16, 128)         │         147,584 │
+├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+│ batch_normalization_2                │ (None, 16, 16, 128)         │             512 │
+│ (BatchNormalization)                 │                             │                 │
+├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+│ activation_2 (Activation)            │ (None, 16, 16, 128)         │               0 │
+├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+│ max_pooling2d_1 (MaxPooling2D)       │ (None, 8, 8, 128)           │               0 │
+├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+│ spatial_dropout2d (SpatialDropout2D) │ (None, 8, 8, 128)           │               0 │
+├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+│ conv2d_3 (Conv2D)                    │ (None, 8, 8, 256)           │         295,168 │
+├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+│ batch_normalization_3                │ (None, 8, 8, 256)           │           1,024 │
+│ (BatchNormalization)                 │                             │                 │
+├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+│ activation_3 (Activation)            │ (None, 8, 8, 256)           │               0 │
+├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+│ max_pooling2d_2 (MaxPooling2D)       │ (None, 4, 4, 256)           │               0 │
+├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+│ flatten (Flatten)                    │ (None, 4096)                │               0 │
+├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+│ dense (Dense)                        │ (None, 256)                 │       1,048,832 │
+├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+│ batch_normalization_4                │ (None, 256)                 │           1,024 │
+│ (BatchNormalization)                 │                             │                 │
+├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+│ activation_4 (Activation)            │ (None, 256)                 │               0 │
+├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+│ dropout (Dropout)                    │ (None, 256)                 │               0 │
+├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+│ dense_1 (Dense)                      │ (None, 10)                  │           2,570 │
+└──────────────────────────────────────┴─────────────────────────────┴─────────────────┘
+ Total params: 1,707,274 (6.51 MB)
+ Trainable params: 1,705,610 (6.51 MB)
+ Non-trainable params: 1,664 (6.50 KB)
+None
+Epoch 1/20
+2025-03-25 10:53:03.066388: I tensorflow/core/grappler/optimizers/custom_graph_optimizer_registry.cc:117] Plugin optimizer for device_type GPU is enabled.
+2000/2000 ━━━━━━━━━━━━━━━━━━━━ 109s 52ms/step - accuracy: 0.3869 - loss: 1.7472 - val_accuracy: 0.5731 - val_loss: 1.1892
+Epoch 2/20
+2000/2000 ━━━━━━━━━━━━━━━━━━━━ 104s 52ms/step - accuracy: 0.5833 - loss: 1.1777 - val_accuracy: 0.6786 - val_loss: 0.9085
+Epoch 3/20
+2000/2000 ━━━━━━━━━━━━━━━━━━━━ 100s 50ms/step - accuracy: 0.6597 - loss: 0.9622 - val_accuracy: 0.7268 - val_loss: 0.7968
+Epoch 4/20
+2000/2000 ━━━━━━━━━━━━━━━━━━━━ 100s 50ms/step - accuracy: 0.7128 - loss: 0.8273 - val_accuracy: 0.6755 - val_loss: 0.9243
+Epoch 5/20
+2000/2000 ━━━━━━━━━━━━━━━━━━━━ 114s 57ms/step - accuracy: 0.7453 - loss: 0.7262 - val_accuracy: 0.7235 - val_loss: 0.7936
+Epoch 6/20
+2000/2000 ━━━━━━━━━━━━━━━━━━━━ 113s 56ms/step - accuracy: 0.7753 - loss: 0.6456 - val_accuracy: 0.7404 - val_loss: 0.7313
+Epoch 7/20
+2000/2000 ━━━━━━━━━━━━━━━━━━━━ 109s 54ms/step - accuracy: 0.8025 - loss: 0.5778 - val_accuracy: 0.7381 - val_loss: 0.7572
+Epoch 8/20
+2000/2000 ━━━━━━━━━━━━━━━━━━━━ 108s 54ms/step - accuracy: 0.8266 - loss: 0.5052 - val_accuracy: 0.7660 - val_loss: 0.6829
+Epoch 9/20
+2000/2000 ━━━━━━━━━━━━━━━━━━━━ 111s 55ms/step - accuracy: 0.8477 - loss: 0.4485 - val_accuracy: 0.7931 - val_loss: 0.5963
+Epoch 10/20
+2000/2000 ━━━━━━━━━━━━━━━━━━━━ 104s 52ms/step - accuracy: 0.8630 - loss: 0.4016 - val_accuracy: 0.7868 - val_loss: 0.6558
+Epoch 11/20
+2000/2000 ━━━━━━━━━━━━━━━━━━━━ 127s 64ms/step - accuracy: 0.8805 - loss: 0.3497 - val_accuracy: 0.7859 - val_loss: 0.6392
+Epoch 12/20
+2000/2000 ━━━━━━━━━━━━━━━━━━━━ 108s 54ms/step - accuracy: 0.8933 - loss: 0.3149 - val_accuracy: 0.7701 - val_loss: 0.6786
+Epoch 13/20
+2000/2000 ━━━━━━━━━━━━━━━━━━━━ 113s 57ms/step - accuracy: 0.9033 - loss: 0.2840 - val_accuracy: 0.7954 - val_loss: 0.6244
+Epoch 14/20
+2000/2000 ━━━━━━━━━━━━━━━━━━━━ 107s 53ms/step - accuracy: 0.9138 - loss: 0.2539 - val_accuracy: 0.7979 - val_loss: 0.6252
+
+real    25m37.939s
+user    25m6.715s
+sys     9m47.527s
+[1/1] Generating learning curve...
+GPU is available
+
+real    0m6.193s
+user    0m5.859s
+sys     0m2.456s
+Generating score
+GPU is available
+2025-03-25 11:18:42.946326: I metal_plugin/src/device/metal_device.cc:1154] Metal device set to: Apple M2
+2025-03-25 11:18:42.946358: I metal_plugin/src/device/metal_device.cc:296] systemMemory: 16.00 GB
+2025-03-25 11:18:42.946365: I metal_plugin/src/device/metal_device.cc:313] maxCacheSize: 5.33 GB
+2025-03-25 11:18:42.946385: I tensorflow/core/common_runtime/pluggable_device/pluggable_device_factory.cc:305] Could not identify NUMA node of platform GPU ID 0, defaulting to 0. Your kernel may not have been built with NUMA support.
+2025-03-25 11:18:42.946402: I tensorflow/core/common_runtime/pluggable_device/pluggable_device_factory.cc:271] Created TensorFlow device (/job:localhost/replica:0/task:0/device:GPU:0 with 0 MB memory) -> physical PluggableDevice (device: 0, name: METAL, pci bus id: <undefined>)
+2025-03-25 11:18:43.625248: I tensorflow/core/grappler/optimizers/custom_graph_optimizer_registry.cc:117] Plugin optimizer for device_type GPU is enabled.
+313/313 ━━━━━━━━━━━━━━━━━━━━ 5s 14ms/step   
+
+models/f.joblib: train: 
+
++-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+
+| 816 |   5 |  42 |  16 |  16 |  13 |   6 |   2 |  68 |  26 |
+|  21 | 860 |   4 |   8 |   1 |   2 |   7 |   1 |  15 |  70 |
+|  47 |   4 | 691 |  54 |  65 |  51 |  45 |  15 |  12 |   9 |
+|  21 |   2 |  38 | 594 |  50 | 162 |  53 |  20 |  10 |  17 |
+|  20 |   1 |  48 |  67 | 774 |  34 |  17 |  40 |   7 |   3 |
+|   7 |   2 |  37 | 147 |  32 | 719 |  15 |  35 |   4 |   6 |
+|  11 |   3 |  36 |  54 |  25 |  17 | 876 |   2 |   5 |   4 |
+|   9 |   1 |  23 |  56 |  50 |  63 |   3 | 825 |   4 |  12 |
+|  30 |  16 |  10 |   9 |   3 |   6 |  10 |   2 | 905 |  13 |
+|  24 |  46 |   3 |   4 |   5 |   7 |   6 |   1 |  31 | 816 |
++-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+
+
+              precision    recall  f1-score   support
+
+           0       0.81      0.81      0.81      1010
+           1       0.91      0.87      0.89       989
+           2       0.74      0.70      0.72       993
+           3       0.59      0.61      0.60       967
+           4       0.76      0.77      0.76      1011
+           5       0.67      0.72      0.69      1004
+           6       0.84      0.85      0.85      1033
+           7       0.87      0.79      0.83      1046
+           8       0.85      0.90      0.88      1004
+           9       0.84      0.87      0.85       943
+
+    accuracy                           0.79     10000
+   macro avg       0.79      0.79      0.79     10000
+weighted avg       0.79      0.79      0.79     10000
+
+
+
+real    0m11.093s
+user    0m7.759s
+sys     0m2.490s
+```
+
+Now that I did run the actual new model that I created I feel way better. I didn't know what to do after this.
+This is for sure going to be my submission model since it meets the requirements:
+
+- Training data accuracy: 0.9138
+- Training data accuracy: *whatever*
+- Validation data accuracy ('val_categorical_accuracy'): > 0.75
+- Testing data accuracy ('test_categorical_accuracy'): > 0.75
+- abs(val_categorical_accuracy - test_categorical_accuracy): < 0.03
+The results:
+
+- Training data accuracy: 0.9138
+- Validation data accuracy ('val_categorical_accuracy'): 0.797 > 0.75
+- Testing data accuracy ('test_categorical_accuracy'): 0.79 > 0.75 (This is not the testing data yet but its my validation data so I'm expecting somewhat the same
+result with the testing data)
+- abs(val_categorical_accuracy - test_categorical_accuracy):(0.797 - 0.79) = 0.007 < 0.03

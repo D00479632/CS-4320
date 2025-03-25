@@ -24,6 +24,8 @@ def create_model(my_args, input_shape):
         "b": create_model_b,
         "c": create_model_c,
         "d": create_model_d,
+        "e": create_model_e,
+        "f": create_model_f,
     }
     if my_args.model_name not in create_functions:
         raise Exception("Invalid model name: {} not in {}".format(my_args.model_name, list(create_functions.keys())))
@@ -211,3 +213,46 @@ def create_model_e(my_args, input_shape):
     model.compile(loss="categorical_crossentropy", metrics=["accuracy"], optimizer=optimizer)
     return model
 
+def create_model_f(my_args, input_shape):
+
+    model = keras.models.Sequential()
+    model.add(keras.layers.Input(shape=input_shape))
+
+    model.add(keras.layers.Conv2D(64, (5,5), padding="same", kernel_initializer="he_normal"))
+    # Trying this from last assignment
+    model.add(keras.layers.BatchNormalization())
+    model.add(keras.layers.Activation("relu"))
+    model.add(keras.layers.MaxPooling2D(pool_size=(2,2)))
+
+    model.add(keras.layers.Conv2D(128, (5,5), padding="same", kernel_initializer="he_normal"))
+    # Trying this from last assignment
+    model.add(keras.layers.BatchNormalization())
+    model.add(keras.layers.Activation("relu"))
+
+    model.add(keras.layers.Conv2D(128, (3,3), padding="same", kernel_initializer="he_normal"))
+    # Trying this from last assignment
+    model.add(keras.layers.BatchNormalization())
+    model.add(keras.layers.Activation("relu"))
+    model.add(keras.layers.MaxPooling2D(pool_size=(2,2)))
+    # Found this on keras and sounded interesting
+    model.add(keras.layers.SpatialDropout2D(0.25))
+
+    model.add(keras.layers.Conv2D(256, (3,3), padding="same", kernel_initializer="he_normal"))
+    # Trying this from last assignment
+    model.add(keras.layers.BatchNormalization())
+    model.add(keras.layers.Activation("relu"))
+    model.add(keras.layers.MaxPooling2D(pool_size=(2,2)))
+
+    model.add(keras.layers.Flatten())
+    model.add(keras.layers.Dense(256, kernel_initializer="he_normal"))
+    # Trying this from last assignment
+    model.add(keras.layers.BatchNormalization())
+    model.add(keras.layers.Activation("relu"))
+    model.add(keras.layers.Dropout(0.25))
+
+    model.add(keras.layers.Dense(10, activation="softmax"))
+
+    optimizer = keras.optimizers.Adamax(learning_rate=0.001, weight_decay=1e-4)
+    model.compile(loss="categorical_crossentropy", metrics=["accuracy"], optimizer=optimizer)
+
+    return model
