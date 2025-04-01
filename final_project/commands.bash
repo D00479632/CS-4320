@@ -13,5 +13,5 @@
 # And now I will preprocess the data
 #python3 preprocess.py
 # Shape for data/preprocessed-diabetes-train.csv: (72000, 77)
-# Shape for data/preprocessed-train.csv: (8000, 77)
+# Shape for data/preprocessed-diabetes-validate.csv: (8000, 77)
 # Shape for data/preprocessed-diabetes-test.csv: (20000, 77)
