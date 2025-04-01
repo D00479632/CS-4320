@@ -6,5 +6,3 @@
 [Esquizofrenia](https://www.kaggle.com/datasets/asinow/schizohealth-dataset)
 [Obesidad](https://www.kaggle.com/datasets/ruchikakumbhar/obesity-prediction)
 [Spain Salary](https://www.kaggle.com/datasets/jtljtl/spain-salary-distribution)
-
-
