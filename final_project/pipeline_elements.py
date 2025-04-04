@@ -48,13 +48,14 @@ class Printer(sklearn.base.BaseEstimator, sklearn.base.TransformerMixin):
 class DataFrameSelector(sklearn.base.BaseEstimator, sklearn.base.TransformerMixin):
     '''
     Here are the features for train.csv:
-    Name,Gender,Age,City,Working Professional or Student,Profession,Academic Pressure,Work Pressure,
-    CGPA,Study Satisfaction,Job Satisfaction,Sleep Duration,Dietary Habits,Degree,
-    Have you ever had suicidal thoughts ?,Work/Study Hours,Financial Stress,Family History of Mental Illness,Depression
+    year, gender, age, location, race:AfricanAmerican, race:Asian, race:Caucasian,
+    race:Hispanic, race:Other, hypertension, heart_disease, smoking_history,bmi,
+    hbA1c_level, blood_glucose_level, diabetes, clinical_notes
     '''
     
     def __init__(self, do_predictors=True, do_numerical=True):
-        # I am not going to include clinical_notes because I don't think it's good for training the model since we would get so many features after one hot encode.
+        # I am not going to include clinical_notes 
+        # TODO: Maybe get rid of location
         self.mCategoricalPredictors = ["gender", "location", "smoking_history"]
         self.mNumericalPredictors = ["year", "age", "race:AfricanAmerican", "race:Asian", "race:Caucasian", "race:Hispanic", "race:Other", "hypertension", 
                                      "heart_disease", "bmi", "hbA1c_level", "blood_glucose_level"]
