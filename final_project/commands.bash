@@ -223,3 +223,73 @@ COMMENT
 # Even though is not as much training data as before I think that 10000 cases will do. 
 
 # I won't make new models yet, I want to see how changing the data changed the outcome of the past models
+#./pipeline.py random-search --model-type SGD --train-file data/balanced_train.csv --model-file models/balanced_SGDClassifier.joblib --search-grid-file models/balanced_SearchGridSGDClassifier.joblib  --use-scaler 1 --categorical-missing-strategy most_frequent --numerical-missing-strategy median --n-search-iterations 10 
+
+# Let's see what our best parameters are
+#./pipeline.py show-best-params --model-type SGD --train-file data/balanced_train.csv --search-grid-file models/balanced_SearchGridSGDClassifier.joblib 
+<<COMMENT
+Best Score: 0.8804230877963596
+Best Params:
+{   'features__categorical__categorical-features-only__do_numerical': False,
+    'features__categorical__categorical-features-only__do_predictors': True,
+    'features__categorical__encode-category-bits__categories': 'auto',
+    'features__categorical__encode-category-bits__handle_unknown': 'ignore',
+    'features__categorical__missing-data__strategy': 'most_frequent',
+    'features__numerical__missing-data__strategy': 'median',
+    'features__numerical__numerical-features-only__do_numerical': True,
+    'features__numerical__numerical-features-only__do_predictors': True,
+    'model__alpha': 0.01,
+    'model__average': False,
+    'model__class_weight': None,
+    'model__early_stopping': True,
+    'model__epsilon': 0.1,
+    'model__eta0': 0.1,
+    'model__fit_intercept': True,
+    'model__l1_ratio': 0.3,
+    'model__learning_rate': 'optimal',
+    'model__loss': 'hinge',
+    'model__max_iter': 1000,
+    'model__n_iter_no_change': 10,
+    'model__n_jobs': None,
+    'model__penalty': 'elasticnet',
+    'model__power_t': 0.5,
+    'model__random_state': None,
+    'model__shuffle': True,
+    'model__tol': 0.001,
+    'model__validation_fraction': 0.1,
+    'model__verbose': 0,
+    'model__warm_start': False}
+COMMENT
+# I already see a difference in the best score that before was 0.96098 and now is 0.880 the learning rate is now optimal and the n_iter_no_change is 10 
+
+# Lets see the score of this model
+# When doing show-test 1 make sure that you pass in the validate.csv not the actual test file
+#./pipeline.py score --show-test 1 --model-type SGD --train-file data/balanced_train.csv --test-file data/balanced_validate.csv --model-file models/balanced_SGDClassifier.joblib
+# balanced_train: train_score: 0.8809742647058824 test_score: 0.8900735294117647
+
+#echo ==== CM Training Data ====
+#./pipeline.py confusion-matrix --model-type SGD --train-file data/balanced_train.csv --model-file models/balanced_SGDClassifier.joblib
+#echo ==== CM Validation Data ====
+#./pipeline.py confusion-matrix --model-type SGD --train-file data/balanced_validate.csv --model-file models/balanced_SGDClassifier.joblib
+#./pipeline.py precision-recall-plot --model-type SGD --train-file data/balanced_train.csv --model-file models/balanced_SGDClassifier.joblib --image-file plots/balanced_SGDClassifier_pr_plot.png
+#./pipeline.py pr-curve --model-type SGD --train-file data/balanced_train.csv --model-file models/balanced_SGDClassifier.joblib --image-file plots/balanced_SGDClassifier_pr_curve.png
+<<COMMENT
+==== CM Training Data ====
+     t/p      F     T 
+        F 4624.0 792.0 
+        T 761.0 4703.0 
+
+Precision: 0.856
+Recall:    0.861
+F1:        0.858
+==== CM Validation Data ====
+     t/p      F     T 
+        F 1140.0 242.0 
+        T 223.0 1115.0 
+
+Precision: 0.822
+Recall:    0.833
+F1:        0.827
+
+We can already see improvement in the balance in between predicting positives and negatives, this score is way better but we are still missing like a 14% of true and false cases 
+COMMENT
