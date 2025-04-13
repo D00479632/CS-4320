@@ -196,7 +196,7 @@ COMMENT
 # negative cases out so that it would be equal to the positive cases.
 
 <<COMMENT
- ./clean_data.py
+./clean_data.py
 Reading data from data/diabetes_dataset.csv...
 Original dataset:
 Positive cases: 8500
@@ -210,3 +210,16 @@ Negative cases: 8500
 After the cleaning we end up with 17000 rows which is not as good as the original 100000 but I think that we can still work with it.
 COMMENT
 
+# Now we need to split the data again
+#python3 split_data.py
+<<COMMENT
+Original data shape: (17000, 17)
+Test data shape: (3400, 17)
+Training data shape initial: (13600, 17)
+Training data shape final: (10880, 17)
+Validation data shape: (2720, 17)
+COMMENT
+
+# Even though is not as much training data as before I think that 10000 cases will do. 
+
+# I won't make new models yet, I want to see how changing the data changed the outcome of the past models
