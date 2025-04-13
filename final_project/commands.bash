@@ -190,3 +190,23 @@ COMMENT
 
 #./pipeline.py precision-recall-plot --model-type forest --train-file data/diabetes_train.csv --model-file models/RandomForestClassifier.joblib --image-file plots/RandomForestClassifier_pr_plot.png
 #./pipeline.py pr-curve --model-type forest --train-file data/diabetes_train.csv --model-file models/RandomForestClassifier.joblib --image-file plots/RandomForestClassifier_pr_curve.png
+
+
+# Since we noticed the unbalanced problem with the negative and positive cases and that was making the model bias I decided to clean the data and leave some of the 
+# negative cases out so that it would be equal to the positive cases.
+
+<<COMMENT
+ ./clean_data.py
+Reading data from data/diabetes_dataset.csv...
+Original dataset:
+Positive cases: 8500
+Negative cases: 91500
+As we can see here there are 91500 negative cases vs the 8500 positive which is not great
+
+Balanced dataset:
+Total cases: 17000
+Positive cases: 8500
+Negative cases: 8500
+After the cleaning we end up with 17000 rows which is not as good as the original 100000 but I think that we can still work with it.
+COMMENT
+
