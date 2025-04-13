@@ -137,23 +137,23 @@ def make_boost_params(my_args):
 
 def make_forest_params(my_args):
     forest_params = {
-        "model__n_estimators": [100],  # Int, default=100
-        "model__criterion": ["gini"],  # ["gini", "entropy", "log_loss"]
-        "model__max_depth": [None],  # Int or None
-        "model__min_samples_split": [2],  # Int in range [2, inf) or float in range (0.0, 1.0]
-        "model__min_samples_leaf": [1],  # Int in range [1, inf) or float in range (0.0, 1.0]
+        "model__n_estimators": [100, 200, 300],  # Int, default=100
+        "model__criterion": ["gini", "entropy"],  # ["gini", "entropy", "log_loss"]
+        "model__max_depth": [None, 10, 20, 30],  # Int or None
+        "model__min_samples_split": [2, 5, 10],  # Int in range [2, inf) or float in range (0.0, 1.0]
+        "model__min_samples_leaf": [1, 2, 4],  # Int in range [1, inf) or float in range (0.0, 1.0]
         "model__min_weight_fraction_leaf": [0.0],  # Float in range [0.0, 0.5]
-        "model__max_features": ["sqrt"],  # ["sqrt", "log2", None] or int or float in range (0.0, 1.0]
+        "model__max_features": ["sqrt", "log2", None],  # ["sqrt", "log2", None] or int or float in range (0.0, 1.0]
         "model__max_leaf_nodes": [None],  # Int in range [2, inf) or None
-        "model__min_impurity_decrease": [0.0],  # Float in range [0.0, inf)
-        "model__bootstrap": [True],  # [True, False]
+        "model__min_impurity_decrease": [0.0, 0.1, 0.2],  # Float in range [0.0, inf)
+        "model__bootstrap": [False],  # [True, False]
         "model__oob_score": [False],  # [True, False] or callable
         "model__n_jobs": [None],  # Int or None
         "model__random_state": [None],  # Int, RandomState instance, or None
         "model__verbose": [0],  # Int in range [0, inf)
         "model__warm_start": [False],  # [True, False]
-        "model__class_weight": [None],  # ["balanced", "balanced_subsample"] or dict or list of dicts
-        "model__ccp_alpha": [0.0],  # Float in range [0.0, inf)
+        "model__class_weight": [None, "balanced"],  # ["balanced", "balanced_subsample"] or dict or list of dicts
+        "model__ccp_alpha": [0.0, 0.01, 0.1],  # Float in range [0.0, inf)
         "model__max_samples": [None],  # Float in range (0.0, 1.0] or Int or None
         "model__monotonic_cst": [None],  # None or array-like
     }

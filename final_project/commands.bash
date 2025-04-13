@@ -293,3 +293,74 @@ F1:        0.827
 
 We can already see improvement in the balance in between predicting positives and negatives, this score is way better but we are still missing like a 14% of true and false cases 
 COMMENT
+
+# Now let's try with the forest
+# I just figured out that last time when I did the forest search in make_pipeline I didnt have multiple choices for the hyperparameters so the models wont be the same
+#./pipeline.py random-search --model-type forest --train-file data/balanced_train.csv --model-file models/balanced_RandomForestClassifier.joblib --search-grid-file models/balanced_SearchGridRandomForestClassifier.joblib --use-polynomial-features 2 --use-scaler 1 --categorical-missing-strategy most_frequent --numerical-missing-strategy median --n-search-iterations 10 
+
+# Let's see what our best parameters are
+#./pipeline.py show-best-params --model-type forest --train-file data/balanced_train.csv --search-grid-file models/balanced_SearchGridRandomForestClassifier.joblib 
+
+<<COMMENT
+Best Score: 0.8966917745719588
+Best Params:
+{   'features__categorical__categorical-features-only__do_numerical': False,
+    'features__categorical__categorical-features-only__do_predictors': True,
+    'features__categorical__encode-category-bits__categories': 'auto',
+    'features__categorical__encode-category-bits__handle_unknown': 'ignore',
+    'features__categorical__missing-data__strategy': 'most_frequent',
+    'features__numerical__missing-data__strategy': 'median',
+    'features__numerical__numerical-features-only__do_numerical': True,
+    'features__numerical__numerical-features-only__do_predictors': True,
+    'features__numerical__polynomial-features__degree': 2,
+    'model__bootstrap': False,
+    'model__ccp_alpha': 0.01,
+    'model__class_weight': None,
+    'model__criterion': 'gini',
+    'model__max_depth': 30,
+    'model__max_features': 'log2',
+    'model__max_leaf_nodes': None,
+    'model__max_samples': None,
+    'model__min_impurity_decrease': 0.0,
+    'model__min_samples_leaf': 2,
+    'model__min_samples_split': 5,
+    'model__min_weight_fraction_leaf': 0.0,
+    'model__monotonic_cst': None,
+    'model__n_estimators': 100,
+    'model__n_jobs': None,
+    'model__oob_score': False,
+    'model__random_state': None,
+    'model__verbose': 0,
+    'model__warm_start': False}
+COMMENT
+
+# Lets see the score of this model
+#./pipeline.py score --show-test 1 --model-type forest --train-file data/balanced_train.csv --test-file data/balanced_validate.csv --model-file models/balanced_RandomForestClassifier.joblib
+# balanced_train: train_score: 0.8991727941176471 test_score: 0.8985294117647059
+
+#echo ==== CM Training Data ====
+#./pipeline.py confusion-matrix --model-type forest --train-file data/balanced_train.csv --model-file models/balanced_RandomForestClassifier.joblib
+#echo ==== CM Validation Data ====
+#./pipeline.py confusion-matrix --model-type forest --train-file data/balanced_validate.csv --model-file models/balanced_RandomForestClassifier.joblib
+#./pipeline.py precision-recall-plot --model-type forest --train-file data/balanced_train.csv --model-file models/balanced_RandomForestClassifier.joblib --image-file plots/balanced_RandomForestClassifier_pr_plot.png
+#./pipeline.py pr-curve --model-type forest --train-file data/balanced_train.csv --model-file models/balanced_RandomForestClassifier.joblib --image-file plots/balanced_RandomForestClassifier_pr_curve.png
+<<COMMENT
+==== CM Training Data ====
+     t/p      F     T 
+        F 4868.0 548.0 
+        T 534.0 4930.0 
+
+Precision: 0.900
+Recall:    0.902
+F1:        0.901
+==== CM Validation Data ====
+     t/p      F     T 
+        F 1258.0 124.0 
+        T 126.0 1212.0 
+
+Precision: 0.907
+Recall:    0.906
+F1:        0.907
+
+This is way better than the other two models and than the SGD regressor, changing the data was a good thing we are not predicting as many negatives anymore
+COMMENT
