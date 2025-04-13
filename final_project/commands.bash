@@ -104,6 +104,10 @@ F1:        0.611
 We can see severe overfitting (0.961 train vs ~0.74 test F1)
 I also don't understand how the test_score with validate file was so high.
 I am very confused with the results
+
+Because there are so many non diabetic the model is bias.
+We could change the data to make it more equal in between positive and negative by dropping some negative rows to make it equal with the positive.
+If we don't change the data then we would need to have into account that a 95% accuracy is not great and that we need to bring to 0 the false positives.
 COMMENT
 
 # I know from past assignments that forest did better than the SGDClassifier so my next model will just be the random forest.
