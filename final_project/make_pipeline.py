@@ -133,7 +133,7 @@ def make_boost_params(my_args):
 
 def make_forest_params(my_args):
     forest_params = {
-        "model__n_estimators": [100, 200, 300],  # Int, default=100
+        "model__n_estimators": [100, 200, 300, 500],  # Int, default=100
         "model__criterion": ["gini", "entropy"],  # ["gini", "entropy", "log_loss"]
         "model__max_depth": [None, 10, 20, 30],  # Int or None
         "model__min_samples_split": [2, 5, 10],  # Int in range [2, inf) or float in range (0.0, 1.0]
@@ -144,7 +144,7 @@ def make_forest_params(my_args):
         "model__min_impurity_decrease": [0.0, 0.1, 0.2],  # Float in range [0.0, inf)
         "model__bootstrap": [False],  # [True, False]
         "model__oob_score": [False],  # [True, False] or callable
-        "model__n_jobs": [None],  # Int or None
+        "model__n_jobs": [-1],  # Int or None
         "model__random_state": [None],  # Int, RandomState instance, or None
         "model__verbose": [0],  # Int in range [0, inf)
         "model__warm_start": [False],  # [True, False]
