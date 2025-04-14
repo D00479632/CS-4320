@@ -364,3 +364,59 @@ F1:        0.907
 
 This is way better than the other two models and than the SGD regressor, changing the data was a good thing we are not predicting as many negatives anymore
 COMMENT
+
+# I changed the score in the sklearn.model_selection.RandomizedSearchCV to be acuracy.
+# Now I will try a linear model (RidgeClassifierCV)
+
+#./pipeline.py random-search --model-type linear --train-file data/balanced_train.csv --model-file models/balanced_RidgeClassifierCV.joblib --search-grid-file models/balanced_SearchGridRidgeClassifierCV.joblib --use-polynomial-features 2 --use-scaler 1 --categorical-missing-strategy most_frequent --numerical-missing-strategy median --n-search-iterations 10 
+
+# Let's see what our best parameters are
+#./pipeline.py show-best-params --model-type linear --train-file data/balanced_train.csv --search-grid-file models/balanced_SearchGridRidgeClassifierCV.joblib 
+<<COMMENT
+Best Score: 0.8781250232863136
+Best Params:
+{   'features__categorical__categorical-features-only__do_numerical': False,
+    'features__categorical__categorical-features-only__do_predictors': True,
+    'features__categorical__encode-category-bits__categories': 'auto',
+    'features__categorical__encode-category-bits__handle_unknown': 'ignore',
+    'features__categorical__missing-data__strategy': 'most_frequent',
+    'features__numerical__missing-data__strategy': 'median',
+    'features__numerical__numerical-features-only__do_numerical': True,
+    'features__numerical__numerical-features-only__do_predictors': True,
+    'features__numerical__polynomial-features__degree': 2,
+    'model__alphas': [0.01, 0.1, 1.0, 10.0, 100.0],
+    'model__class_weight': None,
+    'model__cv': 5,
+    'model__fit_intercept': False,
+    'model__scoring': None}
+COMMENT
+
+#./pipeline.py score --show-test 1 --model-type linear --train-file data/balanced_train.csv --test-file data/balanced_validate.csv --model-file models/balanced_RidgeClassifierCV.joblib
+# balanced_train: train_score: 0.8805147058823529 test_score: 0.8878676470588235
+
+#echo ==== CM Training Data ====
+#./pipeline.py confusion-matrix --model-type linear --train-file data/balanced_train.csv --model-file models/balanced_RidgeClassifierCV.joblib
+#echo ==== CM Validation Data ====
+#./pipeline.py confusion-matrix --model-type linear --train-file data/balanced_validate.csv --model-file models/balanced_RidgeClassifierCV.joblib
+#./pipeline.py precision-recall-plot --model-type linear --train-file data/balanced_train.csv --model-file models/balanced_RidgeClassifierCV.joblib --image-file plots/balanced_RidgeClassifierCV_pr_plot.png
+#./pipeline.py pr-curve --model-type linear --train-file data/balanced_train.csv --model-file models/balanced_RidgeClassifierCV.joblib --image-file plots/balanced_RidgeClassifierCV_pr_curve.png
+
+<<COMMENT 
+==== CM Training Data ====
+     t/p      F     T 
+        F 4832.0 584.0 
+        T 743.0 4721.0 
+
+Precision: 0.890
+Recall:    0.864
+F1:        0.877
+==== CM Validation Data ====
+     t/p      F     T 
+        F 1231.0 151.0 
+        T 171.0 1167.0 
+
+Precision: 0.885
+Recall:    0.872
+F1:        0.879
+This is no better than the forest model so for now my best model is forest
+COMMENT

@@ -235,7 +235,7 @@ def do_random_search(my_args):
     fit_params = make_fit_params(my_args)
 
     search_grid = sklearn.model_selection.RandomizedSearchCV(pipeline, fit_params,
-                                                             scoring="f1_micro",
+                                                             scoring='accuracy',
                                                              cv=my_args.cv_count,
                                                              n_jobs=-1, verbose=1,
                                                              n_iter=my_args.n_search_iterations)

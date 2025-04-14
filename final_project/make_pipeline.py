@@ -75,15 +75,11 @@ def make_SGD_params(my_args):
 
 def make_linear_params(my_args):
     linear_params = {
-        "model__alpha": [1.0],  # Float in range (0.0, inf)
-        "model__fit_intercept": [True],  # [True, False]
-        "model__copy_X": [True],  # [True, False]
-        "model__max_iter": [None],  # Int in range [1, inf) or None
-        "model__tol": [1e-4],  # Float in range [0.0, inf)
-        "model__class_weight": [None],  # [None, "balanced", {class_label: weight}]
-        "model__solver": ["auto"],  # ["auto", "svd", "cholesky", "lsqr", "sparse_cg", "sag", "saga", "lbfgs"]
-        "model__positive": [False],  # [True, False] (Only supported with "lbfgs" solver)
-        "model__random_state": [None],  # Int in range [0, 2**32 - 1] or RandomState instance
+        "model__alphas": [[0.1, 1.0, 10.0], [0.01, 0.1, 1.0, 10.0, 100.0]],  # Regularization strengths
+        "model__fit_intercept": [True, False],  # Whether to fit intercept
+        "model__scoring": [None, "accuracy", "roc_auc_ovr"],  # Scoring metric for CV
+        "model__cv": [None, 5, 10],  # None=Leave-One-Out, or k-fold CV
+        "model__class_weight": [None, "balanced"],  # Handle class imbalance
     }
 
     return linear_params 
@@ -268,7 +264,7 @@ def make_fit_pipeline_classification(my_args):
     if my_args.model_type == "SGD":
         items.append(("model", sklearn.linear_model.SGDClassifier(max_iter=10000, n_iter_no_change=100, penalty=None))) # verbose=3, 
     elif my_args.model_type == "linear":
-        items.append(("model", sklearn.linear_model.RidgeClassifier()))
+        items.append(("model", sklearn.linear_model.RidgeClassifierCV()))
     elif my_args.model_type == "SVM":
         items.append(("model", sklearn.svm.SVC(probability=True)))
     elif my_args.model_type == "boost":
