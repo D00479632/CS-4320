@@ -223,10 +223,10 @@ COMMENT
 # Even though is not as much training data as before I think that 10000 cases will do. 
 
 # I won't make new models yet, I want to see how changing the data changed the outcome of the past models
-#./pipeline.py random-search --model-type SGD --train-file data/balanced_train.csv --model-file models/balanced_SGDClassifier.joblib --search-grid-file models/balanced_SearchGridSGDClassifier.joblib  --use-scaler 1 --categorical-missing-strategy most_frequent --numerical-missing-strategy median --n-search-iterations 10 
+#./pipeline.py random-search --model-type SGD --train-file data/dropped_train.csv --model-file models/dropped_SGDClassifier.joblib --search-grid-file models/dropped_SearchGridSGDClassifier.joblib  --use-scaler 1 --categorical-missing-strategy most_frequent --numerical-missing-strategy median --n-search-iterations 10 
 
 # Let's see what our best parameters are
-#./pipeline.py show-best-params --model-type SGD --train-file data/balanced_train.csv --search-grid-file models/balanced_SearchGridSGDClassifier.joblib 
+#./pipeline.py show-best-params --model-type SGD --train-file data/dropped_train.csv --search-grid-file models/dropped_SearchGridSGDClassifier.joblib 
 <<COMMENT
 Best Score: 0.8804230877963596
 Best Params:
@@ -264,15 +264,15 @@ COMMENT
 
 # Lets see the score of this model
 # When doing show-test 1 make sure that you pass in the validate.csv not the actual test file
-#./pipeline.py score --show-test 1 --model-type SGD --train-file data/balanced_train.csv --test-file data/balanced_validate.csv --model-file models/balanced_SGDClassifier.joblib
-# balanced_train: train_score: 0.8809742647058824 test_score: 0.8900735294117647
+#./pipeline.py score --show-test 1 --model-type SGD --train-file data/dropped_train.csv --test-file data/dropped_validate.csv --model-file models/dropped_SGDClassifier.joblib
+# dropped_train: train_score: 0.8809742647058824 test_score: 0.8900735294117647
 
 #echo ==== CM Training Data ====
-#./pipeline.py confusion-matrix --model-type SGD --train-file data/balanced_train.csv --model-file models/balanced_SGDClassifier.joblib
+#./pipeline.py confusion-matrix --model-type SGD --train-file data/dropped_train.csv --model-file models/dropped_SGDClassifier.joblib
 #echo ==== CM Validation Data ====
-#./pipeline.py confusion-matrix --model-type SGD --train-file data/balanced_validate.csv --model-file models/balanced_SGDClassifier.joblib
-#./pipeline.py precision-recall-plot --model-type SGD --train-file data/balanced_train.csv --model-file models/balanced_SGDClassifier.joblib --image-file plots/balanced_SGDClassifier_pr_plot.png
-#./pipeline.py pr-curve --model-type SGD --train-file data/balanced_train.csv --model-file models/balanced_SGDClassifier.joblib --image-file plots/balanced_SGDClassifier_pr_curve.png
+#./pipeline.py confusion-matrix --model-type SGD --train-file data/dropped_validate.csv --model-file models/dropped_SGDClassifier.joblib
+#./pipeline.py precision-recall-plot --model-type SGD --train-file data/dropped_train.csv --model-file models/dropped_SGDClassifier.joblib --image-file plots/dropped_SGDClassifier_pr_plot.png
+#./pipeline.py pr-curve --model-type SGD --train-file data/dropped_train.csv --model-file models/dropped_SGDClassifier.joblib --image-file plots/dropped_SGDClassifier_pr_curve.png
 <<COMMENT
 ==== CM Training Data ====
      t/p      F     T 
@@ -296,10 +296,10 @@ COMMENT
 
 # Now let's try with the forest
 # I just figured out that last time when I did the forest search in make_pipeline I didnt have multiple choices for the hyperparameters so the models wont be the same
-#./pipeline.py random-search --model-type forest --train-file data/balanced_train.csv --model-file models/balanced_RandomForestClassifier.joblib --search-grid-file models/balanced_SearchGridRandomForestClassifier.joblib --use-polynomial-features 2 --use-scaler 1 --categorical-missing-strategy most_frequent --numerical-missing-strategy median --n-search-iterations 10 
+#./pipeline.py random-search --model-type forest --train-file data/dropped_train.csv --model-file models/dropped_RandomForestClassifier.joblib --search-grid-file models/dropped_SearchGridRandomForestClassifier.joblib --use-polynomial-features 2 --use-scaler 1 --categorical-missing-strategy most_frequent --numerical-missing-strategy median --n-search-iterations 10 
 
 # Let's see what our best parameters are
-#./pipeline.py show-best-params --model-type forest --train-file data/balanced_train.csv --search-grid-file models/balanced_SearchGridRandomForestClassifier.joblib 
+#./pipeline.py show-best-params --model-type forest --train-file data/dropped_train.csv --search-grid-file models/dropped_SearchGridRandomForestClassifier.joblib 
 
 <<COMMENT
 Best Score: 0.8966917745719588
@@ -335,15 +335,15 @@ Best Params:
 COMMENT
 
 # Lets see the score of this model
-#./pipeline.py score --show-test 1 --model-type forest --train-file data/balanced_train.csv --test-file data/balanced_validate.csv --model-file models/balanced_RandomForestClassifier.joblib
-# balanced_train: train_score: 0.8991727941176471 test_score: 0.8985294117647059
+#./pipeline.py score --show-test 1 --model-type forest --train-file data/dropped_train.csv --test-file data/dropped_validate.csv --model-file models/dropped_RandomForestClassifier.joblib
+# dropped_train: train_score: 0.8991727941176471 test_score: 0.8985294117647059
 
 #echo ==== CM Training Data ====
-#./pipeline.py confusion-matrix --model-type forest --train-file data/balanced_train.csv --model-file models/balanced_RandomForestClassifier.joblib
+#./pipeline.py confusion-matrix --model-type forest --train-file data/dropped_train.csv --model-file models/dropped_RandomForestClassifier.joblib
 #echo ==== CM Validation Data ====
-#./pipeline.py confusion-matrix --model-type forest --train-file data/balanced_validate.csv --model-file models/balanced_RandomForestClassifier.joblib
-#./pipeline.py precision-recall-plot --model-type forest --train-file data/balanced_train.csv --model-file models/balanced_RandomForestClassifier.joblib --image-file plots/balanced_RandomForestClassifier_pr_plot.png
-#./pipeline.py pr-curve --model-type forest --train-file data/balanced_train.csv --model-file models/balanced_RandomForestClassifier.joblib --image-file plots/balanced_RandomForestClassifier_pr_curve.png
+#./pipeline.py confusion-matrix --model-type forest --train-file data/dropped_validate.csv --model-file models/dropped_RandomForestClassifier.joblib
+#./pipeline.py precision-recall-plot --model-type forest --train-file data/dropped_train.csv --model-file models/dropped_RandomForestClassifier.joblib --image-file plots/dropped_RandomForestClassifier_pr_plot.png
+#./pipeline.py pr-curve --model-type forest --train-file data/dropped_train.csv --model-file models/dropped_RandomForestClassifier.joblib --image-file plots/dropped_RandomForestClassifier_pr_curve.png
 <<COMMENT
 ==== CM Training Data ====
      t/p      F     T 
@@ -368,10 +368,10 @@ COMMENT
 # I changed the score in the sklearn.model_selection.RandomizedSearchCV to be acuracy.
 # Now I will try a linear model (RidgeClassifierCV)
 
-#./pipeline.py random-search --model-type linear --train-file data/balanced_train.csv --model-file models/balanced_RidgeClassifierCV.joblib --search-grid-file models/balanced_SearchGridRidgeClassifierCV.joblib --use-polynomial-features 2 --use-scaler 1 --categorical-missing-strategy most_frequent --numerical-missing-strategy median --n-search-iterations 10 
+#./pipeline.py random-search --model-type linear --train-file data/dropped_train.csv --model-file models/dropped_RidgeClassifierCV.joblib --search-grid-file models/dropped_SearchGridRidgeClassifierCV.joblib --use-polynomial-features 2 --use-scaler 1 --categorical-missing-strategy most_frequent --numerical-missing-strategy median --n-search-iterations 10 
 
 # Let's see what our best parameters are
-#./pipeline.py show-best-params --model-type linear --train-file data/balanced_train.csv --search-grid-file models/balanced_SearchGridRidgeClassifierCV.joblib 
+#./pipeline.py show-best-params --model-type linear --train-file data/dropped_train.csv --search-grid-file models/dropped_SearchGridRidgeClassifierCV.joblib 
 <<COMMENT
 Best Score: 0.8781250232863136
 Best Params:
@@ -391,15 +391,15 @@ Best Params:
     'model__scoring': None}
 COMMENT
 
-#./pipeline.py score --show-test 1 --model-type linear --train-file data/balanced_train.csv --test-file data/balanced_validate.csv --model-file models/balanced_RidgeClassifierCV.joblib
-# balanced_train: train_score: 0.8805147058823529 test_score: 0.8878676470588235
+#./pipeline.py score --show-test 1 --model-type linear --train-file data/dropped_train.csv --test-file data/dropped_validate.csv --model-file models/dropped_RidgeClassifierCV.joblib
+# dropped_train: train_score: 0.8805147058823529 test_score: 0.8878676470588235
 
 #echo ==== CM Training Data ====
-#./pipeline.py confusion-matrix --model-type linear --train-file data/balanced_train.csv --model-file models/balanced_RidgeClassifierCV.joblib
+#./pipeline.py confusion-matrix --model-type linear --train-file data/dropped_train.csv --model-file models/dropped_RidgeClassifierCV.joblib
 #echo ==== CM Validation Data ====
-#./pipeline.py confusion-matrix --model-type linear --train-file data/balanced_validate.csv --model-file models/balanced_RidgeClassifierCV.joblib
-#./pipeline.py precision-recall-plot --model-type linear --train-file data/balanced_train.csv --model-file models/balanced_RidgeClassifierCV.joblib --image-file plots/balanced_RidgeClassifierCV_pr_plot.png
-#./pipeline.py pr-curve --model-type linear --train-file data/balanced_train.csv --model-file models/balanced_RidgeClassifierCV.joblib --image-file plots/balanced_RidgeClassifierCV_pr_curve.png
+#./pipeline.py confusion-matrix --model-type linear --train-file data/dropped_validate.csv --model-file models/dropped_RidgeClassifierCV.joblib
+#./pipeline.py precision-recall-plot --model-type linear --train-file data/dropped_train.csv --model-file models/dropped_RidgeClassifierCV.joblib --image-file plots/dropped_RidgeClassifierCV_pr_plot.png
+#./pipeline.py pr-curve --model-type linear --train-file data/dropped_train.csv --model-file models/dropped_RidgeClassifierCV.joblib --image-file plots/dropped_RidgeClassifierCV_pr_curve.png
 
 <<COMMENT 
 ==== CM Training Data ====
@@ -419,4 +419,103 @@ Precision: 0.885
 Recall:    0.872
 F1:        0.879
 This is no better than the forest model so for now my best model is forest
+COMMENT
+
+# TODO: ask Curtis what ways I can improve the false negatives (when the model predicts negative but its positive), I rather tell non-diabetic people that they are diabetic than diabetic people that they arent
+# kind of like covid test that have more false positives to make sure no false negative is present
+
+# I changed the score in the grid search to be precision so that I can focus on the false negatives and true positives
+
+#./pipeline.py random-search --model-type forest --train-file data/dropped_train.csv --model-file models/dropped_RandomForestClassifier2.joblib --search-grid-file models/dropped_SearchGridRandomForestClassifier2.joblib --use-polynomial-features 2 --use-scaler 1 --categorical-missing-strategy most_frequent --numerical-missing-strategy median --n-search-iterations 20 
+
+# Let's see what our best parameters are
+#./pipeline.py show-best-params --model-type forest --train-file data/dropped_train.csv --search-grid-file models/dropped_SearchGridRandomForestClassifier2.joblib 
+<<COMMENT
+Best Score: 0.9659927497110411
+Best Params:
+{   'features__categorical__categorical-features-only__do_numerical': False,
+    'features__categorical__categorical-features-only__do_predictors': True,
+    'features__categorical__encode-category-bits__categories': 'auto',
+    'features__categorical__encode-category-bits__handle_unknown': 'ignore',
+    'features__categorical__missing-data__strategy': 'most_frequent',
+    'features__numerical__missing-data__strategy': 'median',
+    'features__numerical__numerical-features-only__do_numerical': True,
+    'features__numerical__numerical-features-only__do_predictors': True,
+    'features__numerical__polynomial-features__degree': 2,
+    'model__bootstrap': False,
+    'model__ccp_alpha': 0.1,
+    'model__class_weight': None,
+    'model__criterion': 'entropy',
+    'model__max_depth': 10,
+    'model__max_features': 'sqrt',
+    'model__max_leaf_nodes': None,
+    'model__max_samples': None,
+    'model__min_impurity_decrease': 0.2,
+    'model__min_samples_leaf': 1,
+    'model__min_samples_split': 10,
+    'model__min_weight_fraction_leaf': 0.0,
+    'model__monotonic_cst': None,
+    'model__n_estimators': 300,
+    'model__n_jobs': -1,
+    'model__oob_score': False,
+    'model__random_state': None,
+    'model__verbose': 0,
+    'model__warm_start': False}
+COMMENT
+
+# Lets see the score of this model
+#./pipeline.py score --show-test 1 --model-type forest --train-file data/dropped_train.csv --test-file data/dropped_validate.csv --model-file models/dropped_RandomForestClassifier2.joblib
+# dropped_train: train_score: 0.8421875 test_score: 0.8371323529411765
+
+#echo ==== CM Training Data ====
+#./pipeline.py confusion-matrix --model-type forest --train-file data/dropped_train.csv --model-file models/dropped_RandomForestClassifier2.joblib
+#echo ==== CM Validation Data ====
+#./pipeline.py confusion-matrix --model-type forest --train-file data/dropped_validate.csv --model-file models/dropped_RandomForestClassifier2.joblib
+#./pipeline.py precision-recall-plot --model-type forest --train-file data/dropped_train.csv --model-file models/dropped_RandomForestClassifier2.joblib --image-file plots/dropped_RandomForestClassifier_pr_plot2.png
+#./pipeline.py pr-curve --model-type forest --train-file data/dropped_train.csv --model-file models/dropped_RandomForestClassifier2.joblib --image-file plots/dropped_RandomForestClassifier_pr_curve2.png
+<<COMMENT
+NEW ONE:
+==== CM Training Data ====
+
+
+     t/p      F     T 
+        F 4852.0 564.0 
+        T 532.0 4932.0 
+
+
+Precision: 0.897
+Recall:    0.903
+F1:        0.900
+==== CM Validation Data ====
+
+
+     t/p      F     T 
+        F 1267.0 115.0 
+        T 129.0 1209.0 
+
+
+Precision: 0.913
+Recall:    0.904
+F1:        0.908
+
+OLD ONE:
+==== CM Training Data ====
+     t/p      F     T 
+        F 4868.0 548.0 
+        T 534.0 4930.0 
+
+Precision: 0.900
+Recall:    0.902
+F1:        0.901
+==== CM Validation Data ====
+     t/p      F     T 
+        F 1258.0 124.0 
+        T 126.0 1212.0 
+
+Precision: 0.907
+Recall:    0.906
+F1:        0.907
+
+
+There is not that much of a change so I think that my old model is still the best one, now I will move on to the neural networks
 COMMENT
