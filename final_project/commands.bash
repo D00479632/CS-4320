@@ -519,3 +519,74 @@ F1:        0.907
 
 There is not that much of a change so I think that my old model is still the best one, now I will move on to the neural networks
 COMMENT
+
+# Curtis recommended to run it again but give it 300 trials to go and see if that changes anythoing
+# I am going to just keep the same namefiles so they will be overwritten
+
+#./pipeline.py random-search --model-type forest --train-file data/dropped_train.csv --model-file models/dropped_RandomForestClassifier2.joblib --search-grid-file models/dropped_SearchGridRandomForestClassifier2.joblib --use-polynomial-features 2 --use-scaler 1 --categorical-missing-strategy most_frequent --numerical-missing-strategy median --n-search-iterations 300 
+
+# Let's see what our best parameters are
+#./pipeline.py show-best-params --model-type forest --train-file data/dropped_train.csv --search-grid-file models/dropped_SearchGridRandomForestClassifier2.joblib 
+
+<<COMMENT
+Best Score: 0.9753511955970132
+Best Params:
+{   'features__categorical__categorical-features-only__do_numerical': False,
+    'features__categorical__categorical-features-only__do_predictors': True,
+    'features__categorical__encode-category-bits__categories': 'auto',
+    'features__categorical__encode-category-bits__handle_unknown': 'ignore',
+    'features__categorical__missing-data__strategy': 'most_frequent',
+    'features__numerical__missing-data__strategy': 'median',
+    'features__numerical__numerical-features-only__do_numerical': True,
+    'features__numerical__numerical-features-only__do_predictors': True,
+    'features__numerical__polynomial-features__degree': 2,
+    'model__bootstrap': False,
+    'model__ccp_alpha': 0.1,
+    'model__class_weight': 'balanced',
+    'model__criterion': 'entropy',
+    'model__max_depth': 10,
+    'model__max_features': 'log2',
+    'model__max_leaf_nodes': None,
+    'model__max_samples': None,
+    'model__min_impurity_decrease': 0.2,
+    'model__min_samples_leaf': 2,
+    'model__min_samples_split': 2,
+    'model__min_weight_fraction_leaf': 0.0,
+    'model__monotonic_cst': None,
+    'model__n_estimators': 300,
+    'model__n_jobs': -1,
+    'model__oob_score': False,
+    'model__random_state': None,
+    'model__verbose': 0,
+    'model__warm_start': False}
+COMMENT
+
+# Lets see the score of this model
+#./pipeline.py score --show-test 1 --model-type forest --train-file data/dropped_train.csv --test-file data/dropped_validate.csv --model-file models/dropped_RandomForestClassifier2.joblib
+# dropped_train: train_score: 0.8431985294117647 test_score: 0.8356617647058824
+
+#echo ==== CM Training Data ====
+#./pipeline.py confusion-matrix --model-type forest --train-file data/dropped_train.csv --model-file models/dropped_RandomForestClassifier2.joblib
+#echo ==== CM Validation Data ====
+#./pipeline.py confusion-matrix --model-type forest --train-file data/dropped_validate.csv --model-file models/dropped_RandomForestClassifier2.joblib
+#./pipeline.py precision-recall-plot --model-type forest --train-file data/dropped_train.csv --model-file models/dropped_RandomForestClassifier2.joblib --image-file plots/dropped_RandomForestClassifier_pr_plot2.png
+#./pipeline.py pr-curve --model-type forest --train-file data/dropped_train.csv --model-file models/dropped_RandomForestClassifier2.joblib --image-file plots/dropped_RandomForestClassifier_pr_curve2.png
+
+<<COMMENT
+==== CM Training Data ====
+     t/p      F     T 
+        F 4851.0 565.0 
+        T 532.0 4932.0 
+
+Precision: 0.897
+Recall:    0.903
+F1:        0.900
+==== CM Validation Data ====
+     t/p      F     T 
+        F 1255.0 127.0 
+        T 129.0 1209.0 
+
+Precision: 0.905
+Recall:    0.904
+F1:        0.904
+COMMENT
