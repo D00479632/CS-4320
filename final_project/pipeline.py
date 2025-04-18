@@ -419,7 +419,7 @@ def parse_args(argv):
                         choices=[ "fit", "score", "loss", "cross", "predict", "grid-search", "show-best-params", "random-search",
                                   "cross-score", "confusion-matrix", "precision-recall-plot", "pr-curve", "proba" ], 
                         nargs='?', help="desired action")
-    parser.add_argument('--model-type',    '-M', default="", type=str,   choices=["SGD", "linear", "SVM", "boost", "forest", "tree"], help="Model type")
+    parser.add_argument('--model-type',    '-M', default="", type=str,   choices=["SGD", "linear", "SVM", "boost", "forest", "tree", "ada"], help="Model type")
     parser.add_argument('--train-file',    '-t', default="",    type=str,   help="name of file with training data")
     parser.add_argument('--test-file',     '-T', default="",    type=str,   help="name of file with test data (default is constructed from train file name)")
     parser.add_argument('--model-file',    '-m', default="",    type=str,   help="name of file for the model (default is constructed from train file name when fitting)")
@@ -444,7 +444,7 @@ def parse_args(argv):
     
     if my_args.model_type in ("SGD", "linear"):
         my_args.cross_val_predict_method = "decision_function"
-    elif my_args.model_type in ("SVM", "boost", "forest", "tree"):
+    elif my_args.model_type in ("SVM", "boost", "forest", "tree", "ada"):
         my_args.cross_val_predict_method = "predict_proba"
     else:
         raise Exception("???")

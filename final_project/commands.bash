@@ -590,3 +590,54 @@ Precision: 0.905
 Recall:    0.904
 F1:        0.904
 COMMENT
+
+#./pipeline.py random-search --model-type ada --train-file data/dropped_train.csv --model-file models/dropped_AdaBoostClassifier.joblib --search-grid-file models/dropped_SearchGridAdaBoostClassifier.joblib --use-polynomial-features 2 --use-scaler 1 --categorical-missing-strategy most_frequent --numerical-missing-strategy median --n-search-iterations 300 
+
+# Let's see what our best parameters are
+#./pipeline.py show-best-params --model-type ada --train-file data/dropped_train.csv --search-grid-file models/dropped_SearchGridAdaBoostClassifier.joblib 
+<<COMMENT
+Best Score: 0.8955556402212524
+Best Params:
+{   'features__categorical__categorical-features-only__do_numerical': False,
+    'features__categorical__categorical-features-only__do_predictors': True,
+    'features__categorical__encode-category-bits__categories': 'auto',
+    'features__categorical__encode-category-bits__handle_unknown': 'ignore',
+    'features__categorical__missing-data__strategy': 'most_frequent',
+    'features__numerical__missing-data__strategy': 'median',
+    'features__numerical__numerical-features-only__do_numerical': True,
+    'features__numerical__numerical-features-only__do_predictors': True,
+    'features__numerical__polynomial-features__degree': 2,
+    'model__learning_rate': 0.1,
+    'model__n_estimators': 100}
+COMMENT
+
+# Lets see the score of this model
+#./pipeline.py score --show-test 1 --model-type ada --train-file data/dropped_train.csv --test-file data/dropped_validate.csv --model-file models/dropped_AdaBoostClassifier.joblib
+# dropped_train: train_score: 0.8897058823529411 test_score: 0.8856617647058823
+
+#echo ==== CM Training Data ====
+#./pipeline.py confusion-matrix --model-type ada --train-file data/dropped_train.csv --model-file models/dropped_AdaBoostClassifier.joblib
+#echo ==== CM Validation Data ====
+#./pipeline.py confusion-matrix --model-type ada --train-file data/dropped_validate.csv --model-file models/dropped_AdaBoostClassifier.joblib
+#./pipeline.py precision-recall-plot --model-type ada --train-file data/dropped_train.csv --model-file models/dropped_AdaBoostClassifier.joblib --image-file plots/dropped_AdaBoostClassifier_pr_plot2.png
+#./pipeline.py pr-curve --model-type ada --train-file data/dropped_train.csv --model-file models/dropped_AdaBoostClassifier.joblib --image-file plots/dropped_AdaBoostClassifier_pr_curve2.png
+<<COMMENT
+==== CM Training Data ====
+     t/p      F     T 
+        F 4763.0 653.0 
+        T 471.0 4993.0 
+
+Precision: 0.884
+Recall:    0.914
+F1:        0.899
+==== CM Validation Data ====
+     t/p      F     T 
+        F 1249.0 133.0 
+        T 121.0 1217.0 
+
+Precision: 0.901
+Recall:    0.910
+F1:        0.906
+COMMENT
+
+# I can actually see improvement with this model, there are more false positives but less false negatives so for me that is an advancement.

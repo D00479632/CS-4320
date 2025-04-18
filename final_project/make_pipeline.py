@@ -169,6 +169,15 @@ def make_tree_params(my_args):
     }
     return tree_params
 
+from sklearn.tree import DecisionTreeClassifier
+
+def make_ada_params(my_args):
+    ada_params = {
+        "model__n_estimators": [50, 100, 200],  # default=50, typical range up to a few hundred
+        "model__learning_rate": [0.01, 0.1, 1.0],  # default=1.0, smaller values often need more estimators
+    }
+    return ada_params
+
 def make_fit_params(my_args):
     params = make_predictor_params(my_args)
     if my_args.model_type == "SGD":
@@ -183,6 +192,8 @@ def make_fit_params(my_args):
         model_params = make_forest_params(my_args)
     elif my_args.model_type == "tree":
         model_params = make_tree_params(my_args)
+    elif my_args.model_type == "ada":
+        model_params = make_ada_params(my_args)
     else:
         raise Exception("Unknown model type: {} [SGD, linear, SVM, boost, forest]".format(my_args.model_type))
 
@@ -273,6 +284,8 @@ def make_fit_pipeline_classification(my_args):
         items.append(("model", sklearn.ensemble.RandomForestClassifier()))
     elif my_args.model_type == "tree":
         items.append(("model", sklearn.tree.DecisionTreeClassifier()))
+    elif my_args.model_type == "ada":
+        items.append(("model", sklearn.ensemble.AdaBoostClassifier()))
     else:
         raise Exception("Unknown model type: {} [SGD, linear, SVM, boost, forest]".format(my_args.model_type))
 
