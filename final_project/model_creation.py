@@ -21,6 +21,8 @@ def create_model(my_args, input_shape):
     # Add the different models here
     create_functions = {
         "a": create_model_a,
+        "b": create_model_b,
+        "c": create_model_c,
     }
     if my_args.model_name not in create_functions:
         raise Exception("Invalid model name: {} not in {}".format(my_args.model_name, list(create_functions.keys())))
@@ -115,3 +117,65 @@ def create_model_a(my_args, input_shape):
     
     return model
     
+def create_model_b(my_args, input_shape):
+    model = keras.models.Sequential()
+    model.add(keras.layers.Input(shape=input_shape))
+
+    # First hidden layer
+    model.add(keras.layers.Dense(128, activation="relu", kernel_initializer="he_normal"))
+    model.add(keras.layers.BatchNormalization())
+    model.add(keras.layers.Dropout(0.3))
+
+    # Second hidden layer
+    model.add(keras.layers.Dense(64, activation="relu", kernel_initializer="he_normal"))
+    model.add(keras.layers.BatchNormalization())
+    model.add(keras.layers.Dropout(0.2))
+
+    # Third hidden layer
+    model.add(keras.layers.Dense(32, activation="relu", kernel_initializer="he_normal"))
+    model.add(keras.layers.BatchNormalization())
+
+    # Output layer
+    model.add(keras.layers.Dense(2, activation="softmax"))
+
+    optimizer = keras.optimizers.Adam(learning_rate=0.001)
+
+    model.compile(
+        loss="categorical_crossentropy",
+        optimizer=optimizer,
+        metrics=["Recall"]
+    )
+
+    return model
+
+def create_model_c(my_args, input_shape):
+    model = keras.models.Sequential()
+    model.add(keras.layers.Input(shape=input_shape))
+
+    # First hidden layer
+    model.add(keras.layers.Dense(128, activation="relu", kernel_initializer="he_normal"))
+    model.add(keras.layers.BatchNormalization())
+    model.add(keras.layers.Dropout(0.3))
+
+    # Second hidden layer
+    model.add(keras.layers.Dense(64, activation="relu", kernel_initializer="he_normal"))
+    model.add(keras.layers.BatchNormalization())
+    model.add(keras.layers.Dropout(0.2))
+
+    # Third hidden layer
+    model.add(keras.layers.Dense(32, activation="relu", kernel_initializer="he_normal"))
+    model.add(keras.layers.BatchNormalization())
+
+    # Output layer
+    model.add(keras.layers.Dense(2, activation="softmax"))
+
+    optimizer = keras.optimizers.Adam(learning_rate=0.001)
+
+    model.compile(
+        loss="categorical_crossentropy",
+        optimizer=optimizer,
+        # Lets see if the weights implemented in fit are enough to bump down false positives if not use:
+        metrics=["Recall", "Precision"]
+    )
+
+    return model

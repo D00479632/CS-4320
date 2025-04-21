@@ -799,3 +799,416 @@ sys     0m0.350s
 
 The precision got way worse but the recall is great
 COMMENT
+
+<<COMMENT
+model_name=b
+
+echo "=== Starting CNN training process ==="
+echo "Model name: ${model_name}"
+
+echo "[1/1] Fitting initial model with all the data..."
+time ./cnn_classification.py cnn-fit \
+     --model-name ${model_name} --model-file models/${model_name}.joblib \
+     --batch-number 1
+
+echo "[1/1] Generating learning curve..."
+time ./cnn_classification.py learning-curve \
+     --model-file models/${model_name}.joblib --learning-curve-file plots/${model_name}_learning_curve.png
+
+echo "Generating training score"
+time ./cnn_classification.py score \
+     --model-file models/${model_name}.joblib \
+     --batch-number 1
+
+echo "Generating validation score"
+time ./cnn_classification.py score \
+     --model-file models/${model_name}.joblib \
+     --batch-number 2
+
+=== Starting CNN training process ===
+Model name: b
+[1/1] Fitting initial model with all the data...
+GPU is available
+Model: "sequential"
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━┓
+┃ Layer (type)                         ┃ Output Shape                ┃         Param # ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━┩
+│ dense (Dense)                        │ (None, 128)                 │           9,984 │
+├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+│ batch_normalization                  │ (None, 128)                 │             512 │
+│ (BatchNormalization)                 │                             │                 │
+├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+│ dropout (Dropout)                    │ (None, 128)                 │               0 │
+├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+│ dense_1 (Dense)                      │ (None, 64)                  │           8,256 │
+├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+│ batch_normalization_1                │ (None, 64)                  │             256 │
+│ (BatchNormalization)                 │                             │                 │
+├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+│ dropout_1 (Dropout)                  │ (None, 64)                  │               0 │
+├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+│ dense_2 (Dense)                      │ (None, 32)                  │           2,080 │
+├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+│ batch_normalization_2                │ (None, 32)                  │             128 │
+│ (BatchNormalization)                 │                             │                 │
+├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+│ dense_3 (Dense)                      │ (None, 2)                   │              66 │
+└──────────────────────────────────────┴─────────────────────────────┴─────────────────┘
+ Total params: 21,282 (83.13 KB)
+ Trainable params: 20,834 (81.38 KB)
+ Non-trainable params: 448 (1.75 KB)
+None
+Epoch 1/50
+2025-04-20 18:22:22.065166: I tensorflow/core/grappler/optimizers/custom_graph_optimizer_registry.cc:117] Plugin optimizer for device_type GPU is enabled.
+544/544 ━━━━━━━━━━━━━━━━━━━━ 13s 20ms/step - Recall: 0.4934 - loss: 0.8594 - val_Recall: 0.5041 - val_loss: 0.7058
+Epoch 2/50
+544/544 ━━━━━━━━━━━━━━━━━━━━ 11s 20ms/step - Recall: 0.5042 - loss: 0.7116 - val_Recall: 0.5032 - val_loss: 0.7262
+Epoch 3/50
+544/544 ━━━━━━━━━━━━━━━━━━━━ 11s 19ms/step - Recall: 0.4968 - loss: 0.7132 - val_Recall: 0.5083 - val_loss: 0.6920
+Epoch 4/50
+544/544 ━━━━━━━━━━━━━━━━━━━━ 10s 19ms/step - Recall: 0.5159 - loss: 0.6976 - val_Recall: 0.5142 - val_loss: 0.6937
+Epoch 5/50
+544/544 ━━━━━━━━━━━━━━━━━━━━ 10s 19ms/step - Recall: 0.5048 - loss: 0.6986 - val_Recall: 0.4963 - val_loss: 0.7053
+Epoch 6/50
+544/544 ━━━━━━━━━━━━━━━━━━━━ 10s 19ms/step - Recall: 0.5113 - loss: 0.6967 - val_Recall: 0.5055 - val_loss: 0.6935
+Epoch 7/50
+544/544 ━━━━━━━━━━━━━━━━━━━━ 10s 19ms/step - Recall: 0.5136 - loss: 0.6990 - val_Recall: 0.5055 - val_loss: 0.6980
+Epoch 8/50
+544/544 ━━━━━━━━━━━━━━━━━━━━ 10s 19ms/step - Recall: 0.5156 - loss: 0.6975 - val_Recall: 0.5786 - val_loss: 0.6889
+Epoch 9/50
+544/544 ━━━━━━━━━━━━━━━━━━━━ 10s 19ms/step - Recall: 0.5132 - loss: 0.6974 - val_Recall: 0.5207 - val_loss: 0.7002
+Epoch 10/50
+544/544 ━━━━━━━━━━━━━━━━━━━━ 10s 19ms/step - Recall: 0.5146 - loss: 0.6992 - val_Recall: 0.5519 - val_loss: 0.6873
+Epoch 11/50
+544/544 ━━━━━━━━━━━━━━━━━━━━ 10s 19ms/step - Recall: 0.5385 - loss: 0.6923 - val_Recall: 0.5345 - val_loss: 0.6942
+Epoch 12/50
+544/544 ━━━━━━━━━━━━━━━━━━━━ 10s 19ms/step - Recall: 0.5552 - loss: 0.6916 - val_Recall: 0.5290 - val_loss: 0.7185
+Epoch 13/50
+544/544 ━━━━━━━━━━━━━━━━━━━━ 11s 19ms/step - Recall: 0.5501 - loss: 0.6935 - val_Recall: 0.5666 - val_loss: 0.6824
+Epoch 14/50
+544/544 ━━━━━━━━━━━━━━━━━━━━ 11s 19ms/step - Recall: 0.5686 - loss: 0.6859 - val_Recall: 0.5083 - val_loss: 0.7235
+Epoch 15/50
+544/544 ━━━━━━━━━━━━━━━━━━━━ 10s 19ms/step - Recall: 0.6000 - loss: 0.6717 - val_Recall: 0.5630 - val_loss: 0.6712
+Epoch 16/50
+544/544 ━━━━━━━━━━━━━━━━━━━━ 11s 19ms/step - Recall: 0.5795 - loss: 0.6860 - val_Recall: 0.5680 - val_loss: 0.6717
+Epoch 17/50
+544/544 ━━━━━━━━━━━━━━━━━━━━ 11s 19ms/step - Recall: 0.5830 - loss: 0.6827 - val_Recall: 0.5028 - val_loss: 0.6714
+Epoch 18/50
+544/544 ━━━━━━━━━━━━━━━━━━━━ 10s 19ms/step - Recall: 0.5878 - loss: 0.6815 - val_Recall: 0.5800 - val_loss: 0.6657
+Epoch 19/50
+544/544 ━━━━━━━━━━━━━━━━━━━━ 11s 20ms/step - Recall: 0.5837 - loss: 0.6800 - val_Recall: 0.8199 - val_loss: 0.6581
+Epoch 20/50
+544/544 ━━━━━━━━━━━━━━━━━━━━ 10s 19ms/step - Recall: 0.6026 - loss: 0.6740 - val_Recall: 0.6415 - val_loss: 0.6590
+Epoch 21/50
+544/544 ━━━━━━━━━━━━━━━━━━━━ 10s 19ms/step - Recall: 0.6096 - loss: 0.6709 - val_Recall: 0.5634 - val_loss: 0.6650
+Epoch 22/50
+544/544 ━━━━━━━━━━━━━━━━━━━━ 10s 19ms/step - Recall: 0.5777 - loss: 0.6820 - val_Recall: 0.6209 - val_loss: 0.6574
+Epoch 23/50
+544/544 ━━━━━━━━━━━━━━━━━━━━ 10s 19ms/step - Recall: 0.5885 - loss: 0.6811 - val_Recall: 0.7100 - val_loss: 0.6536
+Epoch 24/50
+544/544 ━━━━━━━━━━━━━━━━━━━━ 11s 19ms/step - Recall: 0.5985 - loss: 0.6760 - val_Recall: 0.6016 - val_loss: 0.6359
+Epoch 25/50
+544/544 ━━━━━━━━━━━━━━━━━━━━ 11s 19ms/step - Recall: 0.6192 - loss: 0.6631 - val_Recall: 0.5915 - val_loss: 0.6675
+Epoch 26/50
+544/544 ━━━━━━━━━━━━━━━━━━━━ 11s 19ms/step - Recall: 0.6142 - loss: 0.6709 - val_Recall: 0.6466 - val_loss: 0.6463
+Epoch 27/50
+544/544 ━━━━━━━━━━━━━━━━━━━━ 11s 19ms/step - Recall: 0.6263 - loss: 0.6651 - val_Recall: 0.8254 - val_loss: 0.6217
+Epoch 28/50
+544/544 ━━━━━━━━━━━━━━━━━━━━ 11s 19ms/step - Recall: 0.6649 - loss: 0.6333 - val_Recall: 0.6498 - val_loss: 0.6217
+Epoch 29/50
+544/544 ━━━━━━━━━━━━━━━━━━━━ 11s 19ms/step - Recall: 0.6519 - loss: 0.6443 - val_Recall: 0.6673 - val_loss: 0.6006
+Epoch 30/50
+544/544 ━━━━━━━━━━━━━━━━━━━━ 10s 19ms/step - Recall: 0.6715 - loss: 0.6303 - val_Recall: 0.6696 - val_loss: 0.5753
+Epoch 31/50
+544/544 ━━━━━━━━━━━━━━━━━━━━ 11s 20ms/step - Recall: 0.6938 - loss: 0.5988 - val_Recall: 0.7803 - val_loss: 0.5006
+Epoch 32/50
+544/544 ━━━━━━━━━━━━━━━━━━━━ 10s 19ms/step - Recall: 0.7206 - loss: 0.5581 - val_Recall: 0.6314 - val_loss: 0.7345
+Epoch 33/50
+544/544 ━━━━━━━━━━━━━━━━━━━━ 11s 19ms/step - Recall: 0.7130 - loss: 0.5565 - val_Recall: 0.6760 - val_loss: 0.5499
+Epoch 34/50
+544/544 ━━━━━━━━━━━━━━━━━━━━ 10s 19ms/step - Recall: 0.7382 - loss: 0.5371 - val_Recall: 0.8318 - val_loss: 0.4164
+Epoch 35/50
+544/544 ━━━━━━━━━━━━━━━━━━━━ 11s 19ms/step - Recall: 0.7498 - loss: 0.5018 - val_Recall: 0.7537 - val_loss: 0.4860
+Epoch 36/50
+544/544 ━━━━━━━━━━━━━━━━━━━━ 10s 19ms/step - Recall: 0.7428 - loss: 0.5088 - val_Recall: 0.7509 - val_loss: 0.4806
+Epoch 37/50
+544/544 ━━━━━━━━━━━━━━━━━━━━ 10s 19ms/step - Recall: 0.7358 - loss: 0.5243 - val_Recall: 0.7031 - val_loss: 0.5591
+Epoch 38/50
+544/544 ━━━━━━━━━━━━━━━━━━━━ 10s 19ms/step - Recall: 0.7376 - loss: 0.5232 - val_Recall: 0.7863 - val_loss: 0.4761
+Epoch 39/50
+544/544 ━━━━━━━━━━━━━━━━━━━━ 11s 19ms/step - Recall: 0.7200 - loss: 0.5573 - val_Recall: 0.8318 - val_loss: 0.4590
+
+real    6m56.877s
+user    7m17.311s
+sys     2m52.701s
+[1/1] Generating learning curve...
+GPU is available
+
+Generating training score
+GPU is available
+340/340 ━━━━━━━━━━━━━━━━━━━━ 1s 2ms/step  
+
+models/b.joblib: train: 
+
++-----+-----+
+|3716 |1700 |
+| 187 |5277 |
++-----+-----+
+
+precision: 0.7563422674501935
+recall: 0.9657759882869692
+f1: 0.8483240897034
+
+
+Generating validation score
+GPU is available
+85/85 ━━━━━━━━━━━━━━━━━━━━ 0s 2ms/step 
+
+models/b.joblib: train: 
+
++-----+-----+
+| 975 | 407 |
+|  38 |1300 |
++-----+-----+
+
+precision: 0.7615700058582309
+recall: 0.9715994020926756
+f1: 0.8538587848932676
+
+
+real    0m3.370s
+user    0m4.810s
+sys     0m0.388s
+COMMENT
+
+<<COMMENT
+model_name=c
+
+echo "=== Starting CNN training process ==="
+echo "Model name: ${model_name}"
+
+echo "[1/1] Fitting initial model with all the data..."
+time ./cnn_classification.py cnn-fit \
+     --model-name ${model_name} --model-file models/${model_name}.joblib \
+     --batch-number 1
+
+echo "[1/1] Generating learning curve..."
+time ./cnn_classification.py learning-curve \
+     --model-file models/${model_name}.joblib --learning-curve-file plots/${model_name}_learning_curve.png
+
+echo "Generating training score"
+time ./cnn_classification.py score \
+     --model-file models/${model_name}.joblib \
+     --batch-number 1
+
+echo "Generating validation score"
+time ./cnn_classification.py score \
+     --model-file models/${model_name}.joblib \
+     --batch-number 2
+
+=== Starting CNN training process ===
+Model name: c
+[1/1] Fitting initial model with all the data...
+GPU is available
+Model: "sequential"
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━┓
+┃ Layer (type)                         ┃ Output Shape                ┃         Param # ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━┩
+│ dense (Dense)                        │ (None, 128)                 │           9,984 │
+├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+│ batch_normalization                  │ (None, 128)                 │             512 │
+│ (BatchNormalization)                 │                             │                 │
+├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+│ dropout (Dropout)                    │ (None, 128)                 │               0 │
+├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+│ dense_1 (Dense)                      │ (None, 64)                  │           8,256 │
+├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+│ batch_normalization_1                │ (None, 64)                  │             256 │
+│ (BatchNormalization)                 │                             │                 │
+├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+│ dropout_1 (Dropout)                  │ (None, 64)                  │               0 │
+├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+│ dense_2 (Dense)                      │ (None, 32)                  │           2,080 │
+├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+│ batch_normalization_2                │ (None, 32)                  │             128 │
+│ (BatchNormalization)                 │                             │                 │
+├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+│ dense_3 (Dense)                      │ (None, 2)                   │              66 │
+└──────────────────────────────────────┴─────────────────────────────┴─────────────────┘
+ Total params: 21,282 (83.13 KB)
+ Trainable params: 20,834 (81.38 KB)
+ Non-trainable params: 448 (1.75 KB)
+None
+Epoch 1/100
+2025-04-20 19:16:42.137593: I tensorflow/core/grappler/optimizers/custom_graph_optimizer_registry.cc:117] Plugin optimizer for device_type GPU is enabled.
+272/272 ━━━━━━━━━━━━━━━━━━━━ 7s 21ms/step - Precision: 0.5149 - Recall: 0.5149 - loss: 0.8459 - val_Precision: 0.5005 - val_Recall: 0.5005 - val_loss: 0.7098
+Epoch 2/100
+272/272 ━━━━━━━━━━━━━━━━━━━━ 6s 20ms/step - Precision: 0.5218 - Recall: 0.5218 - loss: 0.7202 - val_Precision: 0.4839 - val_Recall: 0.4839 - val_loss: 0.7169
+Epoch 3/100
+272/272 ━━━━━━━━━━━━━━━━━━━━ 6s 21ms/step - Precision: 0.5184 - Recall: 0.5184 - loss: 0.7064 - val_Precision: 0.5188 - val_Recall: 0.5188 - val_loss: 0.6910
+Epoch 4/100
+272/272 ━━━━━━━━━━━━━━━━━━━━ 6s 20ms/step - Precision: 0.5275 - Recall: 0.5275 - loss: 0.7010 - val_Precision: 0.4839 - val_Recall: 0.4839 - val_loss: 0.7068
+Epoch 5/100
+272/272 ━━━━━━━━━━━━━━━━━━━━ 6s 20ms/step - Precision: 0.5244 - Recall: 0.5244 - loss: 0.6998 - val_Precision: 0.5335 - val_Recall: 0.5335 - val_loss: 0.6915
+Epoch 6/100
+272/272 ━━━━━━━━━━━━━━━━━━━━ 6s 20ms/step - Precision: 0.5087 - Recall: 0.5087 - loss: 0.7079 - val_Precision: 0.5391 - val_Recall: 0.5391 - val_loss: 0.6883
+Epoch 7/100
+272/272 ━━━━━━━━━━━━━━━━━━━━ 6s 20ms/step - Precision: 0.5179 - Recall: 0.5179 - loss: 0.6969 - val_Precision: 0.5685 - val_Recall: 0.5685 - val_loss: 0.6880
+Epoch 8/100
+272/272 ━━━━━━━━━━━━━━━━━━━━ 6s 20ms/step - Precision: 0.5208 - Recall: 0.5208 - loss: 0.6952 - val_Precision: 0.5023 - val_Recall: 0.5023 - val_loss: 0.6968
+Epoch 9/100
+272/272 ━━━━━━━━━━━━━━━━━━━━ 6s 20ms/step - Precision: 0.5387 - Recall: 0.5387 - loss: 0.6937 - val_Precision: 0.5446 - val_Recall: 0.5446 - val_loss: 0.6879
+Epoch 10/100
+272/272 ━━━━━━━━━━━━━━━━━━━━ 6s 20ms/step - Precision: 0.5523 - Recall: 0.5523 - loss: 0.6927 - val_Precision: 0.5455 - val_Recall: 0.5455 - val_loss: 0.6886
+Epoch 11/100
+272/272 ━━━━━━━━━━━━━━━━━━━━ 6s 20ms/step - Precision: 0.5359 - Recall: 0.5359 - loss: 0.6979 - val_Precision: 0.5083 - val_Recall: 0.5083 - val_loss: 0.6968
+Epoch 12/100
+272/272 ━━━━━━━━━━━━━━━━━━━━ 6s 20ms/step - Precision: 0.5360 - Recall: 0.5360 - loss: 0.6976 - val_Precision: 0.5165 - val_Recall: 0.5165 - val_loss: 0.6910
+Epoch 13/100
+272/272 ━━━━━━━━━━━━━━━━━━━━ 5s 20ms/step - Precision: 0.5341 - Recall: 0.5341 - loss: 0.6935 - val_Precision: 0.5772 - val_Recall: 0.5772 - val_loss: 0.6853
+Epoch 14/100
+272/272 ━━━━━━━━━━━━━━━━━━━━ 6s 20ms/step - Precision: 0.5374 - Recall: 0.5374 - loss: 0.6950 - val_Precision: 0.5492 - val_Recall: 0.5492 - val_loss: 0.6856
+Epoch 15/100
+272/272 ━━━━━━━━━━━━━━━━━━━━ 6s 20ms/step - Precision: 0.5575 - Recall: 0.5575 - loss: 0.6925 - val_Precision: 0.5193 - val_Recall: 0.5193 - val_loss: 0.6980
+Epoch 16/100
+272/272 ━━━━━━━━━━━━━━━━━━━━ 5s 20ms/step - Precision: 0.5603 - Recall: 0.5603 - loss: 0.6917 - val_Precision: 0.5519 - val_Recall: 0.5519 - val_loss: 0.6877
+Epoch 17/100
+272/272 ━━━━━━━━━━━━━━━━━━━━ 6s 20ms/step - Precision: 0.5384 - Recall: 0.5384 - loss: 0.6956 - val_Precision: 0.5124 - val_Recall: 0.5124 - val_loss: 0.6848
+Epoch 18/100
+272/272 ━━━━━━━━━━━━━━━━━━━━ 6s 20ms/step - Precision: 0.5464 - Recall: 0.5464 - loss: 0.6927 - val_Precision: 0.5271 - val_Recall: 0.5271 - val_loss: 0.6874
+Epoch 19/100
+272/272 ━━━━━━━━━━━━━━━━━━━━ 6s 20ms/step - Precision: 0.5366 - Recall: 0.5366 - loss: 0.6938 - val_Precision: 0.5303 - val_Recall: 0.5303 - val_loss: 0.7136
+Epoch 20/100
+272/272 ━━━━━━━━━━━━━━━━━━━━ 6s 20ms/step - Precision: 0.5592 - Recall: 0.5592 - loss: 0.6896 - val_Precision: 0.7068 - val_Recall: 0.7068 - val_loss: 0.6783
+Epoch 21/100
+272/272 ━━━━━━━━━━━━━━━━━━━━ 6s 20ms/step - Precision: 0.5464 - Recall: 0.5464 - loss: 0.6909 - val_Precision: 0.5188 - val_Recall: 0.5188 - val_loss: 0.6904
+Epoch 22/100
+272/272 ━━━━━━━━━━━━━━━━━━━━ 6s 20ms/step - Precision: 0.5534 - Recall: 0.5534 - loss: 0.6902 - val_Precision: 0.5312 - val_Recall: 0.5312 - val_loss: 0.6814
+Epoch 23/100
+272/272 ━━━━━━━━━━━━━━━━━━━━ 5s 20ms/step - Precision: 0.5716 - Recall: 0.5716 - loss: 0.6867 - val_Precision: 0.5188 - val_Recall: 0.5188 - val_loss: 0.7291
+Epoch 24/100
+272/272 ━━━━━━━━━━━━━━━━━━━━ 5s 20ms/step - Precision: 0.5512 - Recall: 0.5512 - loss: 0.6911 - val_Precision: 0.5579 - val_Recall: 0.5579 - val_loss: 0.6815
+Epoch 25/100
+272/272 ━━━━━━━━━━━━━━━━━━━━ 6s 20ms/step - Precision: 0.5811 - Recall: 0.5811 - loss: 0.6850 - val_Precision: 0.7275 - val_Recall: 0.7275 - val_loss: 0.6731
+Epoch 26/100
+272/272 ━━━━━━━━━━━━━━━━━━━━ 6s 21ms/step - Precision: 0.5900 - Recall: 0.5900 - loss: 0.6801 - val_Precision: 0.6075 - val_Recall: 0.6075 - val_loss: 0.6735
+Epoch 27/100
+272/272 ━━━━━━━━━━━━━━━━━━━━ 6s 20ms/step - Precision: 0.5742 - Recall: 0.5742 - loss: 0.6853 - val_Precision: 0.5960 - val_Recall: 0.5960 - val_loss: 0.6815
+Epoch 28/100
+272/272 ━━━━━━━━━━━━━━━━━━━━ 5s 20ms/step - Precision: 0.5661 - Recall: 0.5661 - loss: 0.6890 - val_Precision: 0.5083 - val_Recall: 0.5083 - val_loss: 0.6696
+Epoch 29/100
+272/272 ━━━━━━━━━━━━━━━━━━━━ 6s 20ms/step - Precision: 0.6060 - Recall: 0.6060 - loss: 0.6772 - val_Precision: 0.5689 - val_Recall: 0.5689 - val_loss: 0.6748
+Epoch 30/100
+272/272 ━━━━━━━━━━━━━━━━━━━━ 5s 20ms/step - Precision: 0.6043 - Recall: 0.6043 - loss: 0.6786 - val_Precision: 0.6195 - val_Recall: 0.6195 - val_loss: 0.6733
+Epoch 31/100
+272/272 ━━━━━━━━━━━━━━━━━━━━ 6s 20ms/step - Precision: 0.5979 - Recall: 0.5979 - loss: 0.6776 - val_Precision: 0.5427 - val_Recall: 0.5427 - val_loss: 0.6639
+Epoch 32/100
+272/272 ━━━━━━━━━━━━━━━━━━━━ 6s 20ms/step - Precision: 0.5966 - Recall: 0.5966 - loss: 0.6765 - val_Precision: 0.5648 - val_Recall: 0.5648 - val_loss: 0.6696
+Epoch 33/100
+272/272 ━━━━━━━━━━━━━━━━━━━━ 5s 20ms/step - Precision: 0.5997 - Recall: 0.5997 - loss: 0.6794 - val_Precision: 0.6025 - val_Recall: 0.6025 - val_loss: 0.6641
+Epoch 34/100
+272/272 ━━━━━━━━━━━━━━━━━━━━ 6s 20ms/step - Precision: 0.6307 - Recall: 0.6307 - loss: 0.6643 - val_Precision: 0.8199 - val_Recall: 0.8199 - val_loss: 0.6562
+Epoch 35/100
+272/272 ━━━━━━━━━━━━━━━━━━━━ 6s 20ms/step - Precision: 0.6065 - Recall: 0.6065 - loss: 0.6703 - val_Precision: 0.5892 - val_Recall: 0.5892 - val_loss: 0.7195
+Epoch 36/100
+272/272 ━━━━━━━━━━━━━━━━━━━━ 5s 20ms/step - Precision: 0.6289 - Recall: 0.6289 - loss: 0.6703 - val_Precision: 0.5533 - val_Recall: 0.5533 - val_loss: 0.6449
+Epoch 37/100
+272/272 ━━━━━━━━━━━━━━━━━━━━ 6s 21ms/step - Precision: 0.6222 - Recall: 0.6222 - loss: 0.6699 - val_Precision: 0.4949 - val_Recall: 0.4949 - val_loss: 0.7346
+Epoch 38/100
+272/272 ━━━━━━━━━━━━━━━━━━━━ 5s 20ms/step - Precision: 0.6310 - Recall: 0.6310 - loss: 0.6647 - val_Precision: 0.6792 - val_Recall: 0.6792 - val_loss: 0.6517
+Epoch 39/100
+272/272 ━━━━━━━━━━━━━━━━━━━━ 5s 20ms/step - Precision: 0.6419 - Recall: 0.6419 - loss: 0.6591 - val_Precision: 0.5666 - val_Recall: 0.5666 - val_loss: 0.6850
+Epoch 40/100
+272/272 ━━━━━━━━━━━━━━━━━━━━ 6s 20ms/step - Precision: 0.6867 - Recall: 0.6867 - loss: 0.6032 - val_Precision: 0.7339 - val_Recall: 0.7339 - val_loss: 0.6271
+Epoch 41/100
+272/272 ━━━━━━━━━━━━━━━━━━━━ 6s 20ms/step - Precision: 0.6889 - Recall: 0.6889 - loss: 0.6164 - val_Precision: 0.6176 - val_Recall: 0.6176 - val_loss: 0.6217
+Epoch 42/100
+272/272 ━━━━━━━━━━━━━━━━━━━━ 6s 20ms/step - Precision: 0.6713 - Recall: 0.6713 - loss: 0.6331 - val_Precision: 0.8079 - val_Recall: 0.8079 - val_loss: 0.5764
+Epoch 43/100
+272/272 ━━━━━━━━━━━━━━━━━━━━ 6s 20ms/step - Precision: 0.7178 - Recall: 0.7178 - loss: 0.5669 - val_Precision: 0.6562 - val_Recall: 0.6562 - val_loss: 0.5600
+Epoch 44/100
+272/272 ━━━━━━━━━━━━━━━━━━━━ 6s 20ms/step - Precision: 0.7207 - Recall: 0.7207 - loss: 0.5426 - val_Precision: 0.6475 - val_Recall: 0.6475 - val_loss: 0.5862
+Epoch 45/100
+272/272 ━━━━━━━━━━━━━━━━━━━━ 5s 20ms/step - Precision: 0.7274 - Recall: 0.7274 - loss: 0.5478 - val_Precision: 0.6006 - val_Recall: 0.6006 - val_loss: 0.7769
+Epoch 46/100
+272/272 ━━━━━━━━━━━━━━━━━━━━ 6s 20ms/step - Precision: 0.7253 - Recall: 0.7253 - loss: 0.5418 - val_Precision: 0.5970 - val_Recall: 0.5970 - val_loss: 1.0727
+Epoch 47/100
+272/272 ━━━━━━━━━━━━━━━━━━━━ 6s 20ms/step - Precision: 0.7130 - Recall: 0.7130 - loss: 0.5563 - val_Precision: 0.6227 - val_Recall: 0.6227 - val_loss: 0.6591
+Epoch 48/100
+272/272 ━━━━━━━━━━━━━━━━━━━━ 6s 21ms/step - Precision: 0.7422 - Recall: 0.7422 - loss: 0.4875 - val_Precision: 0.7771 - val_Recall: 0.7771 - val_loss: 0.4498
+Epoch 49/100
+272/272 ━━━━━━━━━━━━━━━━━━━━ 5s 20ms/step - Precision: 0.7576 - Recall: 0.7576 - loss: 0.4829 - val_Precision: 0.8231 - val_Recall: 0.8231 - val_loss: 0.4132
+Epoch 50/100
+272/272 ━━━━━━━━━━━━━━━━━━━━ 6s 20ms/step - Precision: 0.7092 - Recall: 0.7092 - loss: 0.5672 - val_Precision: 0.7233 - val_Recall: 0.7233 - val_loss: 0.5299
+Epoch 51/100
+272/272 ━━━━━━━━━━━━━━━━━━━━ 6s 20ms/step - Precision: 0.7410 - Recall: 0.7410 - loss: 0.4977 - val_Precision: 0.8787 - val_Recall: 0.8787 - val_loss: 0.4300
+Epoch 52/100
+272/272 ━━━━━━━━━━━━━━━━━━━━ 6s 20ms/step - Precision: 0.7342 - Recall: 0.7342 - loss: 0.5029 - val_Precision: 0.8438 - val_Recall: 0.8438 - val_loss: 0.3808
+Epoch 53/100
+272/272 ━━━━━━━━━━━━━━━━━━━━ 5s 20ms/step - Precision: 0.7409 - Recall: 0.7409 - loss: 0.4934 - val_Precision: 0.5653 - val_Recall: 0.5653 - val_loss: 0.8749
+Epoch 54/100
+272/272 ━━━━━━━━━━━━━━━━━━━━ 6s 21ms/step - Precision: 0.7359 - Recall: 0.7359 - loss: 0.5273 - val_Precision: 0.8415 - val_Recall: 0.8415 - val_loss: 0.3838
+Epoch 55/100
+272/272 ━━━━━━━━━━━━━━━━━━━━ 5s 20ms/step - Precision: 0.7690 - Recall: 0.7690 - loss: 0.4481 - val_Precision: 0.7762 - val_Recall: 0.7762 - val_loss: 0.4399
+Epoch 56/100
+272/272 ━━━━━━━━━━━━━━━━━━━━ 5s 20ms/step - Precision: 0.7578 - Recall: 0.7578 - loss: 0.4690 - val_Precision: 0.6843 - val_Recall: 0.6843 - val_loss: 0.6670
+Epoch 57/100
+272/272 ━━━━━━━━━━━━━━━━━━━━ 5s 20ms/step - Precision: 0.7511 - Recall: 0.7511 - loss: 0.4845 - val_Precision: 0.7146 - val_Recall: 0.7146 - val_loss: 0.5458
+Epoch 58/100
+272/272 ━━━━━━━━━━━━━━━━━━━━ 5s 20ms/step - Precision: 0.7806 - Recall: 0.7806 - loss: 0.4358 - val_Precision: 0.8074 - val_Recall: 0.8074 - val_loss: 0.4081
+Epoch 59/100
+272/272 ━━━━━━━━━━━━━━━━━━━━ 5s 20ms/step - Precision: 0.7745 - Recall: 0.7745 - loss: 0.4542 - val_Precision: 0.6641 - val_Recall: 0.6641 - val_loss: 0.7271
+Epoch 60/100
+272/272 ━━━━━━━━━━━━━━━━━━━━ 5s 20ms/step - Precision: 0.7512 - Recall: 0.7512 - loss: 0.4830 - val_Precision: 0.7578 - val_Recall: 0.7578 - val_loss: 0.4662
+
+real    5m36.989s
+user    5m48.208s
+sys     2m19.473s
+[1/1] Generating learning curve...
+GPU is available
+
+real    0m3.766s
+user    0m4.794s
+sys     0m1.648s
+Generating training score
+GPU is available
+340/340 ━━━━━━━━━━━━━━━━━━━━ 1s 1ms/step  
+
+models/c.joblib: train: 
+
++-----+-----+
+|5089 | 327 |
+|1435 |4029 |
++-----+-----+
+
+precision: 0.9249311294765841
+recall: 0.737371888726208
+f1: 0.8205702647657841
+
+
+real    0m3.863s
+user    0m4.594s
+sys     0m0.911s
+Generating validation score
+GPU is available
+85/85 ━━━━━━━━━━━━━━━━━━━━ 0s 1ms/step 
+
+models/c.joblib: train: 
+
++-----+-----+
+|1323 |  59 |
+| 337 |1001 |
++-----+-----+
+
+precision: 0.9443396226415094
+recall: 0.7481315396113603
+f1: 0.8348623853211009
+
+
+real    0m3.486s
+user    0m4.137s
+sys     0m0.883s
+COMMENT
+
+# This model is not good at all
+# I am just going to stick with model b and AdaBoost

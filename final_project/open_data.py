@@ -132,6 +132,7 @@ def load_diabetes_data(number):
     
     # Convert y to one-hot encoding to match the style of other functions
     y = keras.utils.to_categorical(y, num_classes=2)
+    #print("First 10 elements of y after one-hot encoding:", y[:10])
     
     # Convert to float32 to match the style of other functions
     X = X.astype(np.float32)
@@ -142,4 +143,6 @@ def load_batch(number):
     #return load_cifar10_batch_from_keras(number)
     #return load_fashion_mnist_batch_from_keras(number)
     return load_diabetes_data(number)
+
+#load_batch(1)
 
