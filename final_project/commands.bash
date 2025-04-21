@@ -1215,13 +1215,46 @@ COMMENT
 
 # Lets do the final predictions
 
+<<COMMENT
 echo "Generating test score for model B"
  ./cnn_classification.py score \
     --model-file models/b.joblib \
     --batch-number -1
 
+Generating test score for model B
+
+models/b.joblib: train: 
+
++-----+-----+
+|1210 | 492 |
+|  51 |1647 |
++-----+-----+
+
+precision: 0.7699859747545582
+recall: 0.9699646643109541
+f1: 0.8584831899921814
+
 echo "Generating test predictions for AdaBoost"
 ./pipeline.py confusion-matrix --model-type ada --train-file data/dropped_test.csv --model-file models/dropped_AdaBoostClassifier.joblib
 
+Generating test predictions for AdaBoost
+     t/p      F     T 
+        F 1511.0 191.0 
+        T 149.0 1549.0 
+
+Precision: 0.890
+Recall:    0.912
+F1:        0.901
+
 echo "Generating test predictions for Forest"
 ./pipeline.py confusion-matrix --model-type forest --train-file data/dropped_test.csv --model-file models/dropped_RandomForestClassifier2.joblib
+
+Generating test predictions for Forest
+     t/p      F     T 
+        F 1544.0 158.0 
+        T 153.0 1545.0 
+
+Precision: 0.907
+Recall:    0.910
+F1:        0.909
+COMMENT
