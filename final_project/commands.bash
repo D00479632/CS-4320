@@ -1212,3 +1212,16 @@ COMMENT
 
 # This model is not good at all
 # I am just going to stick with model b and AdaBoost
+
+# Lets do the final predictions
+
+echo "Generating test score for model B"
+ ./cnn_classification.py score \
+    --model-file models/b.joblib \
+    --batch-number -1
+
+echo "Generating test predictions for AdaBoost"
+./pipeline.py confusion-matrix --model-type ada --train-file data/dropped_test.csv --model-file models/dropped_AdaBoostClassifier.joblib
+
+echo "Generating test predictions for Forest"
+./pipeline.py confusion-matrix --model-type forest --train-file data/dropped_test.csv --model-file models/dropped_RandomForestClassifier2.joblib
