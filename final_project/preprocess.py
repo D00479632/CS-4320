@@ -107,24 +107,24 @@ def preprocess_file(input_filename, output_filename, pipeline_filename, label):
     return
 
 def main_train():
-    data_filename = "data/diabetes_train.csv"
-    out_filename = "data/preprocessed-diabetes-train.csv"
+    data_filename = "data/dropped_train.csv"
+    out_filename = "data/preprocessed-dropped-train.csv"
     pipeline_filename = "models/preprocessor.joblib"
     label = "diabetes"
     preprocess_file(data_filename, out_filename, pipeline_filename, label)
     return
 
 def main_validate():
-    data_filename = "data/diabetes_validate.csv"
-    out_filename = "data/preprocessed-diabetes-validate.csv"
+    data_filename = "data/dropped_validate.csv"
+    out_filename = "data/preprocessed-dropped-validate.csv"
     pipeline_filename = "models/preprocessor.joblib"
     label = "diabetes"
     preprocess_file(data_filename, out_filename, pipeline_filename, label)
     return
 
 def main_test():
-    data_filename = "data/diabetes_test.csv"
-    out_filename = "data/preprocessed-diabetes-test.csv"
+    data_filename = "data/dropped_test.csv"
+    out_filename = "data/preprocessed-dropped-test.csv"
     # TODO: Does it matter that train and test both have same pipeline name?
     # Yes, we are reusing it. Look at function preprocess_file
     pipeline_filename = "models/preprocessor.joblib"

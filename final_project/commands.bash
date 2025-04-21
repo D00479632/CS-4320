@@ -641,3 +641,161 @@ F1:        0.906
 COMMENT
 
 # I can actually see improvement with this model, there are more false positives but less false negatives so for me that is an advancement.
+
+# Now lets do neural networks to see how it does
+
+<<COMMENT
+model_name=a
+
+echo "=== Starting CNN training process ==="
+echo "Model name: ${model_name}"
+
+echo "[1/1] Fitting initial model with all the data..."
+time ./cnn_classification.py cnn-fit \
+     --model-name ${model_name} --model-file models/${model_name}.joblib \
+     --batch-number 1
+
+echo "[1/1] Generating learning curve..."
+time ./cnn_classification.py learning-curve \
+     --model-file models/${model_name}.joblib --learning-curve-file plots/${model_name}.learning_curve.png
+
+echo "Generating score"
+time ./cnn_classification.py score \
+     --model-file models/${model_name}.joblib \
+     --batch-number 2
+
+=== Starting CNN training process ===
+Model name: diabetes
+[1/1] Fitting initial model with all the data...
+Model: "sequential"
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━┓
+┃ Layer (type)                         ┃ Output Shape                ┃         Param # ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━┩
+│ dense (Dense)                        │ (None, 64)                  │           4,992 │
+├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+│ dense_1 (Dense)                      │ (None, 32)                  │           2,080 │
+├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+│ dropout (Dropout)                    │ (None, 32)                  │               0 │
+├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+│ dense_2 (Dense)                      │ (None, 2)                   │              66 │
+└──────────────────────────────────────┴─────────────────────────────┴─────────────────┘
+ Total params: 7,138 (27.88 KB)
+ Trainable params: 7,138 (27.88 KB)
+ Non-trainable params: 0 (0.00 B)
+None
+Epoch 1/50
+2025-04-20 17:57:19.386341: I tensorflow/core/grappler/optimizers/custom_graph_optimizer_registry.cc:117] Plugin optimizer for device_type GPU is enabled.
+544/544 ━━━━━━━━━━━━━━━━━━━━ 9s 11ms/step - loss: 466.5778 - precision: 0.4973 - val_loss: 102.7866 - val_precision: 0.5018
+Epoch 2/50
+544/544 ━━━━━━━━━━━━━━━━━━━━ 6s 11ms/step - loss: 213.5778 - precision: 0.5242 - val_loss: 8.4700 - val_precision: 0.5988
+Epoch 3/50
+544/544 ━━━━━━━━━━━━━━━━━━━━ 6s 11ms/step - loss: 112.8842 - precision: 0.5202 - val_loss: 11.1033 - val_precision: 0.5685
+Epoch 4/50
+544/544 ━━━━━━━━━━━━━━━━━━━━ 6s 11ms/step - loss: 47.7494 - precision: 0.5369 - val_loss: 0.4561 - val_precision: 0.8438
+Epoch 5/50
+544/544 ━━━━━━━━━━━━━━━━━━━━ 6s 11ms/step - loss: 23.1884 - precision: 0.5635 - val_loss: 7.1105 - val_precision: 0.5597
+Epoch 6/50
+544/544 ━━━━━━━━━━━━━━━━━━━━ 6s 11ms/step - loss: 17.6721 - precision: 0.5573 - val_loss: 1.0839 - val_precision: 0.6507
+Epoch 7/50
+544/544 ━━━━━━━━━━━━━━━━━━━━ 6s 11ms/step - loss: 11.7128 - precision: 0.5481 - val_loss: 8.2441 - val_precision: 0.5225
+Epoch 8/50
+544/544 ━━━━━━━━━━━━━━━━━━━━ 6s 11ms/step - loss: 9.0351 - precision: 0.5215 - val_loss: 11.8835 - val_precision: 0.5115
+Epoch 9/50
+544/544 ━━━━━━━━━━━━━━━━━━━━ 6s 11ms/step - loss: 7.1652 - precision: 0.5050 - val_loss: 1.1605 - val_precision: 0.5299
+
+[1/1] Generating learning curve...
+GPU is available
+
+Generating score
+GPU is available
+85/85 ━━━━━━━━━━━━━━━━━━━━ 0s 1ms/step 
+
+models/diabetes1.joblib: train: 
+
++-----+-----+
+|1198 | 184 |
+| 207 |1131 |
++-----+-----+
+
+If we compare this confusion matrix with my best model:
+==== CM Validation Data ====
+     t/p      F     T 
+        F 1249.0 133.0 
+        T 121.0 1217.0 
+
+we are predicting a lot more false negatives which is not good and not what I want
+
+precision: 0.8600760456273764
+recall: 0.8452914798206278
+f1: 0.8526196758386732
+
+
+real    0m3.241s
+user    0m4.673s
+sys     0m0.313s
+
+
+I ran the same thing again and got something completely different:
+=== Starting CNN training process ===
+Model name: a
+[1/1] Fitting initial model with all the data...
+GPU is available
+Model: "sequential"
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━┓
+┃ Layer (type)                         ┃ Output Shape                ┃         Param # ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━┩
+│ dense (Dense)                        │ (None, 64)                  │           4,992 │
+├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+│ dense_1 (Dense)                      │ (None, 32)                  │           2,080 │
+├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+│ dropout (Dropout)                    │ (None, 32)                  │               0 │
+├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+│ dense_2 (Dense)                      │ (None, 2)                   │              66 │
+└──────────────────────────────────────┴─────────────────────────────┴─────────────────┘
+ Total params: 7,138 (27.88 KB)
+ Trainable params: 7,138 (27.88 KB)
+ Non-trainable params: 0 (0.00 B)
+None
+Epoch 1/50
+2025-04-20 18:07:41.133859: I tensorflow/core/grappler/optimizers/custom_graph_optimizer_registry.cc:117] Plugin optimizer for device_type GPU is enabled.
+544/544 ━━━━━━━━━━━━━━━━━━━━ 7s 11ms/step - loss: 406.4063 - precision: 0.5100 - val_loss: 25.3938 - val_precision: 0.5202
+Epoch 2/50
+544/544 ━━━━━━━━━━━━━━━━━━━━ 6s 11ms/step - loss: 191.7362 - precision: 0.5290 - val_loss: 3.1168 - val_precision: 0.5823
+Epoch 3/50
+544/544 ━━━━━━━━━━━━━━━━━━━━ 6s 11ms/step - loss: 88.5556 - precision: 0.5332 - val_loss: 0.6495 - val_precision: 0.7647
+Epoch 4/50
+544/544 ━━━━━━━━━━━━━━━━━━━━ 6s 11ms/step - loss: 28.7609 - precision: 0.5375 - val_loss: 12.6152 - val_precision: 0.5198
+Epoch 5/50
+544/544 ━━━━━━━━━━━━━━━━━━━━ 6s 11ms/step - loss: 17.5471 - precision: 0.5419 - val_loss: 8.6038 - val_precision: 0.5193
+Epoch 6/50
+544/544 ━━━━━━━━━━━━━━━━━━━━ 6s 11ms/step - loss: 9.5538 - precision: 0.5199 - val_loss: 6.9664 - val_precision: 0.5142
+Epoch 7/50
+544/544 ━━━━━━━━━━━━━━━━━━━━ 6s 11ms/step - loss: 5.5219 - precision: 0.5369 - val_loss: 21.6714 - val_precision: 0.4940
+Epoch 8/50
+544/544 ━━━━━━━━━━━━━━━━━━━━ 6s 11ms/step - loss: 5.1507 - precision: 0.5213 - val_loss: 13.5184 - val_precision: 0.5124
+
+[1/1] Generating learning curve...
+GPU is available
+
+Generating score
+GPU is available
+85/85 ━━━━━━━━━━━━━━━━━━━━ 0s 1ms/step 
+
+models/a.joblib: train: 
+
++-----+-----+
+| 757 | 625 |
+|  14 |1324 |
++-----+-----+
+
+precision: 0.6793227296049256
+recall: 0.9895366218236173
+f1: 0.8055978095527837
+
+
+real    0m3.240s
+user    0m4.643s
+sys     0m0.350s
+
+The precision got way worse but the recall is great
+COMMENT
